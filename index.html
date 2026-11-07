@@ -341,7 +341,7 @@
       </div>
     </div>
 
-    <!-- VIEW 5: PONTRÓL PONTRA / SZÁMSZEKÖTŐ MUNKATERÜLET -->
+    <!-- VIEW 5: ÜVEGLAP / INDIGÓ ALAPÚ SZÁMSZEKÖTŐ MUNKATERÜLET -->
     <div id="dotConnectView" class="view-section">
       <button class="btn btn-danger" onclick="goBackToDotConnectGallery()" style="margin-bottom: 8px;">❮ Vissza a Pontról Pontra Galériába</button>
       
@@ -361,7 +361,7 @@
   </div>
 
   <footer>
-    Mátrix Labor Engine v1.28 • Projektigazgatás: Jordan & Nefi
+    Mátrix Labor Engine v1.29 • Projektigazgatás: Jordan & Nefi
   </footer>
 
   <script>
@@ -407,7 +407,7 @@
       ]
     };
 
-    // --- KÉZZEL HANGOLT, VALÓDI FELISMERHETŐ PONT-TÁBLÁZATOK (VIDÁMKIFESTŐ STÍLUS) ---
+    // --- ÜVEGLAP / INDIGÓ ALAPÚ PONT- ÉS KONTÚR-TÁBLÁZATOK A SZÁMSZEKÖTŐHÖZ ---
     const dotConnectTemplates = {
       boys: [
         { 
@@ -916,7 +916,7 @@
       }
     }
 
-    // --- PONTRÓL PONTRA / SZÁMSZEKÖTŐ LOGIKA (KÉZZEL HANGOLT TISZTA KOORDINÁTÁKKAL) ---
+    // --- ÜVEGLAP / INDIGÓ ALAPÚ SZÁMSZEKÖTŐ LOGIKA ---
     function openDotConnectGallery(category) {
       document.getElementById('mainMenuView').classList.remove('active');
       document.getElementById('dotConnectGalleryView').classList.add('active');
@@ -940,7 +940,7 @@
     function startDotConnectGame(tpl) {
       currentDotTpl = tpl;
       currentDotConnectedCount = 0; 
-      currentDotPoints = tpl.points; // Itt vannak a precíz, kézi pontsorozatok
+      currentDotPoints = tpl.points; 
 
       document.getElementById('dotConnectGalleryView').classList.remove('active');
       document.getElementById('dotConnectView').classList.add('active');
@@ -956,11 +956,11 @@
 
       const pts = currentDotPoints;
 
-      // Finom háttér segédvonal a kontúrhoz, hogy látványos legyen
+      // Alul az "üveglap / indigó" háttér kontúr (halvány sziluett)
       dCtx.save();
-      dCtx.strokeStyle = '#e2e8f0';
+      dCtx.strokeStyle = '#cbd5e1';
       dCtx.lineWidth = 2;
-      dCtx.setLineDash([4, 4]);
+      dCtx.setLineDash([6, 6]);
       dCtx.beginPath();
       if (pts.length > 0) {
         dCtx.moveTo(pts[0].x, pts[0].y);
@@ -971,7 +971,7 @@
       dCtx.stroke();
       dCtx.restore();
 
-      // Ha már vannak összekötött pontok
+      // Felül az összekötött vonalak
       if (currentDotConnectedCount > 0) {
         dCtx.strokeStyle = '#ff0055';
         dCtx.lineWidth = 4;
@@ -984,7 +984,7 @@
         dCtx.stroke();
       }
 
-      // Pontok és sorszámok kirajzolása
+      // Pontok és sorszámok
       pts.forEach((p, idx) => {
         dCtx.beginPath();
         dCtx.arc(p.x, p.y, 13, 0, 2 * Math.PI);
