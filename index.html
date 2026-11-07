@@ -341,13 +341,13 @@
       </div>
     </div>
 
-    <!-- VIEW 5: EGYEDI SZÁMSZEKÖTŐS KÉP (ÜVEGLAP MÓD) -->
+    <!-- VIEW 5: VALÓDI KÉPALAPÚ SZÁMSZEKÖTŐS (ÜVEGLAP MÓD) -->
     <div id="dotConnectView" class="view-section">
       <button class="btn btn-danger" onclick="goBackToDotConnectGallery()" style="margin-bottom: 8px;">❮ Vissza a Számösszekötős Galériába</button>
       
       <div class="canvas-workspace">
         <h3 id="dotConnectTitle" style="color: var(--neon-cyan); margin: 0; font-size: 1rem;">Számösszekötős Kép (Üveglap Mód)</h3>
-        <p style="font-size: 0.8rem; color: var(--accent-gold); margin: 0;">Alul az egyedi ábra, rajta a sorszámozott pontok! Kösse össze a kis művész!</p>
+        <p style="font-size: 0.8rem; color: var(--accent-gold); margin: 0;">Alul a letöltött kép, rajta a pontok! Kösd össze szabad kézzel a filccel!</p>
         
         <canvas id="dotCanvas" class="interactive-canvas" width="650" height="420"></canvas>
 
@@ -361,7 +361,7 @@
   </div>
 
   <footer>
-    Mátrix Labor Engine v1.34 • Projektigazgatás: Jordan & Nefi
+    Mátrix Labor Engine v1.36 • Projektigazgatás: Jordan & Nefi
   </footer>
 
   <script>
@@ -407,30 +407,31 @@
       ]
     };
 
+    // VALÓDI KÉPALAPÚ SZÁMSZEKÖTŐS FÁJLOK (A KÉPEK A HÁTTÉRBEN)
     const dotConnectTemplates = {
       boys: [
-        { id: 'dc_train', name: '🚂 Gőzmozdony Számösszekötő', desc: 'Pöfögős mozdony egyedi pontokból.' },
-        { id: 'dc_dino', name: '🦖 T-Rex Dínó Számösszekötő', desc: 'Dínó kontúr számozva.' },
-        { id: 'dc_car', name: '🏎️ Sportautó Számösszekötő', desc: 'Sportautó forma.' },
-        { id: 'dc_rocket', name: '🚀 Mátrix Űrhajó', desc: 'Űrhajó indítás pontjai.' },
-        { id: 'dc_robot', name: '🤖 Robot Robi', desc: 'Robot ábra.' },
-        { id: 'dc_ship', name: '⚓ Kalózhajó', desc: 'Hajótest sorszámok.' },
-        { id: 'dc_ball', name: '⚽ Focilabda', desc: 'Labda geometria.' },
-        { id: 'dc_star', name: '⭐ Csillag', desc: 'Csillag forma.' },
-        { id: 'dc_triangle', name: '🔺 Háromszög Alap', desc: 'Háromszög számok.' },
-        { id: 'dc_square', name: '🟦 Négyzet Doboz', desc: 'Négyzetes alakzat.' }
+        { id: 'train', name: '🚂 Gőzmozdony Számösszekötő', img: 'images/dot_train.png', desc: 'Gőzmozdony pontösszekötős kép.' },
+        { id: 'dino', name: '🦖 T-Rex Dínó Számösszekötő', img: 'images/dot_dino.png', desc: 'T-Rex dínó feladatlap.' },
+        { id: 'car', name: '🏎️ Sportautó Számösszekötő', img: 'images/dot_car.png', desc: 'Sportautó számsor.' },
+        { id: 'rocket', name: '🚀 Mátrix Űrhajó', img: 'images/dot_rocket.png', desc: 'Űrhajó pontok.' },
+        { id: 'robot', name: '🤖 Robot Robi', img: 'images/dot_robot.png', desc: 'Robot feladat.' },
+        { id: 'ship', name: '⚓ Kalózhajó', img: 'images/dot_ship.png', desc: 'Hajó ábra.' },
+        { id: 'ball', name: '⚽ Focilabda', img: 'images/dot_ball.png', desc: 'Labda pontok.' },
+        { id: 'star', name: '⭐ Csillag', img: 'images/dot_star.png', desc: 'Csillag alakzat.' },
+        { id: 'triangle', name: '🔺 Háromszög Alap', img: 'images/dot_triangle.png', desc: 'Geometria.' },
+        { id: 'square', name: '🟦 Négyzet Doboz', img: 'images/dot_square.png', desc: 'Négyzet ábra.' }
       ],
       girls: [
-        { id: 'dc_mermaid', name: '🧜‍♀️ Hableány Palota', desc: 'Hableány kastély minta.' },
-        { id: 'dc_unicorn', name: '🦄 Unikornis Kaland', desc: 'Unikornis figura.' },
-        { id: 'dc_crown', name: '👑 Hercegnő Korona', desc: 'Korona részletei.' },
-        { id: 'dc_castle', name: '🏰 Varázskastély', desc: 'Kastély tornyok.' },
-        { id: 'dc_butterfly', name: '🦋 Pillangó Szárny', desc: 'Pillangó szárnyak.' },
-        { id: 'dc_flower', name: '🌸 Tavaszi Virág', desc: 'Virág szirom pontok.' },
-        { id: 'dc_heart', name: '💖 Szívecske', desc: 'Szív alakzat pontjai.' },
-        { id: 'dc_circle', name: '🔵 Kör Alakzat', desc: 'Kör formájú számok.' },
-        { id: 'dc_star', name: '⭐ Csillagfény', desc: 'Csillagfény pontok.' },
-        { id: 'dc_fairy', name: '🧚‍♀️ Tündér Pálca', desc: 'Varázspálca számsor.' }
+        { id: 'mermaid', name: '🧜‍♀️ Hableány Palota', img: 'images/dot_mermaid.png', desc: 'Hableány kastély.' },
+        { id: 'unicorn', name: '🦄 Unikornis Kaland', img: 'images/dot_unicorn.png', desc: 'Unikornis kép.' },
+        { id: 'crown', name: '👑 Hercegnő Korona', img: 'images/dot_crown.png', desc: 'Korona feladat.' },
+        { id: 'castle', name: '🏰 Varázskastély', img: 'images/dot_castle.png', desc: 'Kastély tornyok.' },
+        { id: 'butterfly', name: '🦋 Pillangó Szárny', img: 'images/dot_butterfly.png', desc: 'Pillangó.' },
+        { id: 'flower', name: '🌸 Tavaszi Virág', img: 'images/dot_flower.png', desc: 'Virág szirom.' },
+        { id: 'heart', name: '💖 Szívecske', img: 'images/dot_heart.png', desc: 'Szív alak.' },
+        { id: 'circle', name: '🔵 Kör Alakzat', img: 'images/dot_circle.png', desc: 'Kör formák.' },
+        { id: 'star', name: '⭐ Csillagfény', img: 'images/dot_starlight.png', desc: 'Csillagok.' },
+        { id: 'fairy', name: '🧚‍♀️ Tündér Pálca', img: 'images/dot_fairy.png', desc: 'Varázspálca.' }
       ]
     };
 
@@ -561,7 +562,6 @@
       document.getElementById('tracingView').classList.add('active');
       document.getElementById('tracingTitle').innerText = tpl.name;
       userStrokePoints = [];
-
       drawTracingGuide(tpl.id);
     }
 
@@ -584,7 +584,6 @@
     function drawTracingGuide(id) {
       tCtx.fillStyle = '#ffffff';
       tCtx.fillRect(0, 0, tCanvas.width, tCanvas.height);
-
       tCtx.strokeStyle = '#0088ff';
       tCtx.lineWidth = 5;
       tCtx.setLineDash([8, 8]);
@@ -608,24 +607,6 @@
           sampleLine(475, 335, 175, 335);
           sampleLine(175, 335, 175, 85);
           tCtx.rect(175, 85, 300, 250);
-          break;
-        case 'rectangle':
-          sampleLine(100, 110, 550, 110);
-          sampleLine(550, 110, 550, 310);
-          sampleLine(550, 310, 100, 310);
-          sampleLine(100, 310, 100, 110);
-          tCtx.rect(100, 110, 450, 200);
-          break;
-        case 'b1':
-          tCtx.moveTo(60, 320);
-          sampleLine(60, 320, 120, 100); sampleLine(120, 100, 180, 320); sampleLine(180, 320, 240, 100); sampleLine(240, 100, 300, 320); sampleLine(300, 320, 360, 100); sampleLine(360, 100, 420, 320); sampleLine(420, 320, 480, 100); sampleLine(480, 100, 540, 320);
-          tCtx.moveTo(60, 320); tCtx.lineTo(120, 100); tCtx.lineTo(180, 320); tCtx.lineTo(240, 100); tCtx.lineTo(300, 320); tCtx.lineTo(360, 100); tCtx.lineTo(420, 320); tCtx.lineTo(480, 100); tCtx.lineTo(540, 320);
-          break;
-        case 'b2':
-        case 'g3':
-          tCtx.moveTo(80, 210);
-          sampleArc(160, 210, 80, Math.PI, 0); sampleArc(320, 210, 80, 0, Math.PI); sampleArc(480, 210, 80, Math.PI, 0);
-          tCtx.arc(160, 210, 80, Math.PI, 0, false); tCtx.arc(320, 210, 80, 0, Math.PI, false); tCtx.arc(480, 210, 80, Math.PI, 0, false);
           break;
         default:
           sampleArc(325, 210, 120, 0, 2 * Math.PI);
@@ -668,9 +649,7 @@
 
     function clearTracing() {
       userStrokePoints = [];
-      if (currentTracingTpl) {
-        drawTracingGuide(currentTracingTpl.id);
-      }
+      if (currentTracingTpl) drawTracingGuide(currentTracingTpl.id);
     }
 
     function checkTracingResult() {
@@ -681,7 +660,7 @@
       alert('Hatalmas ügyesség! Tökéletes, hibátlan vonalvezetés a Mátrix Labor előírásai szerint! 🎉🚀');
     }
 
-    // --- EGYEDI SZÁMSZEKÖTŐS KÉPEK (ÜVEGLAP MÓD - SAJÁT PONTOKKAL) ---
+    // --- VALÓDI KÉPALAPÚ SZÁMSZEKÖTŐS (ÜVEGLAP MÓD - KÉP BETÖLTÉSE ALULRA) ---
     function openDotConnectGallery(category) {
       document.getElementById('mainMenuView').classList.remove('active');
       document.getElementById('dotConnectGalleryView').classList.add('active');
@@ -708,92 +687,24 @@
       document.getElementById('dotConnectView').classList.add('active');
       document.getElementById('dotConnectTitle').innerText = tpl.name;
 
-      drawUniqueDotGlassBackground(tpl);
-    }
-
-    function drawUniqueDotGlassBackground(tpl) {
       dCtx.fillStyle = '#ffffff';
       dCtx.fillRect(0, 0, dCanvas.width, dCanvas.height);
 
-      dCtx.save();
-      dCtx.strokeStyle = '#94a3b8';
-      dCtx.lineWidth = 2;
-      dCtx.setLineDash([5, 5]);
-      dCtx.beginPath();
-
-      // Egyedi háttérsziluett az adott témához igazítva
-      let points = [];
-      if (tpl.id.includes('train')) {
-        dCtx.rect(120, 180, 260, 110);
-        dCtx.arc(180, 310, 25, 0, 2 * Math.PI);
-        dCtx.arc(300, 310, 25, 0, 2 * Math.PI);
-        points = [
-          {x: 120, y: 180}, {x: 200, y: 180}, {x: 280, y: 180}, {x: 380, y: 180},
-          {x: 380, y: 290}, {x: 300, y: 290}, {x: 200, y: 290}, {x: 120, y: 290},
-          {x: 155, y: 310}, {x: 205, y: 310}, {x: 275, y: 310}, {x: 325, y: 310}
-        ];
-      } else if (tpl.id.includes('dino') || tpl.id.includes('dragon')) {
-        dCtx.ellipse(325, 210, 150, 100, 0, 0, 2 * Math.PI);
-        points = [
-          {x: 225, y: 210}, {x: 250, y: 150}, {x: 310, y: 130}, {x: 380, y: 150},
-          {x: 435, y: 210}, {x: 400, y: 280}, {x: 325, y: 300}, {x: 250, y: 280},
-          {x: 200, y: 240}, {x: 180, y: 180}, {x: 270, y: 110}, {x: 350, y: 110}
-        ];
-      } else if (tpl.id.includes('heart') || tpl.id.includes('love')) {
-        dCtx.moveTo(325, 330);
-        dCtx.bezierCurveTo(140, 220, 140, 80, 325, 170);
-        dCtx.bezierCurveTo(510, 80, 510, 220, 325, 330);
-        points = [
-          {x: 325, y: 330}, {x: 240, y: 260}, {x: 170, y: 200}, {x: 160, y: 140},
-          {x: 220, y: 90}, {x: 290, y: 120}, {x: 325, y: 170}, {x: 360, y: 120},
-          {x: 430, y: 90}, {x: 490, y: 140}, {x: 480, y: 200}, {x: 410, y: 260}
-        ];
-      } else if (tpl.id.includes('star')) {
-        dCtx.moveTo(325, 60);
-        dCtx.lineTo(375, 150); dCtx.lineTo(480, 160); dCtx.lineTo(400, 230);
-        dCtx.lineTo(425, 330); dCtx.lineTo(325, 280); dCtx.lineTo(225, 330);
-        dCtx.lineTo(250, 230); dCtx.lineTo(170, 160); dCtx.lineTo(275, 150); dCtx.closePath();
-        points = [
-          {x: 325, y: 60}, {x: 350, y: 110}, {x: 375, y: 150}, {x: 430, y: 155},
-          {x: 480, y: 160}, {x: 440, y: 200}, {x: 400, y: 230}, {x: 412, y: 280},
-          {x: 425, y: 330}, {x: 375, y: 305}, {x: 325, y: 280}, {x: 275, y: 305},
-          {x: 225, y: 330}, {x: 238, y: 280}, {x: 200, y: 230}, {x: 170, y: 200},
-          {x: 170, y: 160}, {x: 225, y: 155}, {x: 275, y: 150}, {x: 300, y: 110}
-        ];
-      } else {
-        // Általános gazdag kör alakzat egyedi pontokkal
-        dCtx.arc(325, 210, 130, 0, 2 * Math.PI);
-        for(let i=0; i<14; i++) {
-          let ang = (i / 14) * 2 * Math.PI;
-          points.push({ x: 325 + 130 * Math.cos(ang), y: 210 + 130 * Math.sin(ang) });
-        }
-      }
-      dCtx.stroke();
-      dCtx.restore();
-
-      // Pontok és sorszámok kirajzolása az üveglap alá
-      points.forEach((pt, idx) => {
-        let num = idx + 1;
-        dCtx.beginPath();
-        dCtx.arc(pt.x, pt.y, 11, 0, 2 * Math.PI);
-        dCtx.fillStyle = '#0284c7';
-        dCtx.fill();
-        dCtx.lineWidth = 2;
-        dCtx.strokeStyle = '#ffffff';
-        dCtx.stroke();
-
-        dCtx.fillStyle = '#ffffff';
-        dCtx.font = 'bold 11px Courier New';
+      // Kép betöltése a háttérbe (üveglap alá)
+      const img = new Image();
+      img.src = tpl.img;
+      img.onload = function() {
+        dCtx.drawImage(img, 50, 40, 550, 340);
+      };
+      img.onerror = function() {
+        // Fallback, ha a képfájl még nem érkezett meg a mappába
+        dCtx.fillStyle = '#f1f5f9';
+        dCtx.fillRect(50, 40, 550, 340);
+        dCtx.font = '16px Courier New';
+        dCtx.fillStyle = '#64748b';
         dCtx.textAlign = 'center';
-        dCtx.textBaseline = 'middle';
-        dCtx.fillText(num, pt.x, pt.y);
-      });
-
-      // Címke felül
-      dCtx.font = 'bold 16px Courier New';
-      dCtx.fillStyle = '#0f172a';
-      dCtx.textAlign = 'center';
-      dCtx.fillText(tpl.name + ' (1 - ' + points.length + ')', dCanvas.width / 2, 30);
+        dCtx.fillText('Helyezd el a képet itt: ' + tpl.img, dCanvas.width / 2, dCanvas.height / 2);
+      };
     }
 
     dCanvas.addEventListener('mousedown', e => startDotDraw(e));
@@ -823,7 +734,7 @@
 
     function clearDotConnect() {
       if (currentDotTpl) {
-        drawUniqueDotGlassBackground(currentDotTpl);
+        startDotConnectGame(currentDotTpl);
       }
     }
 
