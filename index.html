@@ -361,28 +361,96 @@
   </div>
 
   <footer>
-    Mátrix Labor Engine v1.31 • Projektigazgatás: Jordan & Nefi
+    Mátrix Labor Engine v1.32 • Projektigazgatás: Jordan & Nefi
   </footer>
 
-  <!-- REJTETT VEKTOROS ÚTVONALAK (IGAZI SZÉP GEOMETRIAI SABLONOK) -->
+  <!-- IGАЗI RÉSZLETES KÉP-ALAPÚ SVG VEKTOR GRAFIKÁK -->
   <svg style="display:none;" width="600" height="400">
-    <path id="svg_car" d="M 140 280 L 190 280 C 210 240, 240 240, 260 280 L 360 280 C 380 240, 410 240, 430 280 L 480 280 L 450 220 C 420 170, 360 160, 300 160 C 240 160, 180 170, 150 220 Z"></path>
-    <path id="svg_house" d="M 180 320 L 420 320 L 420 200 L 460 200 L 300 100 L 140 200 L 180 200 Z"></path>
-    <path id="svg_rocket" d="M 300 60 L 330 120 L 340 240 L 420 320 L 320 290 L 300 340 L 280 290 L 180 320 L 260 240 L 270 120 Z"></path>
-    <path id="svg_tree" d="M 300 60 L 350 140 L 320 140 L 380 220 L 330 220 L 410 300 L 330 300 L 330 350 L 270 350 L 270 300 L 190 300 L 270 220 L 220 220 L 280 140 L 250 140 Z"></path>
-    <path id="svg_star" d="M 300 60 L 340 150 L 440 160 L 360 230 L 390 320 L 300 270 L 210 320 L 240 230 L 160 160 L 260 150 Z"></path>
-    <path id="svg_boat" d="M 300 60 L 300 270 L 460 270 L 380 340 L 220 340 L 140 270 L 300 270 M 410 160 L 300 220 L 190 190 L 300 100 Z"></path>
-    <path id="svg_crown" d="M 140 300 L 170 100 L 240 200 L 300 60 L 360 200 L 430 100 L 460 300 Z"></path>
-    <path id="svg_fish" d="M 200 200 L 280 120 L 380 160 L 460 100 L 480 200 L 460 300 L 380 240 L 280 280 L 200 200 L 130 120 L 110 200 L 130 280 Z"></path>
-    <path id="svg_triangle" d="M 300 60 L 480 330 L 120 330 Z"></path>
-    <path id="svg_square" d="M 150 90 L 450 90 L 450 310 L 150 310 Z"></path>
-    
-    <path id="svg_unicorn" d="M 160 330 L 160 220 L 190 160 L 240 110 L 310 60 L 350 100 L 380 90 L 360 140 L 420 180 L 450 250 L 430 330 Z"></path>
-    <path id="svg_heart" d="M 300 330 L 160 200 L 190 90 L 300 170 L 410 90 L 440 200 Z"></path>
-    <path id="svg_flower" d="M 300 350 L 300 220 L 300 90 L 410 150 L 300 220 L 190 150 Z"></path>
-    <path id="svg_butterfly" d="M 300 190 L 480 70 L 540 200 L 420 250 L 500 320 L 300 330 L 100 320 L 180 250 L 60 200 L 120 70 Z"></path>
-    <path id="svg_castle" d="M 130 340 L 130 180 L 170 110 L 210 180 L 210 340 L 300 340 L 300 70 L 390 340 L 470 340 Z"></path>
-    <path id="svg_fairy" d="M 150 350 L 340 150 L 430 70 L 470 110 L 390 190 Z"></path>
+    <!-- Sportautó részletes sziluett -->
+    <g id="art_car">
+      <path d="M 120 280 L 170 285 C 185 245, 220 240, 245 285 L 355 285 C 380 240, 415 245, 430 285 L 480 280 L 460 220 C 430 170, 370 160, 300 160 C 230 160, 170 170, 140 220 Z" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4 4"/>
+      <circle cx="215" cy="285" r="28" fill="#e2e8f0" stroke="#64748b" stroke-width="2" stroke-dasharray="3 3"/>
+      <circle cx="395" cy="285" r="28" fill="#e2e8f0" stroke="#64748b" stroke-width="2" stroke-dasharray="3 3"/>
+    </g>
+
+    <!-- Házikó -->
+    <g id="art_house">
+      <path d="M 180 320 L 420 320 L 420 200 L 460 200 L 300 100 L 140 200 L 180 200 Z" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4 4"/>
+      <rect x="260" y="240" width="80" height="80" fill="#e2e8f0" stroke="#64748b" stroke-width="2" stroke-dasharray="3 3"/>
+    </g>
+
+    <!-- Rakéta -->
+    <g id="art_rocket">
+      <path d="M 300 50 L 340 120 L 350 250 L 430 320 L 330 290 L 300 350 L 270 290 L 170 320 L 250 250 L 260 120 Z" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4 4"/>
+    </g>
+
+    <!-- Fenyőfa -->
+    <g id="art_tree">
+      <path d="M 300 50 L 360 140 L 320 140 L 390 220 L 330 220 L 420 300 L 330 300 L 330 360 L 270 360 L 270 300 L 180 300 L 270 220 L 210 220 L 280 140 L 240 140 Z" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4 4"/>
+    </g>
+
+    <!-- Csillag -->
+    <g id="art_star">
+      <path d="M 300 60 L 340 150 L 440 160 L 360 230 L 390 320 L 300 270 L 210 320 L 240 230 L 160 160 L 260 150 Z" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4 4"/>
+    </g>
+
+    <!-- Vitorlás -->
+    <g id="art_boat">
+      <path d="M 300 60 L 300 270 L 460 270 L 380 340 L 220 340 L 140 270 Z" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4 4"/>
+      <path d="M 300 80 L 420 180 L 300 240 L 180 180 Z" fill="#e2e8f0" stroke="#64748b" stroke-width="2" stroke-dasharray="3 3"/>
+    </g>
+
+    <!-- Korona -->
+    <g id="art_crown">
+      <path d="M 140 300 L 170 100 L 240 200 L 300 60 L 360 200 L 430 100 L 460 300 Z" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4 4"/>
+    </g>
+
+    <!-- Halacska -->
+    <g id="art_fish">
+      <path d="M 200 200 L 280 120 L 380 160 L 460 100 L 480 200 L 460 300 L 380 240 L 280 280 L 200 200 L 130 120 L 110 200 L 130 280 Z" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4 4"/>
+    </g>
+
+    <!-- Háromszög -->
+    <g id="art_triangle">
+      <polygon points="300,60 480,330 120,330" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4 4"/>
+    </g>
+
+    <!-- Négyzet -->
+    <g id="art_square">
+      <rect x="150" y="90" width="300" height="220" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4 4"/>
+    </g>
+
+    <!-- Unikornis -->
+    <g id="art_unicorn">
+      <path d="M 160 330 L 160 220 L 190 160 L 240 110 L 310 60 L 350 100 L 380 90 L 360 140 L 420 180 L 450 250 L 430 330 Z" fill="#fdf2f8" stroke="#f472b6" stroke-width="2" stroke-dasharray="4 4"/>
+    </g>
+
+    <!-- Szívecske -->
+    <g id="art_heart">
+      <path d="M 300 330 L 160 200 L 190 90 L 300 170 L 410 90 L 440 200 Z" fill="#fdf2f8" stroke="#f472b6" stroke-width="2" stroke-dasharray="4 4"/>
+    </g>
+
+    <!-- Virág -->
+    <g id="art_flower">
+      <circle cx="300" cy="200" r="45" fill="#fdf2f8" stroke="#f472b6" stroke-width="2" stroke-dasharray="3 3"/>
+      <path d="M 300 350 L 300 220" stroke="#f472b6" stroke-width="3" stroke-dasharray="4 4"/>
+      <path d="M 300 90 L 410 150 L 300 220 L 190 150 Z" fill="none" stroke="#f472b6" stroke-width="2" stroke-dasharray="4 4"/>
+    </g>
+
+    <!-- Pillangó -->
+    <g id="art_butterfly">
+      <path d="M 300 190 L 480 70 L 540 200 L 420 250 L 500 320 L 300 330 L 100 320 L 180 250 L 60 200 L 120 70 Z" fill="#fdf2f8" stroke="#f472b6" stroke-width="2" stroke-dasharray="4 4"/>
+    </g>
+
+    <!-- Kastély -->
+    <g id="art_castle">
+      <path d="M 130 340 L 130 180 L 170 110 L 210 180 L 210 340 L 300 340 L 300 70 L 390 340 L 470 340 Z" fill="#fdf2f8" stroke="#f472b6" stroke-width="2" stroke-dasharray="4 4"/>
+    </g>
+
+    <!-- Tündér Pálca -->
+    <g id="art_fairy">
+      <path d="M 150 350 L 340 150 L 430 70 L 470 110 L 390 190 Z" fill="#fdf2f8" stroke="#f472b6" stroke-width="2" stroke-dasharray="4 4"/>
+    </g>
   </svg>
 
   <script>
@@ -428,42 +496,64 @@
       ]
     };
 
-    // PONTSZÁMÍTÁS VALÓDI VEKTOR PATH-OKBÓL (AUTÓMATIKUS ÉS TÖKÉLETESEN PONTOS)
+    // PONTKINYERÉS DIREKT A RÉSZLETES SVG ILLUSZTRÁCIÓK PATH-OKBÓL
     const dotConnectTemplates = {
       boys: [
-        { id: 'svg_car', name: '🏎️ Sportautó', desc: 'Kössd össze az autó pontjait!' },
-        { id: 'svg_house', name: '🏠 Házikó', desc: 'Kössd össze a ház pontjait!' },
-        { id: 'svg_rocket', name: '🚀 Rakéta', desc: 'Kössd össze a rakéta pontjait!' },
-        { id: 'svg_tree', name: '🌲 Fenyőfa', desc: 'Kössd össze a fa pontjait!' },
-        { id: 'svg_star', name: '⭐ Csillag', desc: 'Kössd össze a csillag pontjait!' },
-        { id: 'svg_boat', name: '⛵ Vitorlás', desc: 'Kössd össze a hajó pontjait!' },
-        { id: 'svg_crown', name: '👑 Korona', desc: 'Kössd össze a korona pontjait!' },
-        { id: 'svg_fish', name: '🐠 Halacska', desc: 'Kössd össze a hal pontjait!' },
-        { id: 'svg_triangle', name: '🔺 Háromszög', desc: 'Kössd össze a háromszög pontjait!' },
-        { id: 'svg_square', name: '🟦 Négyzet', desc: 'Kössd össze a négyzet pontjait!' }
+        { id: 'art_car', name: '🏎️ Sportautó', desc: 'Kössd össze az autó pontjait!' },
+        { id: 'art_house', name: '🏠 Házikó', desc: 'Kössd össze a ház pontjait!' },
+        { id: 'art_rocket', name: '🚀 Rakéta', desc: 'Kössd össze a rakéta pontjait!' },
+        { id: 'art_tree', name: '🌲 Fenyőfa', desc: 'Kössd össze a fa pontjait!' },
+        { id: 'art_star', name: '⭐ Csillag', desc: 'Kössd össze a csillag pontjait!' },
+        { id: 'art_boat', name: '⛵ Vitorlás', desc: 'Kössd össze a hajó pontjait!' },
+        { id: 'art_crown', name: '👑 Korona', desc: 'Kössd össze a korona pontjait!' },
+        { id: 'art_fish', name: '🐠 Halacska', desc: 'Kössd össze a hal pontjait!' },
+        { id: 'art_triangle', name: '🔺 Háromszög', desc: 'Kössd össze a háromszög pontjait!' },
+        { id: 'art_square', name: '🟦 Négyzet', desc: 'Kössd össze a négyzet pontjait!' }
       ],
       girls: [
-        { id: 'svg_unicorn', name: '🦄 Unikornis Fej', desc: 'Kössd össze az unikornis pontjait!' },
-        { id: 'svg_heart', name: '💖 Szívecske', desc: 'Kössd össze a szív pontjait!' },
-        { id: 'svg_flower', name: '🌸 Virág', desc: 'Kössd össze a virág pontjait!' },
-        { id: 'svg_butterfly', name: '🦋 Pillangó', desc: 'Kössd össze a pillangó pontjait!' },
-        { id: 'svg_castle', name: '🏰 Varázskastély', desc: 'Kössd össze a kastély pontjait!' },
-        { id: 'svg_star', name: '⭐ Csillagfény', desc: 'Kössd össze a csillag pontjait!' },
-        { id: 'svg_crown', name: '👑 Hercegnő Korona', desc: 'Kössd össze a korona pontjait!' },
-        { id: 'svg_circle', name: '🔵 Kör Alakzat', desc: 'Kössd össze a kör pontjait!' },
-        { id: 'svg_house', name: '🏠 Meseház', desc: 'Kössd össze a ház pontjait!' },
-        { id: 'svg_fairy', name: '🧚‍♀️ Tündér Pálca', desc: 'Kössd össze a pálca pontjait!' }
+        { id: 'art_unicorn', name: '🦄 Unikornis Fej', desc: 'Kössd össze az unikornis pontjait!' },
+        { id: 'art_heart', name: '💖 Szívecske', desc: 'Kössd össze a szív pontjait!' },
+        { id: 'art_flower', name: '🌸 Virág', desc: 'Kössd össze a virág pontjait!' },
+        { id: 'art_butterfly', name: '🦋 Pillangó', desc: 'Kössd össze a pillangó pontjait!' },
+        { id: 'art_castle', name: '🏰 Varázskastély', desc: 'Kössd össze a kastély pontjait!' },
+        { id: 'art_star', name: '⭐ Csillagfény', desc: 'Kössd össze a csillag pontjait!' },
+        { id: 'art_crown', name: '👑 Hercegnő Korona', desc: 'Kössd össze a korona pontjait!' },
+        { id: 'art_triangle', name: '🔺 Háromszög', desc: 'Kössd össze a háromszög pontjait!' },
+        { id: 'art_house', name: '🏠 Meseház', desc: 'Kössd össze a ház pontjait!' },
+        { id: 'art_fairy', name: '🧚‍♀️ Tündér Pálca', desc: 'Kössd össze a pálca pontjait!' }
       ]
     };
 
-    function extractPointsFromSvg(pathId, count = 16) {
-      const pathEl = document.getElementById(pathId);
+    function extractPointsFromSvgArt(artId, count = 18) {
+      const gEl = document.getElementById(artId);
+      if (!gEl) return [];
+      const pathEl = gEl.querySelector('path') || gEl.querySelector('polygon') || gEl.querySelector('rect');
       if (!pathEl) return [];
-      const length = pathEl.getTotalLength();
+      
       let pts = [];
-      for (let i = 0; i < count; i++) {
-        let pt = pathEl.getPointAtLength((i / count) * length);
-        pts.push({ x: Math.round(pt.x), y: Math.round(pt.y) });
+      if (pathEl.tagName.toLowerCase() === 'rect') {
+        let x = parseFloat(pathEl.getAttribute('x'));
+        let y = parseFloat(pathEl.getAttribute('y'));
+        let w = parseFloat(pathEl.getAttribute('width'));
+        let h = parseFloat(pathEl.getAttribute('height'));
+        pts = [
+          {x, y}, {x: x+w/2, y}, {x: x+w, y},
+          {x: x+w, y: y+h/2}, {x: x+w, y: y+h},
+          {x: x+w/2, y: y+h}, {x, y: y+h},
+          {x, y: y+h/2}
+        ];
+      } else if (pathEl.tagName.toLowerCase() === 'polygon') {
+        let ptsStr = pathEl.getAttribute('points').trim().split(/\s+/);
+        pts = ptsStr.map(p => {
+          let parts = p.split(',');
+          return { x: parseFloat(parts[0]), y: parseFloat(parts[1]) };
+        });
+      } else {
+        const length = pathEl.getTotalLength();
+        for (let i = 0; i < count; i++) {
+          let pt = pathEl.getPointAtLength((i / count) * length);
+          pts.push({ x: Math.round(pt.x), y: Math.round(pt.y) });
+        }
       }
       return pts;
     }
@@ -824,7 +914,7 @@
       }
     }
 
-    // --- PONTRÓL PONTRA JÁTÉK (VALÓDI VEKTOR PATH EXTRACTOR) ---
+    // --- PONTRÓL PONTRA JÁTÉK (KÉP-ALAPÚ VIZUÁLIS SZILUETTEL) ---
     function openDotConnectGallery(category) {
       document.getElementById('mainMenuView').classList.remove('active');
       document.getElementById('dotConnectGalleryView').classList.add('active');
@@ -848,8 +938,8 @@
     function startDotConnectGame(tpl) {
       currentDotTpl = tpl;
       currentDotConnectedCount = 0; 
-      // Itt nyerjük ki a pontokat közvetlenül a valódi SVG vektor path-ból (16 pont = tökéletes elsős méret)
-      currentDotPoints = extractPointsFromSvg(tpl.id, 16);
+      // Pontok kinyerése a rejtett SVG illusztráció kontúrjából
+      currentDotPoints = extractPointsFromSvgArt(tpl.id, 18);
 
       document.getElementById('dotConnectGalleryView').classList.remove('active');
       document.getElementById('dotConnectView').classList.add('active');
@@ -861,17 +951,37 @@
 
     function drawObjectSilhouette() {
       dCtx.save();
-      dCtx.strokeStyle = '#cbd5e1';
-      dCtx.fillStyle = '#f8fafc';
-      dCtx.lineWidth = 2;
-      dCtx.setLineDash([4, 4]);
+      const gEl = document.getElementById(currentDotTpl.id);
+      if (gEl) {
+        // Kirajzoljuk a részletes illusztrációt halványan háttérképként a vászonra
+        dCtx.strokeStyle = '#cbd5e1';
+        dCtx.fillStyle = '#f8fafc';
+        dCtx.lineWidth = 2;
+        dCtx.setLineDash([4, 4]);
 
-      const pathEl = document.getElementById(currentDotTpl.id);
-      if (pathEl) {
-        dCtx.beginPath();
-        let p2d = new Path2D(pathEl.getAttribute('d'));
-        dCtx.fill(p2d);
-        dCtx.stroke(p2d);
+        const paths = gEl.querySelectorAll('path, polygon, rect, circle');
+        paths.forEach(p => {
+          if (p.tagName.toLowerCase() === 'rect') {
+            let x = parseFloat(p.getAttribute('x'));
+            let y = parseFloat(p.getAttribute('y'));
+            let w = parseFloat(p.getAttribute('width'));
+            let h = parseFloat(p.getAttribute('height'));
+            dCtx.fillRect(x, y, w, h);
+            dCtx.strokeRect(x, y, w, h);
+          } else if (p.tagName.toLowerCase() === 'circle') {
+            let cx = parseFloat(p.getAttribute('cx'));
+            let cy = parseFloat(p.getAttribute('cy'));
+            let r = parseFloat(p.getAttribute('r'));
+            dCtx.beginPath();
+            dCtx.arc(cx, cy, r, 0, 2 * Math.PI);
+            dCtx.fill();
+            dCtx.stroke();
+          } else {
+            let p2d = new Path2D(p.getAttribute('d') || '');
+            dCtx.fill(p2d);
+            dCtx.stroke(p2d);
+          }
+        });
       }
       dCtx.restore();
     }
