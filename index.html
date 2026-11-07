@@ -337,7 +337,7 @@
   </div>
 
   <footer>
-    Mátrix Labor Engine v1.8 • Projektigazgatás: Jordan & Nefi
+    Mátrix Labor Engine v1.9 • Projektigazgatás: Jordan & Nefi
   </footer>
 
   <script>
@@ -386,6 +386,8 @@
     let selectedColor = '#ff0055';
     let currentTracingTpl = null;
     let currentTracingCat = 'boys';
+    let guideSamplePoints = [];
+    let userStrokePoints = [];
 
     const canvas = document.getElementById('coloringCanvas');
     const ctx = canvas.getContext('2d');
@@ -504,8 +506,44 @@
       document.getElementById('tracingGalleryView').classList.remove('active');
       document.getElementById('tracingView').classList.add('active');
       document.getElementById('tracingTitle').innerText = tpl.name;
+      userStrokePoints = [];
 
       drawTracingGuide(tpl.id);
+    }
+
+    // Segédfüggvények a geometriai minták pontszerinti mintavételezéséhez
+    function sampleLine(x0, y0, x1, y1, steps = 10) {
+      for (let i = 0; i <= steps; i++) {
+        let t = i / steps;
+        guideSamplePoints.push({ x: x0 + t * (x1 - x0), y: y0 + t * (y1 - y0) });
+      }
+    }
+
+    function sampleQuad(x0, y0, cx, cy, x1, y1, steps = 15) {
+      for (let i = 0; i <= steps; i++) {
+        let t = i / steps;
+        let x = (1-t)*(1-t)*x0 + 2*(1-t)*t*cx + t*t*x1;
+        let y = (1-t)*(1-t)*y0 + 2*(1-t)*t*cy + t*t*y1;
+        guideSamplePoints.push({ x, y });
+      }
+    }
+
+    function sampleBezier(x0, y0, c1x, c1y, c2x, c2y, x1, y1, steps = 20) {
+      for (let i = 0; i <= steps; i++) {
+        let t = i / steps;
+        let x = Math.pow(1-t, 3)*x0 + 3*Math.pow(1-t, 2)*t*c1x + 3*(1-t)*t*t*c2x + t*t*t*x1;
+        let y = Math.pow(1-t, 3)*y0 + 3*Math.pow(1-t, 2)*t*c1y + 3*(1-t)*t*t*c2y + t*t*t*y1;
+        guideSamplePoints.push({ x, y });
+      }
+    }
+
+    function sampleArc(cx, cy, radius, startAngle, endAngle, steps = 20) {
+      for (let i = 0; i <= steps; i++) {
+        let angle = startAngle + (i / steps) * (endAngle - startAngle);
+        let x = cx + radius * Math.cos(angle);
+        let y = cy + radius * Math.sin(angle);
+        guideSamplePoints.push({ x, y });
+      }
     }
 
     function drawTracingGuide(id) {
@@ -516,76 +554,137 @@
       tCtx.lineWidth = 5;
       tCtx.setLineDash([8, 8]);
       tCtx.beginPath();
+      guideSamplePoints = [];
 
       switch(id) {
         case 'b1':
-          tCtx.moveTo(40, 300); tCtx.lineTo(100, 100); tCtx.lineTo(160, 300); tCtx.lineTo(220, 100); tCtx.lineTo(280, 300); tCtx.lineTo(340, 100); tCtx.lineTo(400, 300); tCtx.lineTo(460, 100); tCtx.lineTo(520, 300);
+          tCtx.moveTo(40, 300);
+          sampleLine(40, 300, 100, 100); tCtx.lineTo(100, 100);
+          sampleLine(100, 100, 160, 300); tCtx.lineTo(160, 300);
+          sampleLine(160, 300, 220, 100); tCtx.lineTo(220, 100);
+          sampleLine(220, 100, 280, 300); tCtx.lineTo(280, 300);
+          sampleLine(280, 300, 340, 100); tCtx.lineTo(340, 100);
+          sampleLine(340, 100, 400, 300); tCtx.lineTo(400, 300);
+          sampleLine(400, 300, 460, 100); tCtx.lineTo(460, 100);
+          sampleLine(460, 100, 520, 300); tCtx.lineTo(520, 300);
           break;
         case 'b2':
-          tCtx.moveTo(40, 200); tCtx.bezierCurveTo(120, 50, 200, 350, 280, 200); tCtx.bezierCurveTo(360, 50, 440, 350, 520, 200);
+          tCtx.moveTo(40, 200);
+          sampleBezier(40, 200, 120, 50, 200, 350, 280, 200); tCtx.bezierCurveTo(120, 50, 200, 350, 280, 200);
+          sampleBezier(280, 200, 360, 50, 440, 350, 520, 200); tCtx.bezierCurveTo(360, 50, 440, 350, 520, 200);
           break;
         case 'b3':
           tCtx.moveTo(300, 200);
+          let spiralPts = [];
           for (let i = 0; i < 35; i++) {
             let angle = 0.25 * i;
             let x = 300 + (5 + i * 4) * Math.cos(angle);
             let y = 200 + (5 + i * 4) * Math.sin(angle);
-            tCtx.lineTo(x, y);
+            spiralPts.push({x, y});
+            if (i === 0) tCtx.moveTo(x, y); else tCtx.lineTo(x, y);
           }
+          guideSamplePoints = spiralPts;
           break;
         case 'b4':
-          tCtx.moveTo(50, 330); tCtx.lineTo(50, 270); tCtx.lineTo(120, 270); tCtx.lineTo(120, 210); tCtx.lineTo(190, 210); tCtx.lineTo(190, 150); tCtx.lineTo(260, 150); tCtx.lineTo(260, 90); tCtx.lineTo(330, 90);
+          tCtx.moveTo(50, 330);
+          let stairs = [
+            {x:50, y:330}, {x:50, y:270}, {x:120, y:270}, {x:120, y:210}, 
+            {x:190, y:210}, {x:190, y:150}, {x:260, y:150}, {x:260, y:90}, {x:330, y:90}
+          ];
+          for(let i=0; i<stairs.length-1; i++) sampleLine(stairs[i].x, stairs[i].y, stairs[i+1].x, stairs[i+1].y);
+          tCtx.lineTo(50, 270); tCtx.lineTo(120, 270); tCtx.lineTo(120, 210); tCtx.lineTo(190, 210); tCtx.lineTo(190, 150); tCtx.lineTo(260, 150); tCtx.lineTo(260, 90); tCtx.lineTo(330, 90);
           break;
         case 'b5':
-          tCtx.moveTo(50, 200); tCtx.quadraticCurveTo(150, 350, 250, 200); tCtx.quadraticCurveTo(350, 50, 450, 200); tCtx.quadraticCurveTo(500, 300, 550, 200);
+          tCtx.moveTo(50, 200);
+          sampleQuad(50, 200, 150, 350, 250, 200); tCtx.quadraticCurveTo(150, 350, 250, 200);
+          sampleQuad(250, 200, 350, 50, 450, 200); tCtx.quadraticCurveTo(350, 50, 450, 200);
+          sampleQuad(450, 200, 500, 300, 550, 200); tCtx.quadraticCurveTo(500, 300, 550, 200);
           break;
         case 'b6':
-          tCtx.moveTo(150, 40); tCtx.lineTo(250, 160); tCtx.lineTo(180, 180); tCtx.lineTo(350, 320); tCtx.lineTo(280, 220); tCtx.lineTo(400, 100);
+          tCtx.moveTo(150, 40);
+          let vpts = [{x:150, y:40}, {x:250, y:160}, {x:180, y:180}, {x:350, y:320}, {x:280, y:220}, {x:400, y:100}];
+          for(let i=0; i<vpts.length-1; i++) sampleLine(vpts[i].x, vpts[i].y, vpts[i+1].x, vpts[i+1].y);
+          tCtx.lineTo(250, 160); tCtx.lineTo(180, 180); tCtx.lineTo(350, 320); tCtx.lineTo(280, 220); tCtx.lineTo(400, 100);
           break;
         case 'b7':
-          tCtx.moveTo(40, 320); tCtx.lineTo(140, 120); tCtx.lineTo(240, 320); tCtx.lineTo(340, 80); tCtx.lineTo(440, 320); tCtx.lineTo(540, 150);
+          tCtx.moveTo(40, 320);
+          let hpts = [{x:40, y:320}, {x:140, y:120}, {x:240, y:320}, {x:340, y:80}, {x:440, y:320}, {x:540, y:150}];
+          for(let i=0; i<hpts.length-1; i++) sampleLine(hpts[i].x, hpts[i].y, hpts[i+1].x, hpts[i+1].y);
+          tCtx.lineTo(140, 120); tCtx.lineTo(240, 320); tCtx.lineTo(340, 80); tCtx.lineTo(440, 320); tCtx.lineTo(540, 150);
           break;
         case 'b8':
-          tCtx.moveTo(40, 250); tCtx.quadraticCurveTo(300, 20, 560, 250);
+          tCtx.moveTo(40, 250);
+          sampleQuad(40, 250, 300, 20, 560, 250);
+          tCtx.quadraticCurveTo(300, 20, 560, 250);
           break;
         case 'b9':
-          tCtx.moveTo(40, 100); tCtx.lineTo(520, 100); tCtx.lineTo(520, 300); tCtx.lineTo(80, 300); tCtx.lineTo(80, 200); tCtx.lineTo(480, 200);
+          tCtx.moveTo(40, 100);
+          let alts = [{x:40, y:100}, {x:520, y:100}, {x:520, y:300}, {x:80, y:300}, {x:80, y:200}, {x:480, y:200}];
+          for(let i=0; i<alts.length-1; i++) sampleLine(alts[i].x, alts[i].y, alts[i+1].x, alts[i+1].y);
+          tCtx.lineTo(520, 100); tCtx.lineTo(520, 300); tCtx.lineTo(80, 300); tCtx.lineTo(80, 200); tCtx.lineTo(480, 200);
           break;
         case 'b10':
-          tCtx.moveTo(50, 200); tCtx.lineTo(150, 100); tCtx.lineTo(250, 300); tCtx.lineTo(350, 100); tCtx.lineTo(450, 300); tCtx.lineTo(550, 200);
+          tCtx.moveTo(50, 200);
+          let spts = [{x:50, y:200}, {x:150, y:100}, {x:250, y:300}, {x:350, y:100}, {x:450, y:300}, {x:550, y:200}];
+          for(let i=0; i<spts.length-1; i++) sampleLine(spts[i].x, spts[i].y, spts[i+1].x, spts[i+1].y);
+          tCtx.lineTo(150, 100); tCtx.lineTo(250, 300); tCtx.lineTo(350, 100); tCtx.lineTo(450, 300); tCtx.lineTo(550, 200);
           break;
         case 'g1':
-          tCtx.moveTo(50, 280); tCtx.lineTo(120, 120); tCtx.lineTo(190, 250); tCtx.lineTo(260, 100); tCtx.lineTo(330, 250); tCtx.lineTo(400, 120); tCtx.lineTo(470, 280);
+          tCtx.moveTo(50, 280);
+          let kpts = [{x:50, y:280}, {x:120, y:120}, {x:190, y:250}, {x:260, y:100}, {x:330, y:250}, {x:400, y:120}, {x:470, y:280}];
+          for(let i=0; i<kpts.length-1; i++) sampleLine(kpts[i].x, kpts[i].y, kpts[i+1].x, kpts[i+1].y);
+          tCtx.lineTo(120, 120); tCtx.lineTo(190, 250); tCtx.lineTo(260, 100); tCtx.lineTo(330, 250); tCtx.lineTo(400, 120); tCtx.lineTo(470, 280);
           break;
         case 'g2':
+          sampleArc(300, 200, 90, 0, 2 * Math.PI);
           tCtx.arc(300, 200, 90, 0, 2 * Math.PI);
           break;
         case 'g3':
-          tCtx.moveTo(300, 320); tCtx.bezierCurveTo(100, 220, 100, 80, 300, 180); tCtx.bezierCurveTo(500, 80, 500, 220, 300, 320);
+          tCtx.moveTo(300, 320);
+          sampleBezier(300, 320, 100, 220, 100, 80, 300, 180); tCtx.bezierCurveTo(100, 220, 100, 80, 300, 180);
+          sampleBezier(300, 180, 500, 80, 500, 220, 300, 320); tCtx.bezierCurveTo(500, 80, 500, 220, 300, 320);
           break;
         case 'g4':
-          tCtx.moveTo(40, 150); tCtx.quadraticCurveTo(150, 300, 260, 150); tCtx.quadraticCurveTo(370, 0, 480, 150); tCtx.lineTo(560, 220);
+          tCtx.moveTo(40, 150);
+          sampleQuad(40, 150, 150, 300, 260, 150); tCtx.quadraticCurveTo(150, 300, 260, 150);
+          sampleQuad(260, 150, 370, 0, 480, 150); tCtx.quadraticCurveTo(370, 0, 480, 150);
+          sampleLine(480, 150, 560, 220); tCtx.lineTo(560, 220);
           break;
         case 'g5':
-          tCtx.moveTo(300, 200); tCtx.quadraticCurveTo(150, 50, 100, 200); tCtx.quadraticCurveTo(150, 350, 300, 200); tCtx.quadraticCurveTo(450, 50, 500, 200); tCtx.quadraticCurveTo(450, 350, 300, 200);
+          tCtx.moveTo(300, 200);
+          sampleQuad(300, 200, 150, 50, 100, 200); tCtx.quadraticCurveTo(150, 50, 100, 200);
+          sampleQuad(100, 200, 150, 350, 300, 200); tCtx.quadraticCurveTo(150, 350, 300, 200);
+          sampleQuad(300, 200, 450, 50, 500, 200); tCtx.quadraticCurveTo(450, 50, 500, 200);
+          sampleQuad(500, 200, 450, 350, 300, 200); tCtx.quadraticCurveTo(450, 350, 300, 200);
           break;
         case 'g6':
+          sampleArc(300, 300, 180, Math.PI, 2 * Math.PI);
           tCtx.arc(300, 300, 180, Math.PI, 2 * Math.PI);
           break;
         case 'g7':
-          tCtx.moveTo(50, 300); tCtx.lineTo(100, 300); tCtx.lineTo(100, 180); tCtx.lineTo(180, 180); tCtx.lineTo(180, 300); tCtx.lineTo(260, 300); tCtx.lineTo(260, 180); tCtx.lineTo(340, 180); tCtx.lineTo(340, 300);
+          tCtx.moveTo(50, 300);
+          let bastyas = [{x:50, y:300}, {x:100, y:300}, {x:100, y:180}, {x:180, y:180}, {x:180, y:300}, {x:260, y:300}, {x:260, y:180}, {x:340, y:180}, {x:340, y:300}];
+          for(let i=0; i<bastyas.length-1; i++) sampleLine(bastyas[i].x, bastyas[i].y, bastyas[i+1].x, bastyas[i+1].y);
+          tCtx.lineTo(100, 300); tCtx.lineTo(100, 180); tCtx.lineTo(180, 180); tCtx.lineTo(180, 300); tCtx.lineTo(260, 300); tCtx.lineTo(260, 180); tCtx.lineTo(340, 180); tCtx.lineTo(340, 300);
           break;
         case 'g8':
-          tCtx.moveTo(80, 80); tCtx.bezierCurveTo(200, 100, 350, 250, 520, 320);
+          tCtx.moveTo(80, 80);
+          sampleBezier(80, 80, 200, 100, 350, 250, 520, 320);
+          tCtx.bezierCurveTo(200, 100, 350, 250, 520, 320);
           break;
         case 'g9':
-          tCtx.moveTo(40, 250); tCtx.arc(120, 250, 80, Math.PI, 0, false); tCtx.arc(280, 250, 80, Math.PI, 0, false); tCtx.arc(440, 250, 80, Math.PI, 0, false);
+          tCtx.moveTo(40, 250);
+          sampleArc(120, 250, 80, Math.PI, 0, false); tCtx.arc(120, 250, 80, Math.PI, 0, false);
+          sampleArc(280, 250, 80, Math.PI, 0, false); tCtx.arc(280, 250, 80, Math.PI, 0, false);
+          sampleArc(440, 250, 80, Math.PI, 0, false); tCtx.arc(440, 250, 80, Math.PI, 0, false);
           break;
         case 'g10':
-          tCtx.moveTo(100, 200); tCtx.lineTo(500, 200); tCtx.moveTo(300, 50); tCtx.lineTo(300, 350); tCtx.moveTo(180, 100); tCtx.lineTo(420, 300);
+          tCtx.moveTo(100, 200); sampleLine(100, 200, 500, 200); tCtx.lineTo(500, 200);
+          tCtx.moveTo(300, 50); sampleLine(300, 50, 300, 350); tCtx.moveTo(300, 50); tCtx.lineTo(300, 350);
+          tCtx.moveTo(180, 100); sampleLine(180, 100, 420, 300); tCtx.moveTo(180, 100); tCtx.lineTo(420, 300);
           break;
         default:
-          tCtx.moveTo(50, 200); tCtx.lineTo(550, 200);
+          tCtx.moveTo(50, 200); sampleLine(50, 200, 550, 200); tCtx.lineTo(550, 200);
       }
 
       tCtx.stroke();
@@ -604,42 +703,54 @@
       isTracing = true;
       tCtx.beginPath();
       const rect = tCanvas.getBoundingClientRect();
-      tCtx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+      let x = e.clientX - rect.left;
+      let y = e.clientY - rect.top;
+      tCtx.moveTo(x, y);
+      userStrokePoints.push({x, y});
     }
 
     function traceDraw(e) {
       if (!isTracing) return;
       const rect = tCanvas.getBoundingClientRect();
-      tCtx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+      let x = e.clientX - rect.left;
+      let y = e.clientY - rect.top;
+      tCtx.lineTo(x, y);
       tCtx.strokeStyle = '#ff0055';
       tCtx.lineWidth = 8;
       tCtx.lineCap = 'round';
       tCtx.stroke();
+      userStrokePoints.push({x, y});
     }
 
     function clearTracing() {
+      userStrokePoints = [];
       if (currentTracingTpl) {
         drawTracingGuide(currentTracingTpl.id);
       }
     }
 
-    // --- FELKEMÉNYÍTETT ELLENŐRZŐ RENDSZER (Szigorúbb küszöbök) ---
+    // --- VALÓDI GEOMETRIAI ÚTVONAL-ELLENŐRZŐ ---
     function checkTracingResult() {
-      const imgData = tCtx.getImageData(0, 0, tCanvas.width, tCanvas.height);
-      const data = imgData.data;
-      let drawnPixelCount = 0;
-
-      for (let i = 0; i < data.length; i += 4) {
-        if (data[i] > 200 && data[i+1] < 50 && data[i+2] > 50 && data[i+3] > 200) {
-          drawnPixelCount++;
-        }
+      if (userStrokePoints.length < 10) {
+        alert('Hé, kis művész! Előbb rajzold végig a vonalat a mintán! 🧐');
+        return;
       }
 
-      // Szigorúbb értékek: kis firkálással már nem engedi át!
-      if (drawnPixelCount < 600) {
-        alert('Hé, kis művész! Ez még nagyon kevés! Menj végig határozottan a szaggatott vonalon egészen a végéig! 🧐');
-      } else if (drawnPixelCount < 1800) {
-        alert('Már szép a kezdet, de látom, hogy megálltál félúton. Húzd végig pontosan az egészet! ⭐');
+      let coveredCount = 0;
+      guideSamplePoints.forEach(gp => {
+        let isCovered = userStrokePoints.some(up => {
+          let dist = Math.hypot(up.x - gp.x, up.y - gp.y);
+          return dist <= 30; // 30 pixel tűrés a mintától
+        });
+        if (isCovered) coveredCount++;
+      });
+
+      let coveragePercent = guideSamplePoints.length > 0 ? (coveredCount / guideSamplePoints.length) * 100 : 0;
+
+      if (coveragePercent < 45) {
+        alert('Ez még messze van a mintától! Próbáld meg pontosabban követni a kék szaggatott vonalat! ⭐');
+      } else if (coveragePercent < 75) {
+        alert('Már szép a próbálkozás, de menj végig rajta egészen a végéig! 🎯');
       } else {
         alert('Hatalmas ügyesség! Tökéletes, hibátlan vonalvezetés a Mátrix Labor előírásai szerint! 🎉🚀');
       }
