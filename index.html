@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mátrix Labor — Interaktív Gyermek Fejlesztő & Kifestő</title>
+  <style>
+    :root {
+      --bg-color: #02040a;
+      --panel-bg: rgba(12, 27, 42, 0.85);
+      --neon-cyan: #00ffcc;
+      --neon-magenta: #ff00ff;
+      --neon-blue: #0088ff;
+      --text-main: #ffffff;
+      --accent-gold: #ffcc00;
+    }
+
+    body {
+      background: radial-gradient(circle at center, #15002b 0%, var(--bg-color) 100%);
+      color: var(--text-main);
+      font-family: 'Courier New', Courier, monospace, sans-serif;
+      margin: 0;
+      padding: 10px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      color: var(--neon-cyan);
+      text-shadow: 0 0 15px rgba(0,255,204,0.7);
+      margin: 10px 0 5px 0;
+    }
+
+    p.subtitle {
+      font-size: 0.9rem;
+      color: var(--neon-magenta);
+      margin: 0;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+      background: var(--panel-bg);
+      border: 3px solid var(--neon-cyan);
+      border-radius: 15px;
+      box-shadow: 0 0 30px rgba(0, 255, 204, 0.3);
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    /* Névbeviteli sáv */
+    .profile-box {
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid var(--neon-blue);
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .profile-box label {
+      font-size: 0.95rem;
+      color: var(--accent-gold);
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .profile-box input {
+      background: #000;
+      border: 2px solid var(--neon-cyan);
+      color: var(--text-main);
+      padding: 8px 15px;
+      font-size: 1.1rem;
+      border-radius: 6px;
+      text-align: center;
+      width: 80%;
+      max-width: 300px;
+      font-family: inherit;
+    }
+
+    /* Kategória választó panelek */
+    .categories-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    @media (min-width: 650px) {
+      .categories-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .category-card {
+      background: rgba(0, 0, 0, 0.5);
+      border: 2px solid;
+      border-radius: 12px;
+      padding: 15px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .category-card.boys {
+      border-color: var(--neon-blue);
+      box-shadow: 0 0 10px rgba(0,136,255,0.2);
+    }
+
+    .category-card.girls {
+      border-color: var(--neon-magenta);
+      box-shadow: 0 0 10px rgba(255,0,255,0.2);
+    }
+
+    .category-card h2 {
+      font-size: 1.2rem;
+      margin-top: 0;
+      text-align: center;
+    }
+
+    .category-card.boys h2 { color: var(--neon-cyan); }
+    .category-card.girls h2 { color: #ff99cc; }
+
+    /* Feladat gombok */
+    .task-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .task-btn {
+      background: rgba(0, 255, 204, 0.15);
+      border: 1px solid var(--neon-cyan);
+      color: var(--text-main);
+      padding: 12px;
+      font-size: 0.95rem;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: left;
+      font-family: inherit;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .category-card.girls .task-btn {
+      background: rgba(255, 0, 255, 0.15);
+      border-color: var(--neon-magenta);
+    }
+
+    .task-btn:active {
+      transform: scale(0.98);
+      background: rgba(0, 255, 204, 0.4);
+    }
+
+    footer {
+      margin-top: 20px;
+      font-size: 0.75rem;
+      color: #888;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>MÁTRIX LABOR</h1>
+    <p class="subtitle">Interaktív Fejlesztő & Kifestő Birodalom (6-10 év)</p>
+  </header>
+
+  <div class="container">
+    
+    <!-- Profil / Név Beviteli Mező -->
+    <div class="profile-box">
+      <label for="playerName">Add meg a neved, Kis Művész:</label>
+      <input type="text" id="playerName" placeholder="pl. Joci vagy Karina" value="Kis Művész">
+    </div>
+
+    <!-- Fő Kategóriák Grid -->
+    <div class="categories-grid">
+      
+      <!-- Fiús & Univerzális Ág -->
+      <div class="category-card boys">
+        <h2>🚀 Kalandok & Járművek</h2>
+        <div class="task-list">
+          <button class="task-btn" onclick="openModule('boys', 'szinezo')">🎨 Csak Színezős (Gőzmozdony, Traktor)</button>
+          <button class="task-btn" onclick="openModule('boys', 'atrajzolos')">✏️ Átrajzolós / Vonalvezetés (Süni Samu)</button>
+          <button class="task-btn" onclick="openModule('boys', 'pontosszekoto')">⭐ Nyilas Pontösszekötő (Rakéta)</button>
+          <button class="task-btn" onclick="openModule('boys', 'szamolos')">🔢 Számolós & Logikai Feladatok</button>
+        </div>
+      </div>
+
+      <!-- Lányos & Hercegnős Ág -->
+      <div class="category-card girls">
+        <h2>👑 Varázsvilág & Hercegnők</h2>
+        <div class="task-list">
+          <button class="task-btn" onclick="openModule('girls', 'szinezo')">🎨 Csak Színezős (Kastély, Hableány)</button>
+          <button class="task-btn" onclick="openModule('girls', 'atrajzolos')">✏️ Átrajzolós (Varázskorona)</button>
+          <button class="task-btn" onclick="openModule('girls', 'pontosszekoto')">⭐ Nyilas Pontösszekötő (Pillangó)</button>
+          <button class="task-btn" onclick="openModule('girls', 'szamolos')">💖 Pötty-Számláló Challenge</button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <footer>
+    Mátrix Labor Engine v1.0 • Projektigazgatás: Jordan & Nefi
+  </footer>
+
+  <script>
+    function openModule(category, type) {
+      const name = document.getElementById('playerName').value || 'Kis Művész';
+      alert(`Üdvözöllek a Laborban, ${name}! \nA(z) [${category.toUpperCase()} -> ${type.toUpperCase()}] modul előkészítés alatt áll a motorháztető alatt! 🚀`);
+      // Itt fogjuk majd betölteni a dinamikus feladatokat és motorokat!
+    }
+  </script>
+
+</body>
+</html>
