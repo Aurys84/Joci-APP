@@ -188,7 +188,7 @@
       background: #ffffff;
       border: 3px solid var(--neon-cyan);
       border-radius: 10px;
-      cursor: crosshair;
+      cursor: pointer;
       max-width: 100%;
       box-shadow: 0 0 20px rgba(0,255,204,0.4);
     }
@@ -248,7 +248,7 @@
 
   <header>
     <h1>MÁTRIX LABOR</h1>
-    <p class="subtitle">Interaktív Fejlesztő & Kifestő Birodalom (6-10 év)</p>
+    <p class="subtitle">Interaktív Gyermek Fejlesztő & Kifestő Birodalom (6-10 év)</p>
   </header>
 
   <div class="container">
@@ -268,8 +268,8 @@
           <h2>🚀 Kalandok & Járművek</h2>
           <div class="task-list">
             <button class="task-btn" onclick="openGallery('boys', 'szinezo')">🎨 Csak Színezős (Galéria)</button>
-            <button class="task-btn" onclick="openTracingGallery('boys')">✏️ Átrajzolós / Vonalvezetés (Alapformák & Egyebek)</button>
-            <button class="task-btn" onclick="openModule('boys', 'pontosszekoto')">⭐ Nyilas Pontösszekötő</button>
+            <button class="task-btn" onclick="openTracingGallery('boys')">✏️ Átrajzolós / Vonalvezetés (10 féle)</button>
+            <button class="task-btn" onclick="openDotConnectGallery('boys')">🔢 Pontról Pontra / Számszekötő (10)</button>
             <button class="task-btn" onclick="openModule('boys', 'szamolos')">🔢 Számolós & Logikai Feladatok</button>
           </div>
         </div>
@@ -279,8 +279,8 @@
           <h2>👑 Varázsvilág & Hercegnők</h2>
           <div class="task-list">
             <button class="task-btn" onclick="openGallery('girls', 'szinezo')">🎨 Csak Színezős (Galéria)</button>
-            <button class="task-btn" onclick="openTracingGallery('girls')">✏️ Átrajzolós / Vonalvezetés (Alapformák & Egyebek)</button>
-            <button class="task-btn" onclick="openModule('girls', 'pontosszekoto')">⭐ Nyilas Pontösszekötő</button>
+            <button class="task-btn" onclick="openTracingGallery('girls')">✏️ Átrajzolós / Vonalvezetés (10 féle)</button>
+            <button class="task-btn" onclick="openDotConnectGallery('girls')">🔢 Pontról Pontra / Számszekötő (10)</button>
             <button class="task-btn" onclick="openModule('girls', 'szamolos')">💖 Pötty-Számláló Challenge</button>
           </div>
         </div>
@@ -300,6 +300,13 @@
       <button class="btn btn-danger" onclick="goBackToMenu()" style="margin-bottom: 10px;">❮ Vissza a Főmenübe</button>
       <h2 style="color: var(--neon-cyan); text-align: center; margin-top: 0; font-size: 1.1rem;">Válassz egy vonalvezetési feladatot!</h2>
       <div id="tracingGalleryContainer" class="gallery-grid"></div>
+    </div>
+
+    <!-- VIEW 2.6: PONTÖSSZEKÖTŐ / SZÁMSZEKÖTŐ GALÉRIA -->
+    <div id="dotConnectGalleryView" class="view-section">
+      <button class="btn btn-danger" onclick="goBackToMenu()" style="margin-bottom: 10px;">❮ Vissza a Főmenübe</button>
+      <h2 style="color: var(--neon-cyan); text-align: center; margin-top: 0; font-size: 1.1rem;">Válassz egy pontról pontra feladatot!</h2>
+      <div id="dotConnectGalleryContainer" class="gallery-grid"></div>
     </div>
 
     <!-- VIEW 3: SZÍNEZŐ MUNKATERÜLET -->
@@ -334,10 +341,27 @@
       </div>
     </div>
 
+    <!-- VIEW 5: PONTRÓL PONTRA / SZÁMSZEKÖTŐ MUNKATERÜLET -->
+    <div id="dotConnectView" class="view-section">
+      <button class="btn btn-danger" onclick="goBackToDotConnectGallery()" style="margin-bottom: 8px;">❮ Vissza a Pontról Pontra Galériába</button>
+      
+      <div class="canvas-workspace">
+        <h3 id="dotConnectTitle" style="color: var(--neon-cyan); margin: 0; font-size: 1rem;">Pontról Pontra / Számszekötő</h3>
+        <p id="dotInstructions" style="font-size: 0.8rem; color: var(--accent-gold); margin: 0;">Kattints sorban a számozott pontokra 1-től kezdve!</p>
+        
+        <canvas id="dotCanvas" class="interactive-canvas" width="600" height="400"></canvas>
+
+        <div class="action-row">
+          <button class="btn btn-danger" onclick="resetDotConnect()">Újrakezdés 🔄</button>
+          <button class="btn btn-success" onclick="hintDotConnect()">Segítség 💡</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <footer>
-    Mátrix Labor Engine v1.11 • Projektigazgatás: Jordan & Nefi
+    Mátrix Labor Engine v1.17 • Projektigazgatás: Jordan & Nefi
   </footer>
 
   <script>
@@ -383,11 +407,116 @@
       ]
     };
 
+    // RÉSZLETES, VALÓDI KONTÚROKAT RAJZOLÓ PONTRÓL PONTRA (SZÁMSZEKÖTŐ) SABLONOK
+    const dotConnectTemplates = {
+      boys: [
+        { id: 'dc_dino', name: '🦖 T-Rex Dínó', desc: 'Kössd össze a dínó pontjait 1-től 24-ig!', points: [
+          {x: 220, y: 310}, {x: 210, y: 270}, {x: 180, y: 240}, {x: 150, y: 220},
+          {x: 130, y: 190}, {x: 140, y: 160}, {x: 170, y: 150}, {x: 200, y: 170},
+          {x: 230, y: 160}, {x: 270, y: 130}, {x: 310, y: 140}, {x: 350, y: 120},
+          {x: 390, y: 140}, {x: 430, y: 110}, {x: 410, y: 170}, {x: 380, y: 210},
+          {x: 440, y: 230}, {x: 410, y: 270}, {x: 350, y: 280}, {x: 340, y: 330},
+          {x: 310, y: 330}, {x: 290, y: 280}, {x: 250, y: 280}, {x: 240, y: 330}, {x: 220, y: 310}
+        ]},
+        { id: 'dc_car', name: '🏎️ Sportautó', desc: 'Kössd össze a sportautó pontjait 1-től 20-ig!', points: [
+          {x: 140, y: 270}, {x: 150, y: 240}, {x: 180, y: 210}, {x: 220, y: 190},
+          {x: 270, y: 190}, {x: 320, y: 190}, {x: 370, y: 220}, {x: 420, y: 250},
+          {x: 450, y: 270}, {x: 450, y: 290}, {x: 400, y: 290}, {x: 370, y: 260},
+          {x: 310, y: 290}, {x: 250, y: 290}, {x: 230, y: 260}, {x: 190, y: 290},
+          {x: 140, y: 290}, {x: 140, y: 270}
+        ]},
+        { id: 'dc_rocket', name: '🚀 Mátrix Űrhajó', desc: 'Kössd össze az űrhajó pontjait!', points: [
+          {x: 300, y: 70}, {x: 330, y: 130}, {x: 350, y: 200}, {x: 400, y: 260},
+          {x: 430, y: 310}, {x: 360, y: 290}, {x: 320, y: 330}, {x: 280, y: 330},
+          {x: 240, y: 290}, {x: 170, y: 310}, {x: 200, y: 260}, {x: 250, y: 200},
+          {x: 270, y: 130}, {x: 300, y: 70}
+        ]},
+        { id: 'dc_robot', name: '🤖 Robot Robi', desc: 'Kössd össze a robot pontjait!', points: [
+          {x: 250, y: 100}, {x: 350, y: 100}, {x: 350, y: 150}, {x: 410, y: 150},
+          {x: 410, y: 200}, {x: 350, y: 200}, {x: 350, y: 280}, {x: 380, y: 340},
+          {x: 340, y: 340}, {x: 320, y: 290}, {x: 280, y: 290}, {x: 260, y: 340},
+          {x: 220, y: 340}, {x: 250, y: 280}, {x: 250, y: 200}, {x: 190, y: 200},
+          {x: 190, y: 150}, {x: 250, y: 150}, {x: 250, y: 100}
+        ]},
+        { id: 'dc_train', name: '🚂 Gőzmozdony', desc: 'Kössd össze a vonat pontjait!', points: [
+          {x: 140, y: 290}, {x: 460, y: 290}, {x: 460, y: 190}, {x: 380, y: 190},
+          {x: 350, y: 130}, {x: 190, y: 130}, {x: 140, y: 190}, {x: 140, y: 290}
+        ]},
+        { id: 'dc_ship', name: '⚓ Kalózhajó', desc: 'Kössd össze a hajó pontjait!', points: [
+          {x: 130, y: 230}, {x: 470, y: 230}, {x: 410, y: 310}, {x: 190, y: 310},
+          {x: 130, y: 230}, {x: 300, y: 310}, {x: 300, y: 100}, {x: 300, y: 230}
+        ]},
+        { id: 'dc_ball', name: '⚽ Focilabda', desc: 'Kössd össze a labda pontjait!', points: [
+          {x: 300, y: 90}, {x: 370, y: 120}, {x: 410, y: 180}, {x: 410, y: 230},
+          {x: 370, y: 290}, {x: 300, y: 310}, {x: 230, y: 290}, {x: 190, y: 230},
+          {x: 190, y: 180}, {x: 230, y: 120}, {x: 300, y: 90}
+        ]},
+        { id: 'dc_star', name: '⭐ Csillag', desc: 'Kössd össze a csillag pontjait!', points: [
+          {x: 300, y: 80}, {x: 340, y: 160}, {x: 430, y: 170}, {x: 360, y: 230},
+          {x: 390, y: 320}, {x: 300, y: 270}, {x: 210, y: 320}, {x: 240, y: 230},
+          {x: 170, y: 170}, {x: 260, y: 160}, {x: 300, y: 80}
+        ]},
+        { id: 'dc_triangle', name: '🔺 Háromszög', desc: 'Kössd össze a háromszög pontjait!', points: [
+          {x: 300, y: 80}, {x: 480, y: 320}, {x: 120, y: 320}, {x: 300, y: 80}
+        ]},
+        { id: 'dc_square', name: '🟦 Négyzet', desc: 'Kössd össze a négyzet pontjait!', points: [
+          {x: 160, y: 100}, {x: 440, y: 100}, {x: 440, y: 320}, {x: 160, y: 320}, {x: 160, y: 100}
+        ]}
+      ],
+      girls: [
+        { id: 'dc_mermaid', name: '🧜‍♀️ Hableány Palota', desc: 'Kössd össze a hableány pontjait!', points: [
+          {x: 300, y: 80}, {x: 340, y: 130}, {x: 330, y: 210}, {x: 400, y: 310},
+          {x: 300, y: 270}, {x: 200, y: 310}, {x: 270, y: 210}, {x: 260, y: 130}, {x: 300, y: 80}
+        ]},
+        { id: 'dc_unicorn', name: '🦄 Unikornis Kaland', desc: 'Kössd össze az unikornis pontjait!', points: [
+          {x: 200, y: 320}, {x: 200, y: 210}, {x: 260, y: 140}, {x: 320, y: 80},
+          {x: 360, y: 170}, {x: 400, y: 230}, {x: 410, y: 320}, {x: 200, y: 320}
+        ]},
+        { id: 'dc_crown', name: '👑 Hercegnő Korona', desc: 'Kössd össze a korona pontjait!', points: [
+          {x: 150, y: 290}, {x: 180, y: 120}, {x: 240, y: 200}, {x: 300, y: 90},
+          {x: 360, y: 200}, {x: 420, y: 120}, {x: 450, y: 290}, {x: 150, y: 290}
+        ]},
+        { id: 'dc_castle', name: '🏰 Varázskastély', desc: 'Kössd össze a kastély pontjait!', points: [
+          {x: 140, y: 330}, {x: 140, y: 190}, {x: 170, y: 130}, {x: 200, y: 190},
+          {x: 200, y: 330}, {x: 300, y: 330}, {x: 300, y: 90}, {x: 400, y: 330},
+          {x: 460, y: 330}, {x: 140, y: 330}
+        ]},
+        { id: 'dc_butterfly', name: '🦋 Pillangó Szárny', desc: 'Kössd össze a pillangó pontjait!', points: [
+          {x: 300, y: 200}, {x: 460, y: 90}, {x: 520, y: 230}, {x: 300, y: 320},
+          {x: 80, y: 230}, {x: 140, y: 90}, {x: 300, y: 200}
+        ]},
+        { id: 'dc_flower', name: '🌸 Tavaszi Virág', desc: 'Kössd össze a virág pontjait!', points: [
+          {x: 300, y: 350}, {x: 300, y: 230}, {x: 300, y: 110}, {x: 380, y: 170},
+          {x: 300, y: 230}, {x: 220, y: 170}, {x: 300, y: 350}
+        ]},
+        { id: 'dc_heart', name: '💖 Szívecske', desc: 'Kössd össze a szív pontjait!', points: [
+          {x: 300, y: 320}, {x: 150, y: 210}, {x: 180, y: 100}, {x: 300, y: 170},
+          {x: 420, y: 100}, {x: 450, y: 210}, {x: 300, y: 320}
+        ]},
+        { id: 'dc_circle', name: '🔵 Kör Alakzat', desc: 'Kössd össze a kör pontjait!', points: [
+          {x: 410, y: 200}, {x: 377, y: 277}, {x: 300, y: 310}, {x: 222, y: 277},
+          {x: 190, y: 200}, {x: 222, y: 122}, {x: 300, y: 90}, {x: 377, y: 122}, {x: 410, y: 200}
+        ]},
+        { id: 'dc_star', name: '⭐ Csillagfény', desc: 'Kössd össze a csillag pontjait!', points: [
+          {x: 300, y: 80}, {x: 340, y: 160}, {x: 430, y: 170}, {x: 360, y: 230},
+          {x: 390, y: 320}, {x: 300, y: 270}, {x: 210, y: 320}, {x: 240, y: 230},
+          {x: 170, y: 170}, {x: 260, y: 160}, {x: 300, y: 80}
+        ]},
+        { id: 'dc_fairy', name: '🧚‍♀️ Tündér Pálca', desc: 'Kössd össze a pálca pontjait!', points: [
+          {x: 180, y: 330}, {x: 340, y: 170}, {x: 410, y: 100}, {x: 440, y: 140},
+          {x: 370, y: 210}, {x: 340, y: 170}
+        ]}
+      ]
+    };
+
     let selectedColor = '#ff0055';
     let currentTracingTpl = null;
-    let currentTracingCat = 'boys';
     let guideSamplePoints = [];
     let userStrokePoints = [];
+
+    // Pontról pontra játékállapot
+    let currentDotTpl = null;
+    let currentDotIndex = 0;
 
     const canvas = document.getElementById('coloringCanvas');
     const ctx = canvas.getContext('2d');
@@ -396,6 +525,9 @@
     const tCanvas = document.getElementById('tracingCanvas');
     const tCtx = tCanvas.getContext('2d');
     let isTracing = false;
+
+    const dCanvas = document.getElementById('dotCanvas');
+    const dCtx = dCanvas.getContext('2d');
 
     const colors = ['#ff0055', '#ff9900', '#ffff00', '#00cc66', '#00ffff', '#0088ff', '#9933ff', '#ff66b2', '#8b4513', '#333333'];
     const paletteContainer = document.getElementById('colorPalette');
@@ -481,7 +613,6 @@
     function clearCanvas() { ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height); }
 
     function openTracingGallery(category) {
-      currentTracingCat = category;
       document.getElementById('mainMenuView').classList.remove('active');
       document.getElementById('tracingGalleryView').classList.add('active');
 
@@ -693,35 +824,29 @@
       }
     }
 
-    // --- KETTŐS SZŰRŐS ELLENŐRZŐ (Lefedettség + Kilengés büntetés) ---
     function checkTracingResult() {
       if (userStrokePoints.length < 15) {
         alert('Hé, kis művész! Előbb rajzold végig a vonalat a mintán! 🧐');
         return;
       }
 
-      // 1. Lefedettség ellenőrzés
       let coveredCount = 0;
       guideSamplePoints.forEach(gp => {
         let isCovered = userStrokePoints.some(up => {
           let dist = Math.hypot(up.x - gp.x, up.y - gp.y);
-          return dist <= 18; // Picit szigorúbb tűrés (18 pixel)
+          return dist <= 18;
         });
         if (isCovered) coveredCount++;
       });
       let coveragePercent = guideSamplePoints.length > 0 ? (coveredCount / guideSamplePoints.length) * 100 : 0;
 
-      // 2. Kilengés / stray ellenőrzés (Ha túl sokat kóborolt a vonal a mintán kívül)
       let strayCount = 0;
       userStrokePoints.forEach(up => {
         let minDist = Math.min(...guideSamplePoints.map(gp => Math.hypot(up.x - gp.x, up.y - gp.y)));
-        if (minDist > 25) { // Ha 25 pixelnél messzebb kóborolt a mintától
-          strayCount++;
-        }
+        if (minDist > 25) { strayCount++; }
       });
       let strayPercent = (strayCount / userStrokePoints.length) * 100;
 
-      // Szigorú döntés: Magas lefedettség ÉS kevés kilengés kell!
       if (coveragePercent < 88 || strayPercent > 12) {
         alert('Hé, kis művész! Ez most túl sok kilengést tartalmaz vagy nem követted elég pontosan a vonalat! Próbáld újra! 🧐');
       } else if (coveragePercent < 95) {
@@ -731,11 +856,136 @@
       }
     }
 
+    // --- PONTRÓL PONTRA / SZÁMSZEKÖTŐ LOGIKA ---
+    function openDotConnectGallery(category) {
+      document.getElementById('mainMenuView').classList.remove('active');
+      document.getElementById('dotConnectGalleryView').classList.add('active');
+
+      const container = document.getElementById('dotConnectGalleryContainer');
+      container.innerHTML = '';
+
+      dotConnectTemplates[category].forEach(tpl => {
+        const card = document.createElement('div');
+        card.className = 'gallery-item';
+        card.innerHTML = `
+          <div style="font-size: 1.8rem; margin-bottom: 4px;">🔢</div>
+          <h3>${tpl.name}</h3>
+          <p style="font-size: 0.7rem; color: #aaa; margin: 2px 0 0 0;">${tpl.desc}</p>
+        `;
+        card.onclick = () => startDotConnectGame(tpl);
+        container.appendChild(card);
+      });
+    }
+
+    function startDotConnectGame(tpl) {
+      currentDotTpl = tpl;
+      currentDotIndex = 0;
+      document.getElementById('dotConnectGalleryView').classList.remove('active');
+      document.getElementById('dotConnectView').classList.add('active');
+      document.getElementById('dotConnectTitle').innerText = tpl.name;
+      document.getElementById('dotInstructions').innerText = `Kattints sorban a számozott pontokra: Következik az 1. pont!`;
+
+      renderDotCanvas();
+    }
+
+    function renderDotCanvas() {
+      dCtx.fillStyle = '#ffffff';
+      dCtx.fillRect(0, 0, dCanvas.width, dCanvas.height);
+
+      const pts = currentDotTpl.points;
+
+      // Már összekötött vonalak
+      if (currentDotIndex > 0) {
+        dCtx.strokeStyle = '#ff0055';
+        dCtx.lineWidth = 4;
+        dCtx.beginPath();
+        dCtx.moveTo(pts[0].x, pts[0].y);
+        for (let i = 1; i <= currentDotIndex; i++) {
+          dCtx.lineTo(pts[i].x, pts[i].y);
+        }
+        dCtx.stroke();
+      }
+
+      // Pontok és számok
+      pts.forEach((p, idx) => {
+        dCtx.beginPath();
+        dCtx.arc(p.x, p.y, 13, 0, 2 * Math.PI);
+        
+        if (idx <= currentDotIndex) {
+          dCtx.fillStyle = '#00cc66';
+        } else if (idx === currentDotIndex + 1) {
+          dCtx.fillStyle = '#ffcc00'; // Sárga kiemelés a következőhöz
+        } else {
+          dCtx.fillStyle = '#0088ff';
+        }
+        dCtx.fill();
+        dCtx.lineWidth = 2;
+        dCtx.strokeStyle = '#ffffff';
+        dCtx.stroke();
+
+        dCtx.fillStyle = '#ffffff';
+        dCtx.font = 'bold 11px Courier New';
+        dCtx.textAlign = 'center';
+        dCtx.textBaseline = 'middle';
+        dCtx.fillText(idx + 1, p.x, p.y);
+      });
+    }
+
+    dCanvas.addEventListener('click', e => {
+      if (!currentDotTpl) return;
+      const rect = dCanvas.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+
+      const pts = currentDotTpl.points;
+      const nextTargetIdx = currentDotIndex + 1;
+
+      if (nextTargetIdx < pts.length) {
+        const targetPt = pts[nextTargetIdx];
+        let distance = Math.hypot(mouseX - targetPt.x, mouseY - targetPt.y);
+
+        if (distance <= 25) {
+          currentDotIndex++;
+          renderDotCanvas();
+
+          if (currentDotIndex === pts.length - 1) {
+            document.getElementById('dotInstructions').innerText = `✨ Gratulálunk! Kirajzolódott a(z) ${currentDotTpl.name}! 🎉`;
+            setTimeout(() => {
+              alert(`Hatalmas ügyesség! Sikeresen végigkövezted a(z) "${currentDotTpl.name}" pontjait a Mátrix Laborban! 🚀⭐`);
+            }, 200);
+          } else {
+            document.getElementById('dotInstructions').innerText = `Ügyes vagy! Következik a(z) ${currentDotIndex + 2}. pont! 🎯`;
+          }
+        } else {
+          document.getElementById('dotInstructions').innerText = `Hoppá! A(z) ${nextTargetIdx + 1}. pontot keresd a sárgával jelöltek közül! 🧐`;
+        }
+      }
+    });
+
+    function resetDotConnect() {
+      if (currentDotTpl) {
+        currentDotIndex = 0;
+        document.getElementById('dotInstructions').innerText = `Kattints sorban a számozott pontokra: Következik az 1. pont!`;
+        renderDotCanvas();
+      }
+    }
+
+    function hintDotConnect() {
+      if (!currentDotTpl) return;
+      const nextTargetIdx = currentDotIndex + 1;
+      const pts = currentDotTpl.points;
+      if (nextTargetIdx < pts.length) {
+        alert(`💡 Tipp: A(z) ${nextTargetIdx + 1}. számú pont a képernyőn sárgával kiemelve vár rád!`);
+      }
+    }
+
     function goBackToMenu() {
       document.getElementById('galleryView').classList.remove('active');
       document.getElementById('tracingGalleryView').classList.remove('active');
+      document.getElementById('dotConnectGalleryView').classList.remove('active');
       document.getElementById('canvasView').classList.remove('active');
       document.getElementById('tracingView').classList.remove('active');
+      document.getElementById('dotConnectView').classList.remove('active');
       document.getElementById('mainMenuView').classList.add('active');
     }
 
@@ -749,6 +999,11 @@
       document.getElementById('tracingGalleryView').classList.add('active');
     }
 
+    function goBackToDotConnectGallery() {
+      document.getElementById('dotConnectView').classList.remove('active');
+      document.getElementById('dotConnectGalleryView').classList.add('active');
+    }
+
     function openModule(category, type) {
       const name = document.getElementById('playerName').value || 'Kis Művész';
       alert(`Üdvözöllek a Laborban, ${name}!\nA(z) [${category.toUpperCase()} -> ${type.toUpperCase()}] modul fejlesztése folyamatban van.`);
@@ -757,4 +1012,3 @@
 
 </body>
 </html>
-
