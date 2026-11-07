@@ -347,7 +347,7 @@
       
       <div class="canvas-workspace">
         <h3 id="dotConnectTitle" style="color: var(--neon-cyan); margin: 0; font-size: 1rem;">Számösszekötős Kép (Üveglap Mód)</h3>
-        <p style="font-size: 0.8rem; color: var(--accent-gold); margin: 0;">Kövesd az üveglap alatt futó képet és kösd össze a számokat 1-től kezdve!</p>
+        <p style="font-size: 0.8rem; color: var(--accent-gold); margin: 0;">Alul a kép, rajta a számok! Rajzold át szabad kézzel a vonalat!</p>
         
         <canvas id="dotCanvas" class="interactive-canvas" width="600" height="400"></canvas>
 
@@ -361,7 +361,7 @@
   </div>
 
   <footer>
-    Mátrix Labor Engine v1.31 • Projektigazgatás: Jordan & Nefi
+    Mátrix Labor Engine v1.32 • Projektigazgatás: Jordan & Nefi
   </footer>
 
   <script>
@@ -407,31 +407,30 @@
       ]
     };
 
-    // --- SZÁMSZEKÖTŐS KÉPEK (ÜVEGLAP / ALÁRAJZOLT KÉP MÓD) ---
     const dotConnectTemplates = {
       boys: [
-        { id: 'dc_train', name: '🚂 Gőzmozdony Számösszekötő', desc: 'Alul a mozdony képe, kösd össze a számokat!' },
-        { id: 'dc_dino', name: '🦖 T-Rex Dínó Számösszekötő', desc: 'Alul a dínó sziluettje, kösd össze a pontokat!' },
-        { id: 'dc_car', name: '🏎️ Sportautó Számösszekötő', desc: 'Autó körvonal számösszekötő feladat.' },
-        { id: 'dc_rocket', name: '🚀 Mátrix Űrhajó', desc: 'Űrhajó alakzat számozott pontokkal.' },
-        { id: 'dc_robot', name: '🤖 Robot Robi', desc: 'Robot kontúr számok mentén.' },
-        { id: 'dc_ship', name: '⚓ Kalózhajó', desc: 'Hajó test számszekötő.' },
-        { id: 'dc_ball', name: '⚽ Focilabda', desc: 'Labda formájú számozott ívek.' },
-        { id: 'dc_star', name: '⭐ Csillag', desc: 'Csillag alakú számösszekötő.' },
-        { id: 'dc_triangle', name: '🔺 Háromszög Alap', desc: 'Geometriai számösszekötő.' },
-        { id: 'dc_square', name: '🟦 Négyzet Doboz', desc: 'Négyzetes számozott feladat.' }
+        { id: 'dc_train', name: '🚂 Gőzmozdony Számösszekötő', desc: 'Gőzmozdony kontúr alul, üveglap felül.' },
+        { id: 'dc_dino', name: '🦖 T-Rex Dínó Számösszekötő', desc: 'Dínó sziluett számozott pontokkal.' },
+        { id: 'dc_car', name: '🏎️ Sportautó Számösszekötő', desc: 'Sportautó körvonal.' },
+        { id: 'dc_rocket', name: '🚀 Mátrix Űrhajó', desc: 'Űrhajó indítás.' },
+        { id: 'dc_robot', name: '🤖 Robot Robi', desc: 'Robot figura.' },
+        { id: 'dc_ship', name: '⚓ Kalózhajó', desc: 'Hajó test.' },
+        { id: 'dc_ball', name: '⚽ Focilabda', desc: 'Labda minták.' },
+        { id: 'dc_star', name: '⭐ Csillag', desc: 'Csillag forma.' },
+        { id: 'dc_triangle', name: '🔺 Háromszög Alap', desc: 'Geometria.' },
+        { id: 'dc_square', name: '🟦 Négyzet Doboz', desc: 'Négyzetes forma.' }
       ],
       girls: [
-        { id: 'dc_mermaid', name: '🧜‍♀️ Hableány Palota', desc: 'Hableány mintás számösszekötő.' },
-        { id: 'dc_unicorn', name: '🦄 Unikornis Kaland', desc: 'Unikornis sziluett számokkal.' },
-        { id: 'dc_crown', name: '👑 Hercegnő Korona', desc: 'Korona alakzat számösszekötő.' },
-        { id: 'dc_castle', name: '🏰 Varázskastély', desc: 'Kastély tornyok számozva.' },
-        { id: 'dc_butterfly', name: '🦋 Pillangó Szárny', desc: 'Pillangó szárnyak összekötése.' },
-        { id: 'dc_flower', name: '🌸 Tavaszi Virág', desc: 'Virág szirom számösszekötő.' },
-        { id: 'dc_heart', name: '💖 Szívecske', desc: 'Szív alakú számkövető.' },
-        { id: 'dc_circle', name: '🔵 Kör Alakzat', desc: 'Kerek formájú számok.' },
-        { id: 'dc_star', name: '⭐ Csillagfény', desc: 'Csillag alakzat pontjai.' },
-        { id: 'dc_fairy', name: '🧚‍♀️ Tündér Pálca', desc: 'Varázspálca számösszekötő.' }
+        { id: 'dc_mermaid', name: '🧜‍♀️ Hableány Palota', desc: 'Hableány kastély.' },
+        { id: 'dc_unicorn', name: '🦄 Unikornis Kaland', desc: 'Unikornis figura.' },
+        { id: 'dc_crown', name: '👑 Hercegnő Korona', desc: 'Korona minta.' },
+        { id: 'dc_castle', name: '🏰 Varázskastély', desc: 'Kastély tornyok.' },
+        { id: 'dc_butterfly', name: '🦋 Pillangó Szárny', desc: 'Pillangó.' },
+        { id: 'dc_flower', name: '🌸 Tavaszi Virág', desc: 'Virág szirom.' },
+        { id: 'dc_heart', name: '💖 Szívecske', desc: 'Szív alak.' },
+        { id: 'dc_circle', name: '🔵 Kör Alakzat', desc: 'Kör vonalak.' },
+        { id: 'dc_star', name: '⭐ Csillagfény', desc: 'Csillag.' },
+        { id: 'dc_fairy', name: '🧚‍♀️ Tündér Pálca', desc: 'Varázspálca.' }
       ]
     };
 
@@ -439,7 +438,6 @@
     let currentTracingTpl = null;
     let guideSamplePoints = [];
     let userStrokePoints = [];
-
     let currentDotTpl = null;
 
     const canvas = document.getElementById('coloringCanvas');
@@ -790,7 +788,7 @@
       }
     }
 
-    // --- SZÁMSZEKÖTŐS KÉPEK (ÜVEGLAP / ALÁRAJZOLT KÉP MÓD) ---
+    // --- SZÁMSZEKÖTŐS KÉPEK (ÜVEGLAP ALÁ RAJZOLT KÉP MÓD) ---
     function openDotConnectGallery(category) {
       document.getElementById('mainMenuView').classList.remove('active');
       document.getElementById('dotConnectGalleryView').classList.add('active');
@@ -824,24 +822,51 @@
       dCtx.fillStyle = '#ffffff';
       dCtx.fillRect(0, 0, dCanvas.width, dCanvas.height);
 
-      // Alul a finom "üveglap" háttér kontúr (mint egy igazi nyomtatott számösszekötő lap)
+      // Üveglap alatti vizuális minták (sziluettek, számok, ábrák)
       dCtx.save();
-      dCtx.strokeStyle = '#cbd5e1';
-      dCtx.lineWidth = 2;
-      dCtx.setLineDash([5, 5]);
+      dCtx.strokeStyle = '#94a3b8';
+      dCtx.lineWidth = 3;
+      dCtx.setLineDash([6, 6]);
+
+      // Alakzat kirajzolása típustól függően, hogy alul ott legyen a kép
       dCtx.beginPath();
-      dCtx.arc(300, 200, 100, 0, 2 * Math.PI);
+      if (tpl.id.includes('train')) {
+        dCtx.rect(120, 220, 200, 80);
+        dCtx.arc(170, 320, 30, 0, 2 * Math.PI);
+        dCtx.arc(270, 320, 30, 0, 2 * Math.PI);
+      } else if (tpl.id.includes('dino') || tpl.id.includes('unicorn')) {
+        dCtx.arc(300, 200, 110, 0.5, Math.PI * 1.8);
+      } else if (tpl.id.includes('heart')) {
+        dCtx.moveTo(300, 320);
+        dCtx.bezierCurveTo(150, 220, 150, 80, 300, 160);
+        dCtx.bezierCurveTo(450, 80, 450, 220, 300, 320);
+      } else if (tpl.id.includes('star')) {
+        dCtx.moveTo(300, 80);
+        dCtx.lineTo(350, 160);
+        dCtx.lineTo(440, 170);
+        dCtx.lineTo(370, 230);
+        dCtx.lineTo(390, 320);
+        dCtx.lineTo(300, 270);
+        dCtx.lineTo(210, 320);
+        dCtx.lineTo(230, 230);
+        dCtx.lineTo(160, 170);
+        dCtx.lineTo(250, 160);
+        dCtx.closePath();
+      } else {
+        dCtx.arc(300, 200, 100, 0, 2 * Math.PI);
+      }
       dCtx.stroke();
       dCtx.restore();
 
-      // Címke a lap közepén
-      dCtx.font = '20px Courier New';
-      dCtx.fillStyle = '#64748b';
+      // Címke és útmutató a vászon alján/közepén
+      dCtx.font = 'bold 18px Courier New';
+      dCtx.fillStyle = '#1e293b';
       dCtx.textAlign = 'center';
-      dCtx.fillText(tpl.name, dCanvas.width / 2, dCanvas.height / 2 - 20);
-      dCtx.font = '14px Courier New';
-      dCtx.fillStyle = '#94a3b8';
-      dCtx.fillText('Kösd össze a számokat 1-től 20-ig!', dCanvas.width / 2, dCanvas.height / 2 + 15);
+      dCtx.fillText(tpl.name, dCanvas.width / 2, 50);
+
+      dCtx.font = '13px Courier New';
+      dCtx.fillStyle = '#0284c7';
+      dCtx.fillText('Üveglap mód: Kövesd alul a képet és rajzold át filccel!', dCanvas.width / 2, 370);
     }
 
     dCanvas.addEventListener('mousedown', e => startDotDraw(e));
