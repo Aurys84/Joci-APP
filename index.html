@@ -295,7 +295,7 @@
       <div id="galleryContainer" class="gallery-grid"></div>
     </div>
 
-    <!-- VIEW 2.5: VONALVEZETÉS GALÉRIA (10 Különböző sablon) -->
+    <!-- VIEW 2.5: VONALVEZETÉS GALÉRIA -->
     <div id="tracingGalleryView" class="view-section">
       <button class="btn btn-danger" onclick="goBackToMenu()" style="margin-bottom: 10px;">❮ Vissza a Főmenübe</button>
       <h2 style="color: var(--neon-cyan); text-align: center; margin-top: 0; font-size: 1.1rem;">Válassz egy vonalvezetési feladatot!</h2>
@@ -337,7 +337,7 @@
   </div>
 
   <footer>
-    Mátrix Labor Engine v1.7 • Projektigazgatás: Jordan & Nefi
+    Mátrix Labor Engine v1.8 • Projektigazgatás: Jordan & Nefi
   </footer>
 
   <script>
@@ -356,7 +356,6 @@
       ]
     };
 
-    // 10-10 TELJESEN KÜLÖNBÖZŐ Vonalvezetés Sablon (Garantáltan egyedi geometriák)
     const tracingTemplates = {
       boys: [
         { id: 'b1', name: '⚡ Süni Cikk-cakk', desc: 'Éles hegyes tüskék vonala' },
@@ -373,7 +372,7 @@
       girls: [
         { id: 'g1', name: '👑 Varázskorona Ívek', desc: 'Királyi csúcsos ívek' },
         { id: 'g2', name: '🌸 Virágszirom Körök', desc: 'Lágy köríves szirmok' },
-        { id: 'g3', name: '💖 Szív Hurok Pálya', desc: 'Szerelmes összekötő ív' },
+        { id: 'g3', name: '💖 Szív Hurok Pálya', desc: 'Szeretetteljes összekötő ív' },
         { id: 'g4', name: '🧚‍♀️ Tündér Porhintő', desc: 'Hullámzó varázspor sáv' },
         { id: 'g5', name: '🦋 Pillangó Szárny', desc: 'Szimmetrikus szárnygörbe' },
         { id: 'g6', name: '🌈 Szivárvány Ív', desc: 'Magas félkörös szivárvány' },
@@ -396,7 +395,6 @@
     const tCtx = tCanvas.getContext('2d');
     let isTracing = false;
 
-    // Színpaletta
     const colors = ['#ff0055', '#ff9900', '#ffff00', '#00cc66', '#00ffff', '#0088ff', '#9933ff', '#ff66b2', '#8b4513', '#333333'];
     const paletteContainer = document.getElementById('colorPalette');
     
@@ -412,7 +410,6 @@
       paletteContainer.appendChild(btn);
     });
 
-    // Színező Galéria
     function openGallery(category, type) {
       document.getElementById('mainMenuView').classList.remove('active');
       document.getElementById('galleryView').classList.add('active');
@@ -481,8 +478,6 @@
     function stopDraw() { isDrawing = false; isTracing = false; }
     function clearCanvas() { ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height); }
 
-
-    // --- VONALVEZETÉS (TRACING) 10 EGYEDI SABLON ---
     function openTracingGallery(category) {
       currentTracingCat = category;
       document.getElementById('mainMenuView').classList.remove('active');
@@ -522,16 +517,14 @@
       tCtx.setLineDash([8, 8]);
       tCtx.beginPath();
 
-      // Mind a 20 sablonhoz teljesen egyedi útvonal generálás
       switch(id) {
-        // Fiúsak
-        case 'b1': // Cikk-cakk
+        case 'b1':
           tCtx.moveTo(40, 300); tCtx.lineTo(100, 100); tCtx.lineTo(160, 300); tCtx.lineTo(220, 100); tCtx.lineTo(280, 300); tCtx.lineTo(340, 100); tCtx.lineTo(400, 300); tCtx.lineTo(460, 100); tCtx.lineTo(520, 300);
           break;
-        case 'b2': // Hullámok
+        case 'b2':
           tCtx.moveTo(40, 200); tCtx.bezierCurveTo(120, 50, 200, 350, 280, 200); tCtx.bezierCurveTo(360, 50, 440, 350, 520, 200);
           break;
-        case 'b3': // Spirál
+        case 'b3':
           tCtx.moveTo(300, 200);
           for (let i = 0; i < 35; i++) {
             let angle = 0.25 * i;
@@ -540,57 +533,55 @@
             tCtx.lineTo(x, y);
           }
           break;
-        case 'b4': // Lépcső
+        case 'b4':
           tCtx.moveTo(50, 330); tCtx.lineTo(50, 270); tCtx.lineTo(120, 270); tCtx.lineTo(120, 210); tCtx.lineTo(190, 210); tCtx.lineTo(190, 150); tCtx.lineTo(260, 150); tCtx.lineTo(260, 90); tCtx.lineTo(330, 90);
           break;
-        case 'b5': // Bukfenc hurok
+        case 'b5':
           tCtx.moveTo(50, 200); tCtx.quadraticCurveTo(150, 350, 250, 200); tCtx.quadraticCurveTo(350, 50, 450, 200); tCtx.quadraticCurveTo(500, 300, 550, 200);
           break;
-        case 'b6': // Villám
+        case 'b6':
           tCtx.moveTo(150, 40); tCtx.lineTo(250, 160); tCtx.lineTo(180, 180); tCtx.lineTo(350, 320); tCtx.lineTo(280, 220); tCtx.lineTo(400, 100);
           break;
-        case 'b7': // Hegyvonulat
+        case 'b7':
           tCtx.moveTo(40, 320); tCtx.lineTo(140, 120); tCtx.lineTo(240, 320); tCtx.lineTo(340, 80); tCtx.lineTo(440, 320); tCtx.lineTo(540, 150);
           break;
-        case 'b8': // Íves megahíd
+        case 'b8':
           tCtx.moveTo(40, 250); tCtx.quadraticCurveTo(300, 20, 560, 250);
           break;
-        case 'b9': // Alagút szögletes
+        case 'b9':
           tCtx.moveTo(40, 100); tCtx.lineTo(520, 100); tCtx.lineTo(520, 300); tCtx.lineTo(80, 300); tCtx.lineTo(80, 200); tCtx.lineTo(480, 200);
           break;
-        case 'b10': // Csillagösvény
+        case 'b10':
           tCtx.moveTo(50, 200); tCtx.lineTo(150, 100); tCtx.lineTo(250, 300); tCtx.lineTo(350, 100); tCtx.lineTo(450, 300); tCtx.lineTo(550, 200);
           break;
-
-        // Lányosak
-        case 'g1': // Korona ívek
+        case 'g1':
           tCtx.moveTo(50, 280); tCtx.lineTo(120, 120); tCtx.lineTo(190, 250); tCtx.lineTo(260, 100); tCtx.lineTo(330, 250); tCtx.lineTo(400, 120); tCtx.lineTo(470, 280);
           break;
-        case 'g2': // Virágszirom
+        case 'g2':
           tCtx.arc(300, 200, 90, 0, 2 * Math.PI);
           break;
-        case 'g3': // Szív hurok
+        case 'g3':
           tCtx.moveTo(300, 320); tCtx.bezierCurveTo(100, 220, 100, 80, 300, 180); tCtx.bezierCurveTo(500, 80, 500, 220, 300, 320);
           break;
-        case 'g4': // Tündér porhintő hullám
+        case 'g4':
           tCtx.moveTo(40, 150); tCtx.quadraticCurveTo(150, 300, 260, 150); tCtx.quadraticCurveTo(370, 0, 480, 150); tCtx.lineTo(560, 220);
           break;
-        case 'g5': // Pillangó szárny ív
+        case 'g5':
           tCtx.moveTo(300, 200); tCtx.quadraticCurveTo(150, 50, 100, 200); tCtx.quadraticCurveTo(150, 350, 300, 200); tCtx.quadraticCurveTo(450, 50, 500, 200); tCtx.quadraticCurveTo(450, 350, 300, 200);
           break;
-        case 'g6': // Szivárvány ív (koncentrikus félkör)
+        case 'g6':
           tCtx.arc(300, 300, 180, Math.PI, 2 * Math.PI);
           break;
-        case 'g7': // Kastély bástya
+        case 'g7':
           tCtx.moveTo(50, 300); tCtx.lineTo(100, 300); tCtx.lineTo(100, 180); tCtx.lineTo(180, 180); tCtx.lineTo(180, 300); tCtx.lineTo(260, 300); tCtx.lineTo(260, 180); tCtx.lineTo(340, 180); tCtx.lineTo(340, 300);
           break;
-        case 'g8': // Hullócsillag csík
+        case 'g8':
           tCtx.moveTo(80, 80); tCtx.bezierCurveTo(200, 100, 350, 250, 520, 320);
           break;
-        case 'g9': // Gyöngysor dombok
+        case 'g9':
           tCtx.moveTo(40, 250); tCtx.arc(120, 250, 80, Math.PI, 0, false); tCtx.arc(280, 250, 80, Math.PI, 0, false); tCtx.arc(440, 250, 80, Math.PI, 0, false);
           break;
-        case 'g10': // Varázspálca csillag sugár
+        case 'g10':
           tCtx.moveTo(100, 200); tCtx.lineTo(500, 200); tCtx.moveTo(300, 50); tCtx.lineTo(300, 350); tCtx.moveTo(180, 100); tCtx.lineTo(420, 300);
           break;
         default:
@@ -632,25 +623,25 @@
       }
     }
 
-    // --- INTELLIGENS ELLENŐRZŐ FUNKCIÓ (Nincs vak dicséret!) ---
+    // --- FELKEMÉNYÍTETT ELLENŐRZŐ RENDSZER (Szigorúbb küszöbök) ---
     function checkTracingResult() {
       const imgData = tCtx.getImageData(0, 0, tCanvas.width, tCanvas.height);
       const data = imgData.data;
       let drawnPixelCount = 0;
 
-      // Megszámoljuk, hány rózsaszín/rajzolt pixel van a vásznon (#ff0055 RGB: 255, 0, 85)
       for (let i = 0; i < data.length; i += 4) {
         if (data[i] > 200 && data[i+1] < 50 && data[i+2] > 50 && data[i+3] > 200) {
           drawnPixelCount++;
         }
       }
 
-      if (drawnPixelCount < 120) {
-        alert('Hé, kis művész! Itt még alig van vonal! Menj végig alaposan a szaggatott útvonalon! 🧐');
-      } else if (drawnPixelCount < 400) {
-        alert('Már szép a kezdet, de próbáld meg még pontosabban követni a vonalat egészen végig! ⭐');
+      // Szigorúbb értékek: kis firkálással már nem engedi át!
+      if (drawnPixelCount < 600) {
+        alert('Hé, kis művész! Ez még nagyon kevés! Menj végig határozottan a szaggatott vonalon egészen a végéig! 🧐');
+      } else if (drawnPixelCount < 1800) {
+        alert('Már szép a kezdet, de látom, hogy megálltál félúton. Húzd végig pontosan az egészet! ⭐');
       } else {
-        alert('Hatalmas ügyesség! Tökéletesen végigvezetted a vonalat a Mátrix Labor előírásai szerint! 🎉🚀');
+        alert('Hatalmas ügyesség! Tökéletes, hibátlan vonalvezetés a Mátrix Labor előírásai szerint! 🎉🚀');
       }
     }
 
