@@ -7,7 +7,7 @@
   <style>
     :root {
       --bg-color: #02040a;
-      --panel-bg: rgba(12, 27, 42, 0.85);
+      --panel-bg: rgba(12, 27, 42, 0.9);
       --neon-cyan: #00ffcc;
       --neon-magenta: #ff00ff;
       --neon-blue: #0088ff;
@@ -29,18 +29,18 @@
 
     header {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
 
     h1 {
-      font-size: 1.6rem;
+      font-size: 1.5rem;
       color: var(--neon-cyan);
       text-shadow: 0 0 15px rgba(0,255,204,0.7);
-      margin: 10px 0 5px 0;
+      margin: 8px 0 3px 0;
     }
 
     p.subtitle {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: var(--neon-magenta);
       margin: 0;
     }
@@ -52,45 +52,53 @@
       border: 3px solid var(--neon-cyan);
       border-radius: 15px;
       box-shadow: 0 0 30px rgba(0, 255, 204, 0.3);
-      padding: 20px;
+      padding: 15px;
       box-sizing: border-box;
     }
 
-    /* Névbeviteli sáv */
+    /* Profil sáv */
     .profile-box {
       background: rgba(0, 0, 0, 0.6);
       border: 1px solid var(--neon-blue);
       border-radius: 10px;
-      padding: 12px;
+      padding: 10px;
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
 
     .profile-box label {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       color: var(--accent-gold);
       display: block;
-      margin-bottom: 6px;
+      margin-bottom: 5px;
     }
 
     .profile-box input {
       background: #000;
       border: 2px solid var(--neon-cyan);
       color: var(--text-main);
-      padding: 8px 15px;
-      font-size: 1.1rem;
+      padding: 6px 12px;
+      font-size: 1rem;
       border-radius: 6px;
       text-align: center;
       width: 80%;
-      max-width: 300px;
+      max-width: 280px;
       font-family: inherit;
     }
 
-    /* Kategória választó panelek */
+    /* Nézetkezelő (Főmenü vs Galéria) */
+    .view-section {
+      display: none;
+    }
+    .view-section.active {
+      display: block;
+    }
+
+    /* Kategória grid */
     .categories-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 20px;
+      gap: 15px;
     }
 
     @media (min-width: 650px) {
@@ -103,50 +111,40 @@
       background: rgba(0, 0, 0, 0.5);
       border: 2px solid;
       border-radius: 12px;
-      padding: 15px;
-      transition: transform 0.2s, box-shadow 0.2s;
+      padding: 12px;
     }
 
-    .category-card.boys {
-      border-color: var(--neon-blue);
-      box-shadow: 0 0 10px rgba(0,136,255,0.2);
-    }
-
-    .category-card.girls {
-      border-color: var(--neon-magenta);
-      box-shadow: 0 0 10px rgba(255,0,255,0.2);
-    }
+    .category-card.boys { border-color: var(--neon-blue); }
+    .category-card.girls { border-color: var(--neon-magenta); }
 
     .category-card h2 {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       margin-top: 0;
       text-align: center;
     }
-
     .category-card.boys h2 { color: var(--neon-cyan); }
     .category-card.girls h2 { color: #ff99cc; }
 
-    /* Feladat gombok */
     .task-list {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
     }
 
     .task-btn {
       background: rgba(0, 255, 204, 0.15);
       border: 1px solid var(--neon-cyan);
       color: var(--text-main);
-      padding: 12px;
-      font-size: 0.95rem;
+      padding: 10px;
+      font-size: 0.9rem;
       border-radius: 8px;
       cursor: pointer;
       text-align: left;
       font-family: inherit;
       display: flex;
       align-items: center;
-      gap: 10px;
-      transition: background 0.2s, transform 0.1s;
+      gap: 8px;
+      transition: background 0.2s;
     }
 
     .category-card.girls .task-btn {
@@ -155,12 +153,52 @@
     }
 
     .task-btn:active {
-      transform: scale(0.98);
       background: rgba(0, 255, 204, 0.4);
     }
 
+    /* Galéria stílusok (Almenü) */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+      margin-top: 15px;
+    }
+
+    .gallery-item {
+      background: rgba(0,0,0,0.7);
+      border: 2px solid var(--neon-cyan);
+      border-radius: 10px;
+      padding: 15px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .gallery-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 15px rgba(0,255,204,0.5);
+    }
+
+    .gallery-item h3 {
+      font-size: 0.95rem;
+      color: var(--accent-gold);
+      margin: 5px 0;
+    }
+
+    .back-btn {
+      background: #ff3333;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-family: inherit;
+      cursor: pointer;
+      font-size: 0.9rem;
+      margin-bottom: 15px;
+    }
+
     footer {
-      margin-top: 20px;
+      margin-top: 15px;
       font-size: 0.75rem;
       color: #888;
       text-align: center;
@@ -176,50 +214,107 @@
 
   <div class="container">
     
-    <!-- Profil / Név Beviteli Mező -->
+    <!-- Profil Sáv -->
     <div class="profile-box">
       <label for="playerName">Add meg a neved, Kis Művész:</label>
-      <input type="text" id="playerName" placeholder="pl. Joci vagy Karina" value="Kis Művész">
+      <input type="text" id="playerName" value="Kis Művész">
     </div>
 
-    <!-- Fő Kategóriák Grid -->
-    <div class="categories-grid">
+    <!-- VIEW 1: FŐMENÜ -->
+    <div id="mainMenuView" class="view-section active">
+      <div class="categories-grid">
+        
+        <!-- Fiús & Univerzális Ág -->
+        <div class="category-card boys">
+          <h2>🚀 Kalandok & Járművek</h2>
+          <div class="task-list">
+            <button class="task-btn" onclick="openGallery('boys', 'szinezo')">🎨 Csak Színezős (Több féle sablon)</button>
+            <button class="task-btn" onclick="openModule('boys', 'atrajzolos')">✏️ Átrajzolós / Vonalvezetés</button>
+            <button class="task-btn" onclick="openModule('boys', 'pontosszekoto')">⭐ Nyilas Pontösszekötő</button>
+            <button class="task-btn" onclick="openModule('boys', 'szamolos')">🔢 Számolós & Logikai Feladatok</button>
+          </div>
+        </div>
+
+        <!-- Lányos & Hercegnős Ág -->
+        <div class="category-card girls">
+          <h2>👑 Varázsvilág & Hercegnők</h2>
+          <div class="task-list">
+            <button class="task-btn" onclick="openGallery('girls', 'szinezo')">🎨 Csak Színezős (Több féle sablon)</button>
+            <button class="task-btn" onclick="openModule('girls', 'atrajzolos')">✏️ Átrajzolós (Varázskorona)</button>
+            <button class="task-btn" onclick="openModule('girls', 'pontosszekoto')">⭐ Nyilas Pontösszekötő</button>
+            <button class="task-btn" onclick="openModule('girls', 'szamolos')">💖 Pötty-Számláló Challenge</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- VIEW 2: SZÍNEZŐ GALÉRIA (Almenü) -->
+    <div id="galleryView" class="view-section">
+      <button class="back-btn" onclick="goBackToMenu()">❮ Vissza a Főmenübe</button>
+      <h2 id="galleryTitle" style="color: var(--neon-cyan); text-align: center; margin-top: 0;">Válassz egy képet a színezéshez!</h2>
       
-      <!-- Fiús & Univerzális Ág -->
-      <div class="category-card boys">
-        <h2>🚀 Kalandok & Járművek</h2>
-        <div class="task-list">
-          <button class="task-btn" onclick="openModule('boys', 'szinezo')">🎨 Csak Színezős (Gőzmozdony, Traktor)</button>
-          <button class="task-btn" onclick="openModule('boys', 'atrajzolos')">✏️ Átrajzolós / Vonalvezetés (Süni Samu)</button>
-          <button class="task-btn" onclick="openModule('boys', 'pontosszekoto')">⭐ Nyilas Pontösszekötő (Rakéta)</button>
-          <button class="task-btn" onclick="openModule('boys', 'szamolos')">🔢 Számolós & Logikai Feladatok</button>
-        </div>
+      <div id="galleryContainer" class="gallery-grid">
+        <!-- Ide töltődnek be dinamikusan a színező opciók -->
       </div>
-
-      <!-- Lányos & Hercegnős Ág -->
-      <div class="category-card girls">
-        <h2>👑 Varázsvilág & Hercegnők</h2>
-        <div class="task-list">
-          <button class="task-btn" onclick="openModule('girls', 'szinezo')">🎨 Csak Színezős (Kastély, Hableány)</button>
-          <button class="task-btn" onclick="openModule('girls', 'atrajzolos')">✏️ Átrajzolós (Varázskorona)</button>
-          <button class="task-btn" onclick="openModule('girls', 'pontosszekoto')">⭐ Nyilas Pontösszekötő (Pillangó)</button>
-          <button class="task-btn" onclick="openModule('girls', 'szamolos')">💖 Pötty-Számláló Challenge</button>
-        </div>
-      </div>
-
     </div>
 
   </div>
 
   <footer>
-    Mátrix Labor Engine v1.0 • Projektigazgatás: Jordan & Nefi
+    Mátrix Labor Engine v1.1 • Projektigazgatás: Jordan & Nefi
   </footer>
 
   <script>
+    // Színező sablonok adatbázisa
+    const coloringTemplates = {
+      boys: [
+        { id: 'train', name: '🚂 A Zúgó Gőzmozdony', desc: 'Pöfögjön a vonat saját színekben!' },
+        { id: 'pumpkin_express', name: '🎃 Őszi Sütőtök Expressz', desc: 'Vagonok tele aranyszínű tökökkel.' },
+        { id: 'rocket', name: '🚀 Mátrix Űrsikló', desc: 'Irány a galaxis és a csillagok!' },
+        { id: 'robot', name: '🤖 Robot Robi', desc: 'Varázsolj új külsőt a vidám robotnak!' }
+      ],
+      girls: [
+        { id: 'castle', name: '🏰 Barbie Hercegnő Kastélya', desc: 'Tornyok, hintók és csillogás.' },
+        { id: 'mermaid', name: '🧜‍♀️ Barbie Hableány', desc: 'Víz alatti birodalom labdával.' },
+        { id: 'fairy', name: '🧚‍♀️ Tündér Hercegnő', desc: 'Szárnyak, virágok és varázslat.' },
+        { id: 'pegasus', name: '🦄 Unikornis Kaland', desc: 'Szivárványok és csillagos ég.' }
+      ]
+    };
+
+    function openGallery(category, type) {
+      const name = document.getElementById('playerName').value || 'Kis Művész';
+      document.getElementById('mainMenuView').classList.remove('active');
+      document.getElementById('galleryView').classList.add('active');
+
+      const container = document.getElementById('galleryContainer');
+      container.innerHTML = '';
+
+      const templates = coloringTemplates[category] || [];
+      templates.forEach(tpl => {
+        const card = document.createElement('div');
+        card.className = 'gallery-item';
+        card.innerHTML = `
+          <div style="font-size: 2rem; margin-bottom: 5px;">🎨</div>
+          <h3>${tpl.name}</h3>
+          <p style="font-size: 0.75rem; color: #aaa; margin: 5px 0 0 0;">${tpl.desc}</p>
+        `;
+        card.onclick = () => {
+          alert(`Indul a színezés, ${name}!\nKiválasztott sablon: ${tpl.name}`);
+          // Itt indítjuk majd a konkrét színezőmotort (Flood-fill canvas)
+        };
+        container.appendChild(card);
+      });
+    }
+
+    function goBackToMenu() {
+      document.getElementById('galleryView').classList.remove('active');
+      document.getElementById('mainMenuView').classList.add('active');
+    }
+
     function openModule(category, type) {
       const name = document.getElementById('playerName').value || 'Kis Művész';
-      alert(`Üdvözöllek a Laborban, ${name}! \nA(z) [${category.toUpperCase()} -> ${type.toUpperCase()}] modul előkészítés alatt áll a motorháztető alatt! 🚀`);
-      // Itt fogjuk majd betölteni a dinamikus feladatokat és motorokat!
+      alert(`Üdvözöllek a Laborban, ${name}!\nA(z) [${category.toUpperCase()} -> ${type.toUpperCase()}] modul fejlesztése folyamatban van.`);
     }
   </script>
 
