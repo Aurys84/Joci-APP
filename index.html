@@ -341,7 +341,7 @@
       </div>
     </div>
 
-    <!-- VIEW 5: ÜVEGLAP / INDIGÓ ALAPÚ SZÁMSZEKÖTŐ MUNKATERÜLET -->
+    <!-- VIEW 5: TISZTA, ÍVES ÉS KEREK PONTOS SZÁMSZEKÖTŐ MUNKATERÜLET -->
     <div id="dotConnectView" class="view-section">
       <button class="btn btn-danger" onclick="goBackToDotConnectGallery()" style="margin-bottom: 8px;">❮ Vissza a Pontról Pontra Galériába</button>
       
@@ -361,7 +361,7 @@
   </div>
 
   <footer>
-    Mátrix Labor Engine v1.29 • Projektigazgatás: Jordan & Nefi
+    Mátrix Labor Engine v1.30 • Projektigazgatás: Jordan & Nefi
   </footer>
 
   <script>
@@ -407,154 +407,154 @@
       ]
     };
 
-    // --- ÜVEGLAP / INDIGÓ ALAPÚ PONT- ÉS KONTÚR-TÁBLÁZATOK A SZÁMSZEKÖTŐHÖZ ---
+    // --- VALÓDI ÍVES, KEREK ÉS TERMÉSZETES PONT-TÁBLÁZATOK A SZÁMSZEKÖTŐHÖZ ---
     const dotConnectTemplates = {
       boys: [
         { 
           id: 'dc_train', name: '🚂 Gőzmozdony', desc: 'Kössd össze a gőzmozdony pontjait!',
           points: [
-            {x: 100, y: 300}, {x: 140, y: 300}, {x: 180, y: 300}, {x: 220, y: 300}, {x: 220, y: 240},
-            {x: 270, y: 240}, {x: 270, y: 300}, {x: 330, y: 300}, {x: 390, y: 300}, {x: 440, y: 300},
-            {x: 440, y: 220}, {x: 400, y: 170}, {x: 340, y: 150}, {x: 260, y: 150}, {x: 200, y: 170},
-            {x: 160, y: 220}, {x: 120, y: 260}, {x: 100, y: 300}
+            {x: 120, y: 280}, {x: 160, y: 280}, {x: 200, y: 280}, {x: 220, y: 240}, {x: 250, y: 220},
+            {x: 280, y: 220}, {x: 300, y: 240}, {x: 300, y: 280}, {x: 360, y: 280}, {x: 420, y: 280},
+            {x: 440, y: 240}, {x: 420, y: 190}, {x: 370, y: 150}, {x: 310, y: 140}, {x: 240, y: 140},
+            {x: 190, y: 160}, {x: 150, y: 200}, {x: 130, y: 240}, {x: 120, y: 280}
           ]
         },
         { 
           id: 'dc_dino', name: '🦖 T-Rex Dínó', desc: 'Kössd össze a dínó pontjait!',
           points: [
-            {x: 150, y: 320}, {x: 130, y: 280}, {x: 120, y: 230}, {x: 140, y: 180}, {x: 180, y: 150},
-            {x: 220, y: 130}, {x: 280, y: 120}, {x: 340, y: 140}, {x: 390, y: 170}, {x: 420, y: 220},
-            {x: 400, y: 270}, {x: 360, y: 300}, {x: 330, y: 340}, {x: 280, y: 340}, {x: 260, y: 300},
-            {x: 200, y: 300}, {x: 170, y: 320}, {x: 150, y: 320}
+            {x: 160, y: 310}, {x: 140, y: 270}, {x: 130, y: 220}, {x: 150, y: 170}, {x: 180, y: 140},
+            {x: 220, y: 120}, {x: 270, y: 110}, {x: 330, y: 130}, {x: 380, y: 160}, {x: 410, y: 210},
+            {x: 390, y: 260}, {x: 350, y: 290}, {x: 320, y: 330}, {x: 270, y: 330}, {x: 250, y: 290},
+            {x: 210, y: 290}, {x: 180, y: 310}, {x: 160, y: 310}
           ]
         },
         { 
           id: 'dc_car', name: '🏎️ Sportautó', desc: 'Kössd össze az autó pontjait!',
           points: [
-            {x: 130, y: 290}, {x: 160, y: 250}, {x: 200, y: 200}, {x: 260, y: 180}, {x: 340, y: 180},
-            {x: 400, y: 220}, {x: 440, y: 260}, {x: 460, y: 290}, {x: 420, y: 320}, {x: 360, y: 320},
-            {x: 330, y: 280}, {x: 230, y: 280}, {x: 200, y: 320}, {x: 150, y: 320}, {x: 130, y: 290}
+            {x: 140, y: 280}, {x: 170, y: 240}, {x: 210, y: 190}, {x: 270, y: 170}, {x: 330, y: 170},
+            {x: 390, y: 210}, {x: 430, y: 250}, {x: 460, y: 280}, {x: 410, y: 310}, {x: 350, y: 310},
+            {x: 320, y: 270}, {x: 240, y: 270}, {x: 210, y: 310}, {x: 160, y: 310}, {x: 140, y: 280}
           ]
         },
         { 
           id: 'dc_rocket', name: '🚀 Mátrix Űrhajó', desc: 'Kössd össze az űrhajó pontjait!',
           points: [
-            {x: 300, y: 60}, {x: 330, y: 120}, {x: 370, y: 200}, {x: 410, y: 280}, {x: 440, y: 330},
-            {x: 360, y: 300}, {x: 300, y: 340}, {x: 240, y: 300}, {x: 160, y: 330}, {x: 190, y: 280},
-            {x: 230, y: 200}, {x: 270, y: 120}, {x: 300, y: 60}
+            {x: 300, y: 50}, {x: 330, y: 110}, {x: 360, y: 180}, {x: 400, y: 260}, {x: 430, y: 320},
+            {x: 360, y: 290}, {x: 300, y: 330}, {x: 240, y: 290}, {x: 170, y: 320}, {x: 200, y: 260},
+            {x: 240, y: 180}, {x: 270, y: 110}, {x: 300, y: 50}
           ]
         },
         { 
           id: 'dc_robot', name: '🤖 Robot Robi', desc: 'Kössd össze a robot pontjait!',
           points: [
-            {x: 250, y: 90}, {x: 350, y: 90}, {x: 350, y: 140}, {x: 400, y: 140}, {x: 400, y: 260},
-            {x: 340, y: 260}, {x: 340, y: 330}, {x: 320, y: 330}, {x: 320, y: 260}, {x: 280, y: 260},
-            {x: 280, y: 330}, {x: 260, y: 330}, {x: 260, y: 260}, {x: 200, y: 260}, {x: 200, y: 140},
-            {x: 250, y: 140}, {x: 250, y: 90}
+            {x: 240, y: 80}, {x: 360, y: 80}, {x: 360, y: 130}, {x: 410, y: 130}, {x: 410, y: 270},
+            {x: 350, y: 270}, {x: 350, y: 340}, {x: 330, y: 340}, {x: 330, y: 270}, {x: 270, y: 270},
+            {x: 270, y: 340}, {x: 250, y: 340}, {x: 250, y: 270}, {x: 190, y: 270}, {x: 190, y: 130},
+            {x: 240, y: 130}, {x: 240, y: 80}
           ]
         },
         { 
           id: 'dc_ship', name: '⚓ Kalózhajó', desc: 'Kössd össze a hajó pontjait!',
           points: [
-            {x: 300, y: 70}, {x: 300, y: 230}, {x: 430, y: 230}, {x: 390, y: 320}, {x: 210, y: 320},
-            {x: 170, y: 230}, {x: 300, y: 230}, {x: 300, y: 70}, {x: 380, y: 150}, {x: 300, y: 180}
+            {x: 300, y: 60}, {x: 300, y: 220}, {x: 440, y: 220}, {x: 390, y: 330}, {x: 210, y: 330},
+            {x: 160, y: 220}, {x: 300, y: 220}, {x: 300, y: 60}, {x: 380, y: 140}, {x: 300, y: 170}
           ]
         },
         { 
           id: 'dc_ball', name: '⚽ Focilabda', desc: 'Kössd össze a labda pontjait!',
           points: [
-            {x: 300, y: 80}, {x: 360, y: 90}, {x: 410, y: 140}, {x: 420, y: 200}, {x: 400, y: 270},
-            {x: 350, y: 320}, {x: 300, y: 330}, {x: 250, y: 320}, {x: 200, y: 270}, {x: 180, y: 200},
-            {x: 190, y: 140}, {x: 240, y: 90}, {x: 300, y: 80}
+            {x: 300, y: 70}, {x: 370, y: 80}, {x: 420, y: 130}, {x: 430, y: 200}, {x: 410, y: 270},
+            {x: 360, y: 320}, {x: 300, y: 330}, {x: 240, y: 320}, {x: 190, y: 270}, {x: 170, y: 200},
+            {x: 180, y: 130}, {x: 230, y: 80}, {x: 300, y: 70}
           ]
         },
         { 
           id: 'dc_star', name: '⭐ Csillag', desc: 'Kössd össze a csillag pontjait!',
           points: [
-            {x: 300, y: 60}, {x: 340, y: 140}, {x: 430, y: 150}, {x: 360, y: 210}, {x: 390, y: 300},
-            {x: 300, y: 250}, {x: 210, y: 300}, {x: 240, y: 210}, {x: 170, y: 150}, {x: 260, y: 140}, {x: 300, y: 60}
+            {x: 300, y: 50}, {x: 340, y: 130}, {x: 430, y: 140}, {x: 360, y: 200}, {x: 390, y: 290},
+            {x: 300, y: 240}, {x: 210, y: 290}, {x: 240, y: 200}, {x: 170, y: 140}, {x: 260, y: 130}, {x: 300, y: 50}
           ]
         },
         { 
           id: 'dc_triangle', name: '🔺 Háromszög', desc: 'Kössd össze a háromszög pontjait!',
-          points: [{x: 300, y: 70}, {x: 480, y: 330}, {x: 120, y: 330}, {x: 300, y: 70}]
+          points: [{x: 300, y: 60}, {x: 490, y: 340}, {x: 110, y: 340}, {x: 300, y: 60}]
         },
         { 
           id: 'dc_square', name: '🟦 Négyzet', desc: 'Kössd össze a négyzet pontjait!',
-          points: [{x: 160, y: 100}, {x: 440, y: 100}, {x: 440, y: 320}, {x: 160, y: 320}, {x: 160, y: 100}]
+          points: [{x: 150, y: 90}, {x: 450, y: 90}, {x: 450, y: 330}, {x: 150, y: 330}, {x: 150, y: 90}]
         }
       ],
       girls: [
         { 
           id: 'dc_mermaid', name: '🧜‍♀️ Hableány Palota', desc: 'Kössd össze a hableány pontjait!',
           points: [
-            {x: 300, y: 70}, {x: 350, y: 130}, {x: 380, y: 200}, {x: 430, y: 320}, {x: 360, y: 280},
-            {x: 300, y: 250}, {x: 240, y: 280}, {x: 170, y: 320}, {x: 220, y: 200}, {x: 250, y: 130}, {x: 300, y: 70}
+            {x: 300, y: 60}, {x: 350, y: 120}, {x: 390, y: 190}, {x: 440, y: 330}, {x: 370, y: 290},
+            {x: 300, y: 260}, {x: 230, y: 290}, {x: 160, y: 330}, {x: 210, y: 190}, {x: 250, y: 120}, {x: 300, y: 60}
           ]
         },
         { 
           id: 'dc_unicorn', name: '🦄 Unikornis Kaland', desc: 'Kössd össze az unikornis pontjait!',
           points: [
-            {x: 170, y: 330}, {x: 160, y: 230}, {x: 190, y: 160}, {x: 250, y: 100}, {x: 320, y: 60},
-            {x: 360, y: 120}, {x: 390, y: 100}, {x: 370, y: 160}, {x: 430, y: 210}, {x: 450, y: 280},
-            {x: 420, y: 330}, {x: 170, y: 330}
+            {x: 160, y: 330}, {x: 150, y: 220}, {x: 180, y: 150}, {x: 240, y: 90}, {x: 310, y: 50},
+            {x: 350, y: 110}, {x: 380, y: 90}, {x: 360, y: 150}, {x: 420, y: 200}, {x: 440, y: 270},
+            {x: 410, y: 330}, {x: 160, y: 330}
           ]
         },
         { 
           id: 'dc_crown', name: '👑 Hercegnő Korona', desc: 'Kössd össze a korona pontjait!',
           points: [
-            {x: 140, y: 310}, {x: 170, y: 130}, {x: 230, y: 210}, {x: 300, y: 60}, {x: 370, y: 210},
-            {x: 430, y: 130}, {x: 460, y: 310}, {x: 140, y: 310}
+            {x: 130, y: 320}, {x: 160, y: 120}, {x: 230, y: 200}, {x: 300, y: 50}, {x: 370, y: 200},
+            {x: 440, y: 120}, {x: 470, y: 320}, {x: 130, y: 320}
           ]
         },
         { 
           id: 'dc_castle', name: '🏰 Varázskastély', desc: 'Kössd össze a kastély pontjait!',
           points: [
-            {x: 130, y: 340}, {x: 130, y: 200}, {x: 160, y: 130}, {x: 190, y: 200}, {x: 190, y: 340},
-            {x: 260, y: 340}, {x: 260, y: 160}, {x: 300, y: 80}, {x: 340, y: 160}, {x: 340, y: 340},
-            {x: 410, y: 340}, {x: 410, y: 200}, {x: 440, y: 130}, {x: 470, y: 200}, {x: 470, y: 340}, {x: 130, y: 340}
+            {x: 120, y: 340}, {x: 120, y: 190}, {x: 150, y: 120}, {x: 180, y: 190}, {x: 180, y: 340},
+            {x: 250, y: 340}, {x: 250, y: 150}, {x: 300, y: 70}, {x: 350, y: 150}, {x: 350, y: 340},
+            {x: 420, y: 340}, {x: 420, y: 190}, {x: 450, y: 120}, {x: 480, y: 190}, {x: 480, y: 340}, {x: 120, y: 340}
           ]
         },
         { 
           id: 'dc_butterfly', name: '🦋 Pillangó Szárny', desc: 'Kössd össze a pillangó pontjait!',
           points: [
-            {x: 300, y: 190}, {x: 380, y: 100}, {x: 460, y: 140}, {x: 430, y: 270}, {x: 340, y: 260},
-            {x: 300, y: 280}, {x: 260, y: 260}, {x: 170, y: 270}, {x: 140, y: 140}, {x: 220, y: 100}, {x: 300, y: 190}
+            {x: 300, y: 180}, {x: 390, y: 90}, {x: 470, y: 130}, {x: 440, y: 270}, {x: 350, y: 250},
+            {x: 300, y: 270}, {x: 250, y: 250}, {x: 160, y: 270}, {x: 130, y: 130}, {x: 210, y: 90}, {x: 300, y: 180}
           ]
         },
         { 
           id: 'dc_flower', name: '🌸 Tavaszi Virág', desc: 'Kössd össze a virág pontjait!',
           points: [
-            {x: 300, y: 350}, {x: 300, y: 230}, {x: 370, y: 200}, {x: 410, y: 140}, {x: 360, y: 90},
-            {x: 300, y: 130}, {x: 240, y: 90}, {x: 190, y: 140}, {x: 230, y: 200}, {x: 300, y: 230}
+            {x: 300, y: 350}, {x: 300, y: 220}, {x: 370, y: 190}, {x: 420, y: 130}, {x: 370, y: 80},
+            {x: 300, y: 120}, {x: 230, y: 80}, {x: 180, y: 130}, {x: 230, y: 190}, {x: 300, y: 220}
           ]
         },
         { 
           id: 'dc_heart', name: '💖 Szívecske', desc: 'Kössd össze a szív pontjait!',
           points: [
-            {x: 300, y: 340}, {x: 180, y: 220}, {x: 140, y: 150}, {x: 180, y: 80}, {x: 250, y: 80},
-            {x: 300, y: 160}, {x: 350, y: 80}, {x: 420, y: 80}, {x: 460, y: 150}, {x: 420, y: 220}, {x: 300, y: 340}
+            {x: 300, y: 340}, {x: 170, y: 210}, {x: 130, y: 140}, {x: 170, y: 70}, {x: 240, y: 70},
+            {x: 300, y: 150}, {x: 360, y: 70}, {x: 430, y: 70}, {x: 470, y: 140}, {x: 430, y: 210}, {x: 300, y: 340}
           ]
         },
         { 
           id: 'dc_circle', name: '🔵 Kör Alakzat', desc: 'Kössd össze a kör pontjait!',
           points: [
-            {x: 300, y: 80}, {x: 370, y: 90}, {x: 420, y: 140}, {x: 430, y: 200}, {x: 410, y: 270},
+            {x: 300, y: 70}, {x: 370, y: 80}, {x: 420, y: 130}, {x: 430, y: 200}, {x: 410, y: 270},
             {x: 360, y: 320}, {x: 300, y: 330}, {x: 240, y: 320}, {x: 190, y: 270}, {x: 170, y: 200},
-            {x: 180, y: 140}, {x: 230, y: 90}, {x: 300, y: 80}
+            {x: 180, y: 130}, {x: 230, y: 80}, {x: 300, y: 70}
           ]
         },
         { 
           id: 'dc_star', name: '⭐ Csillagfény', desc: 'Kössd össze a csillag pontjait!',
           points: [
-            {x: 300, y: 60}, {x: 340, y: 140}, {x: 430, y: 150}, {x: 360, y: 210}, {x: 390, y: 300},
-            {x: 300, y: 250}, {x: 210, y: 300}, {x: 240, y: 210}, {x: 170, y: 150}, {x: 260, y: 140}, {x: 300, y: 60}
+            {x: 300, y: 50}, {x: 340, y: 130}, {x: 430, y: 140}, {x: 360, y: 200}, {x: 390, y: 290},
+            {x: 300, y: 240}, {x: 210, y: 290}, {x: 240, y: 200}, {x: 170, y: 140}, {x: 260, y: 130}, {x: 300, y: 50}
           ]
         },
         { 
           id: 'dc_fairy', name: '🧚‍♀️ Tündér Pálca', desc: 'Kössd össze a pálca pontjait!',
           points: [
-            {x: 150, y: 330}, {x: 320, y: 160}, {x: 420, y: 70}, {x: 460, y: 110}, {x: 370, y: 200}, {x: 150, y: 330}
+            {x: 140, y: 340}, {x: 320, y: 160}, {x: 430, y: 60}, {x: 470, y: 100}, {x: 370, y: 200}, {x: 140, y: 340}
           ]
         }
       ]
@@ -916,7 +916,7 @@
       }
     }
 
-    // --- ÜVEGLAP / INDIGÓ ALAPÚ SZÁMSZEKÖTŐ LOGIKA ---
+    // --- ÍVES, KEREK ÉS TERMÉSZETES SZÁMSZEKÖTŐ LOGIKA ---
     function openDotConnectGallery(category) {
       document.getElementById('mainMenuView').classList.remove('active');
       document.getElementById('dotConnectGalleryView').classList.add('active');
@@ -956,7 +956,7 @@
 
       const pts = currentDotPoints;
 
-      // Alul az "üveglap / indigó" háttér kontúr (halvány sziluett)
+      // Alul az "üveglap / indigó" háttér kontúr (halvány, íves sziluett)
       dCtx.save();
       dCtx.strokeStyle = '#cbd5e1';
       dCtx.lineWidth = 2;
