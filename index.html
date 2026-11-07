@@ -7,7 +7,7 @@
   <style>
     :root {
       --bg-color: #02040a;
-      --panel-bg: rgba(12, 27, 42, 0.9);
+      --panel-bg: rgba(12, 27, 42, 0.92);
       --neon-cyan: #00ffcc;
       --neon-magenta: #ff00ff;
       --neon-blue: #0088ff;
@@ -29,18 +29,18 @@
 
     header {
       text-align: center;
-      margin-bottom: 15px;
+      margin-bottom: 12px;
     }
 
     h1 {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       color: var(--neon-cyan);
       text-shadow: 0 0 15px rgba(0,255,204,0.7);
-      margin: 8px 0 3px 0;
+      margin: 6px 0 2px 0;
     }
 
     p.subtitle {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: var(--neon-magenta);
       margin: 0;
     }
@@ -61,16 +61,16 @@
       background: rgba(0, 0, 0, 0.6);
       border: 1px solid var(--neon-blue);
       border-radius: 10px;
-      padding: 10px;
+      padding: 8px;
       text-align: center;
-      margin-bottom: 15px;
+      margin-bottom: 12px;
     }
 
     .profile-box label {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: var(--accent-gold);
       display: block;
-      margin-bottom: 5px;
+      margin-bottom: 4px;
     }
 
     .profile-box input {
@@ -78,33 +78,27 @@
       border: 2px solid var(--neon-cyan);
       color: var(--text-main);
       padding: 6px 12px;
-      font-size: 1rem;
+      font-size: 0.95rem;
       border-radius: 6px;
       text-align: center;
       width: 80%;
-      max-width: 280px;
+      max-width: 260px;
       font-family: inherit;
     }
 
-    /* Nézetkezelő (Főmenü vs Galéria) */
-    .view-section {
-      display: none;
-    }
-    .view-section.active {
-      display: block;
-    }
+    /* Nézetkezelő */
+    .view-section { display: none; }
+    .view-section.active { display: block; }
 
     /* Kategória grid */
     .categories-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 15px;
+      gap: 12px;
     }
 
     @media (min-width: 650px) {
-      .categories-grid {
-        grid-template-columns: 1fr 1fr;
-      }
+      .categories-grid { grid-template-columns: 1fr 1fr; }
     }
 
     .category-card {
@@ -118,7 +112,7 @@
     .category-card.girls { border-color: var(--neon-magenta); }
 
     .category-card h2 {
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       margin-top: 0;
       text-align: center;
     }
@@ -144,7 +138,6 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      transition: background 0.2s;
     }
 
     .category-card.girls .task-btn {
@@ -152,53 +145,99 @@
       border-color: var(--neon-magenta);
     }
 
-    .task-btn:active {
-      background: rgba(0, 255, 204, 0.4);
-    }
+    .task-btn:active { background: rgba(0, 255, 204, 0.4); }
 
-    /* Galéria stílusok (Almenü) */
+    /* Galéria rács */
     .gallery-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 12px;
-      margin-top: 15px;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
     }
 
     .gallery-item {
       background: rgba(0,0,0,0.7);
       border: 2px solid var(--neon-cyan);
       border-radius: 10px;
-      padding: 15px;
+      padding: 12px;
       text-align: center;
       cursor: pointer;
       transition: transform 0.2s, box-shadow 0.2s;
     }
 
     .gallery-item:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 0 15px rgba(0,255,204,0.5);
+      transform: translateY(-2px);
+      box-shadow: 0 0 12px rgba(0,255,204,0.5);
     }
 
     .gallery-item h3 {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       color: var(--accent-gold);
-      margin: 5px 0;
+      margin: 4px 0;
     }
 
-    .back-btn {
-      background: #ff3333;
+    /* Színező Vászon Munkaterület */
+    .canvas-workspace {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    #coloringCanvas {
+      background: #ffffff;
+      border: 3px solid var(--neon-cyan);
+      border-radius: 10px;
+      cursor: crosshair;
+      max-width: 100%;
+      box-shadow: 0 0 20px rgba(0,255,204,0.4);
+    }
+
+    .palette {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      background: rgba(0,0,0,0.8);
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid var(--neon-blue);
+    }
+
+    .color-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid white;
+      cursor: pointer;
+      transition: transform 0.1s;
+    }
+    .color-btn:active, .color-btn.selected {
+      transform: scale(1.15);
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 10px var(--accent-gold);
+    }
+
+    .action-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      background: var(--neon-blue);
       color: white;
       border: none;
-      padding: 8px 16px;
+      padding: 8px 14px;
       border-radius: 6px;
       font-family: inherit;
       cursor: pointer;
-      font-size: 0.9rem;
-      margin-bottom: 15px;
+      font-size: 0.85rem;
     }
+    .btn-danger { background: #ff3333; }
+    .btn-success { background: #00cc66; }
 
     footer {
-      margin-top: 15px;
+      margin-top: 12px;
       font-size: 0.75rem;
       color: #888;
       text-align: center;
@@ -228,7 +267,7 @@
         <div class="category-card boys">
           <h2>🚀 Kalandok & Járművek</h2>
           <div class="task-list">
-            <button class="task-btn" onclick="openGallery('boys', 'szinezo')">🎨 Csak Színezős (Több féle sablon)</button>
+            <button class="task-btn" onclick="openGallery('boys', 'szinezo')">🎨 Csak Színezős (Válogatott sablonok)</button>
             <button class="task-btn" onclick="openModule('boys', 'atrajzolos')">✏️ Átrajzolós / Vonalvezetés</button>
             <button class="task-btn" onclick="openModule('boys', 'pontosszekoto')">⭐ Nyilas Pontösszekötő</button>
             <button class="task-btn" onclick="openModule('boys', 'szamolos')">🔢 Számolós & Logikai Feladatok</button>
@@ -239,7 +278,7 @@
         <div class="category-card girls">
           <h2>👑 Varázsvilág & Hercegnők</h2>
           <div class="task-list">
-            <button class="task-btn" onclick="openGallery('girls', 'szinezo')">🎨 Csak Színezős (Több féle sablon)</button>
+            <button class="task-btn" onclick="openGallery('girls', 'szinezo')">🎨 Csak Színezős (Válogatott sablonok)</button>
             <button class="task-btn" onclick="openModule('girls', 'atrajzolos')">✏️ Átrajzolós (Varázskorona)</button>
             <button class="task-btn" onclick="openModule('girls', 'pontosszekoto')">⭐ Nyilas Pontösszekötő</button>
             <button class="task-btn" onclick="openModule('girls', 'szamolos')">💖 Pötty-Számláló Challenge</button>
@@ -251,39 +290,77 @@
 
     <!-- VIEW 2: SZÍNEZŐ GALÉRIA (Almenü) -->
     <div id="galleryView" class="view-section">
-      <button class="back-btn" onclick="goBackToMenu()">❮ Vissza a Főmenübe</button>
-      <h2 id="galleryTitle" style="color: var(--neon-cyan); text-align: center; margin-top: 0;">Válassz egy képet a színezéshez!</h2>
+      <button class="btn btn-danger" onclick="goBackToMenu()" style="margin-bottom: 10px;">❮ Vissza a Főmenübe</button>
+      <h2 id="galleryTitle" style="color: var(--neon-cyan); text-align: center; margin-top: 0; font-size: 1.1rem;">Válassz egy képet a színezéshez!</h2>
+      <div id="galleryContainer" class="gallery-grid"></div>
+    </div>
+
+    <!-- VIEW 3: SZÍNEZŐ MUNKATERÜLET (Canvas) -->
+    <div id="canvasView" class="view-section">
+      <button class="btn btn-danger" onclick="goBackToGallery()" style="margin-bottom: 8px;">❮ Vissza a Galériába</button>
       
-      <div id="galleryContainer" class="gallery-grid">
-        <!-- Ide töltődnek be dinamikusan a színező opciók -->
+      <div class="canvas-workspace">
+        <h3 id="activeTemplateTitle" style="color: var(--accent-gold); margin: 0; font-size: 1rem;">Színező Munkaterület</h3>
+        
+        <!-- Színpaletta -->
+        <div class="palette" id="colorPalette"></div>
+
+        <!-- Rajzvászon -->
+        <canvas id="coloringCanvas" width="600" height="400"></canvas>
+
+        <!-- Akció gombok -->
+        <div class="action-row">
+          <button class="btn btn-danger" onclick="clearCanvas()">Törlés / Újra</button>
+          <button class="btn btn-success" onclick="alert('Csodás alkotás! Mentve a Mátrix Labor archívumába!')">Kész / Mentés 💾</button>
+        </div>
       </div>
     </div>
 
   </div>
 
   <footer>
-    Mátrix Labor Engine v1.1 • Projektigazgatás: Jordan & Nefi
+    Mátrix Labor Engine v1.2 • Projektigazgatás: Jordan & Nefi
   </footer>
 
   <script>
-    // Színező sablonok adatbázisa
+    // Leegyszerűsített, egységes sablonlista (MVP elv alapján)
     const coloringTemplates = {
       boys: [
-        { id: 'train', name: '🚂 A Zúgó Gőzmozdony', desc: 'Pöfögjön a vonat saját színekben!' },
-        { id: 'pumpkin_express', name: '🎃 Őszi Sütőtök Expressz', desc: 'Vagonok tele aranyszínű tökökkel.' },
-        { id: 'rocket', name: '🚀 Mátrix Űrsikló', desc: 'Irány a galaxis és a csillagok!' },
-        { id: 'robot', name: '🤖 Robot Robi', desc: 'Varázsolj új külsőt a vidám robotnak!' }
+        { id: 'train', name: '🚂 Gőzmozdony', desc: 'Klasszikus pöfögős vonat.' },
+        { id: 'pumpkin', name: '🎃 Őszi Sütőtök', desc: 'Hangulatos évszakos sablon.' },
+        { id: 'rocket', name: '🚀 Mátrix Űrsikló', desc: 'Irány a galaxis!' }
       ],
       girls: [
-        { id: 'castle', name: '🏰 Barbie Hercegnő Kastélya', desc: 'Tornyok, hintók és csillogás.' },
-        { id: 'mermaid', name: '🧜‍♀️ Barbie Hableány', desc: 'Víz alatti birodalom labdával.' },
-        { id: 'fairy', name: '🧚‍♀️ Tündér Hercegnő', desc: 'Szárnyak, virágok és varázslat.' },
-        { id: 'pegasus', name: '🦄 Unikornis Kaland', desc: 'Szivárványok és csillagos ég.' }
+        { id: 'castle', name: '🏰 Varázskastély', desc: 'Tornyok és csillogás.' },
+        { id: 'butterfly', name: '🦋 Pillangó Kaland', desc: 'Szárnyaló természet.' },
+        { id: 'crown', name: '👑 Hercegnő Korona', desc: 'Ékkövek és ragyogás.' }
       ]
     };
 
+    let currentCategory = 'boys';
+    let selectedColor = '#ff0055';
+    const canvas = document.getElementById('coloringCanvas');
+    const ctx = canvas.getContext('2d');
+    let isDrawing = false;
+
+    // Színpaletta generálás
+    const colors = ['#ff0055', '#ff9900', '#ffff00', '#00cc66', '#00ffff', '#0088ff', '#9933ff', '#ff66b2', '#8b4513', '#333333'];
+    const paletteContainer = document.getElementById('colorPalette');
+    
+    colors.forEach((col, idx) => {
+      const btn = document.createElement('div');
+      btn.className = 'color-btn' + (idx === 0 ? ' selected' : '');
+      btn.style.backgroundColor = col;
+      btn.onclick = () => {
+        document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedColor = col;
+      };
+      paletteContainer.appendChild(btn);
+    });
+
     function openGallery(category, type) {
-      const name = document.getElementById('playerName').value || 'Kis Művész';
+      currentCategory = category;
       document.getElementById('mainMenuView').classList.remove('active');
       document.getElementById('galleryView').classList.add('active');
 
@@ -295,21 +372,81 @@
         const card = document.createElement('div');
         card.className = 'gallery-item';
         card.innerHTML = `
-          <div style="font-size: 2rem; margin-bottom: 5px;">🎨</div>
+          <div style="font-size: 1.8rem; margin-bottom: 4px;">🎨</div>
           <h3>${tpl.name}</h3>
-          <p style="font-size: 0.75rem; color: #aaa; margin: 5px 0 0 0;">${tpl.desc}</p>
+          <p style="font-size: 0.7rem; color: #aaa; margin: 2px 0 0 0;">${tpl.desc}</p>
         `;
-        card.onclick = () => {
-          alert(`Indul a színezés, ${name}!\nKiválasztott sablon: ${tpl.name}`);
-          // Itt indítjuk majd a konkrét színezőmotort (Flood-fill canvas)
-        };
+        card.onclick = () => startColoring(tpl);
         container.appendChild(card);
       });
+    }
+
+    function startColoring(tpl) {
+      document.getElementById('galleryView').classList.remove('active');
+      document.getElementById('canvasView').classList.add('active');
+      document.getElementById('activeTemplateTitle').innerText = tpl.name;
+
+      // Vászon alaphelyzetbe állítása (sablon rajzolása)
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      // Kezdő kontúr / felirat a vászonra
+      ctx.strokeStyle = '#222222';
+      ctx.lineWidth = 4;
+      ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
+
+      ctx.font = '24px Courier New';
+      ctx.fillStyle = '#444444';
+      ctx.textAlign = 'center';
+      ctx.fillText(tpl.name, canvas.width / 2, canvas.height / 2 - 10);
+      ctx.font = '16px Courier New';
+      ctx.fillText('Színezd ki az ujjal vagy egérrel!', canvas.width / 2, canvas.height / 2 + 25);
+    }
+
+    // Egér / Érintés rajzolás kezelése a vásznon
+    canvas.addEventListener('mousedown', startDraw);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', stopDraw);
+    canvas.addEventListener('mouseleave', stopDraw);
+
+    canvas.addEventListener('touchstart', e => { e.preventDefault(); startDraw(e.touches[0]); });
+    canvas.addEventListener('touchmove', e => { e.preventDefault(); draw(e.touches[0]); });
+    canvas.addEventListener('touchend', stopDraw);
+
+    function startDraw(e) {
+      isDrawing = true;
+      ctx.beginPath();
+      const rect = canvas.getBoundingClientRect();
+      ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+    }
+
+    function draw(e) {
+      if (!isDrawing) return;
+      const rect = canvas.getBoundingClientRect();
+      ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+      ctx.strokeStyle = selectedColor;
+      ctx.lineWidth = 15;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+    }
+
+    function stopDraw() {
+      isDrawing = false;
+    }
+
+    function clearCanvas() {
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
     function goBackToMenu() {
       document.getElementById('galleryView').classList.remove('active');
       document.getElementById('mainMenuView').classList.add('active');
+    }
+
+    function goBackToGallery() {
+      document.getElementById('canvasView').classList.remove('active');
+      document.getElementById('galleryView').classList.add('active');
     }
 
     function openModule(category, type) {
