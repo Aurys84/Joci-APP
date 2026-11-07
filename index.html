@@ -176,7 +176,7 @@
       margin: 4px 0;
     }
 
-    /* Színező Vászon Munkaterület */
+    /* Munkaterületek (Canvas) */
     .canvas-workspace {
       display: flex;
       flex-direction: column;
@@ -184,7 +184,7 @@
       gap: 10px;
     }
 
-    #coloringCanvas {
+    .interactive-canvas {
       background: #ffffff;
       border: 3px solid var(--neon-cyan);
       border-radius: 10px;
@@ -268,7 +268,7 @@
           <h2>🚀 Kalandok & Járművek</h2>
           <div class="task-list">
             <button class="task-btn" onclick="openGallery('boys', 'szinezo')">🎨 Csak Színezős (Galéria)</button>
-            <button class="task-btn" onclick="openModule('boys', 'atrajzolos')">✏️ Átrajzolós / Vonalvezetés</button>
+            <button class="task-btn" onclick="openTracing('boys')">✏️ Átrajzolós / Vonalvezetés (Süni Samu)</button>
             <button class="task-btn" onclick="openModule('boys', 'pontosszekoto')">⭐ Nyilas Pontösszekötő</button>
             <button class="task-btn" onclick="openModule('boys', 'szamolos')">🔢 Számolós & Logikai Feladatok</button>
           </div>
@@ -279,7 +279,7 @@
           <h2>👑 Varázsvilág & Hercegnők</h2>
           <div class="task-list">
             <button class="task-btn" onclick="openGallery('girls', 'szinezo')">🎨 Csak Színezős (Galéria)</button>
-            <button class="task-btn" onclick="openModule('girls', 'atrajzolos')">✏️ Átrajzolós (Varázskorona)</button>
+            <button class="task-btn" onclick="openTracing('girls')">✏️ Átrajzolós (Varázskorona & Ívek)</button>
             <button class="task-btn" onclick="openModule('girls', 'pontosszekoto')">⭐ Nyilas Pontösszekötő</button>
             <button class="task-btn" onclick="openModule('girls', 'szamolos')">💖 Pötty-Számláló Challenge</button>
           </div>
@@ -301,14 +301,8 @@
       
       <div class="canvas-workspace">
         <h3 id="activeTemplateTitle" style="color: var(--accent-gold); margin: 0; font-size: 1rem;">Színező Munkaterület</h3>
-        
-        <!-- Színpaletta -->
         <div class="palette" id="colorPalette"></div>
-
-        <!-- Rajzvászon -->
-        <canvas id="coloringCanvas" width="600" height="400"></canvas>
-
-        <!-- Akció gombok -->
+        <canvas id="coloringCanvas" class="interactive-canvas" width="600" height="400"></canvas>
         <div class="action-row">
           <button class="btn btn-danger" onclick="clearCanvas()">Törlés / Újra</button>
           <button class="btn btn-success" onclick="alert('Csodás alkotás! Mentve a Mátrix Labor archívumába!')">Kész / Mentés 💾</button>
@@ -316,14 +310,31 @@
       </div>
     </div>
 
+    <!-- VIEW 4: ÁTRAJZOLÓS / VONALVEZETÉS MUNKATERÜLET (Tracing) -->
+    <div id="tracingView" class="view-section">
+      <button class="btn btn-danger" onclick="goBackToMenu()" style="margin-bottom: 8px;">❮ Vissza a Főmenübe</button>
+      
+      <div class="canvas-workspace">
+        <h3 id="tracingTitle" style="color: var(--neon-cyan); margin: 0; font-size: 1rem;">Vonalvezetés Gyakorlat</h3>
+        <p style="font-size: 0.8rem; color: #aaa; margin: 0;">Kövesd az ujjaddal vagy egérrel a szaggatott vonalat!</p>
+        
+        <canvas id="tracingCanvas" class="interactive-canvas" width="600" height="400"></canvas>
+
+        <div class="action-row">
+          <button class="btn btn-danger" onclick="clearTracing()">Törlés / Újra</button>
+          <button class="btn btn-success" onclick="alert('Hatalmas ügyesség! Sikerült végigvezetni a vonalat!')">Kész / Ellenőrzés ⭐</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <footer>
-    Mátrix Labor Engine v1.4 • Projektigazgatás: Jordan & Nefi
+    Mátrix Labor Engine v1.5 • Projektigazgatás: Jordan & Nefi
   </footer>
 
   <script>
-    // Frissített, egységes sablonlista (Természet sablon mindkét oldalon)
+    // Színező sablonok
     const coloringTemplates = {
       boys: [
         { id: 'train', name: '🚂 Gőzmozdony', desc: 'Klasszikus pöfögős vonat.' },
@@ -339,11 +350,17 @@
       ]
     };
 
-    let currentCategory = 'boys';
     let selectedColor = '#ff0055';
+    
+    // Színező Canvas
     const canvas = document.getElementById('coloringCanvas');
     const ctx = canvas.getContext('2d');
     let isDrawing = false;
+
+    // Tracing Canvas (Vonalvezetés)
+    const tCanvas = document.getElementById('tracingCanvas');
+    const tCtx = tCanvas.getContext('2d');
+    let isTracing = false;
 
     // Színpaletta generálás
     const colors = ['#ff0055', '#ff9900', '#ffff00', '#00cc66', '#00ffff', '#0088ff', '#9933ff', '#ff66b2', '#8b4513', '#333333'];
@@ -362,7 +379,6 @@
     });
 
     function openGallery(category, type) {
-      currentCategory = category;
       document.getElementById('mainMenuView').classList.remove('active');
       document.getElementById('galleryView').classList.add('active');
 
@@ -388,11 +404,9 @@
       document.getElementById('canvasView').classList.add('active');
       document.getElementById('activeTemplateTitle').innerText = tpl.name;
 
-      // Vászon alaphelyzetbe állítása (sablon rajzolása)
       ctx.fillStyle = '#ffffff';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       
-      // Kezdő kontúr / felirat a vászonra
       ctx.strokeStyle = '#222222';
       ctx.lineWidth = 4;
       ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
@@ -405,44 +419,111 @@
       ctx.fillText('Színezd ki az ujjal vagy egérrel!', canvas.width / 2, canvas.height / 2 + 25);
     }
 
-    // Egér / Érintés rajzolás kezelése a vásznon
-    canvas.addEventListener('mousedown', startDraw);
-    canvas.addEventListener('mousemove', draw);
+    // Színező események
+    canvas.addEventListener('mousedown', e => startDraw(e, canvas, ctx));
+    canvas.addEventListener('mousemove', e => draw(e, canvas, ctx));
     canvas.addEventListener('mouseup', stopDraw);
     canvas.addEventListener('mouseleave', stopDraw);
-
-    canvas.addEventListener('touchstart', e => { e.preventDefault(); startDraw(e.touches[0]); });
-    canvas.addEventListener('touchmove', e => { e.preventDefault(); draw(e.touches[0]); });
+    canvas.addEventListener('touchstart', e => { e.preventDefault(); startDraw(e.touches[0], canvas, ctx); });
+    canvas.addEventListener('touchmove', e => { e.preventDefault(); draw(e.touches[0], canvas, ctx); });
     canvas.addEventListener('touchend', stopDraw);
 
-    function startDraw(e) {
+    function startDraw(e, cvs, context) {
       isDrawing = true;
-      ctx.beginPath();
-      const rect = canvas.getBoundingClientRect();
-      ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+      context.beginPath();
+      const rect = cvs.getBoundingClientRect();
+      context.moveTo(e.clientX - rect.left, e.clientY - rect.top);
     }
 
-    function draw(e) {
+    function draw(e, cvs, context) {
       if (!isDrawing) return;
-      const rect = canvas.getBoundingClientRect();
-      ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
-      ctx.strokeStyle = selectedColor;
-      ctx.lineWidth = 15;
-      ctx.lineCap = 'round';
-      ctx.stroke();
+      const rect = cvs.getBoundingClientRect();
+      context.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+      context.strokeStyle = selectedColor;
+      context.lineWidth = 15;
+      context.lineCap = 'round';
+      context.stroke();
     }
 
-    function stopDraw() {
-      isDrawing = false;
+    function stopDraw() { isDrawing = false; isTracing = false; }
+    function clearCanvas() { ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height); }
+
+    // --- TRACING (Vonalvezetés) MUNKATERÜLET LOGIKA ---
+    function openTracing(category) {
+      document.getElementById('mainMenuView').classList.remove('active');
+      document.getElementById('tracingView').classList.add('active');
+      
+      const title = category === 'boys' ? '✏️ Süni Samu Tüskéi (Cikk-cakk vonalvezetés)' : '✏️ Varázskorona Ívei (Finommotorika)';
+      document.getElementById('tracingTitle').innerText = title;
+
+      drawTracingGuide(category);
     }
 
-    function clearCanvas() {
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    function drawTracingGuide(category) {
+      tCtx.fillStyle = '#ffffff';
+      tCtx.fillRect(0, 0, tCanvas.width, tCanvas.height);
+
+      // Szaggatott vezetővonal rajzolása
+      tCtx.strokeStyle = '#0088ff';
+      tCtx.lineWidth = 6;
+      tCtx.setLineDash([10, 10]); // Szaggatott vonal
+      tCtx.beginPath();
+
+      if (category === 'boys') {
+        // Cikk-cakk vonal (Süni tüskék)
+        tCtx.moveTo(50, 300);
+        tCtx.lineTo(150, 100);
+        tCtx.lineTo(250, 300);
+        tCtx.lineTo(350, 100);
+        tCtx.lineTo(450, 300);
+        tCtx.lineTo(550, 100);
+      } else {
+        // Hullámos / Íves vonal (Varázskorona)
+        tCtx.moveTo(50, 200);
+        tCtx.quadraticCurveTo(175, 50, 300, 200);
+        tCtx.quadraticCurveTo(425, 350, 550, 200);
+      }
+      tCtx.stroke();
+      tCtx.setLineDash([]); // Visszaállíték a sima vonalra a rajzoláshoz
+    }
+
+    // Tracing egér / érintés események
+    tCanvas.addEventListener('mousedown', e => startTrace(e));
+    tCanvas.addEventListener('mousemove', e => traceDraw(e));
+    tCanvas.addEventListener('mouseup', stopDraw);
+    tCanvas.addEventListener('mouseleave', stopDraw);
+    tCanvas.addEventListener('touchstart', e => { e.preventDefault(); startTrace(e.touches[0]); });
+    tCanvas.addEventListener('touchmove', e => { e.preventDefault(); traceDraw(e.touches[0]); });
+    tCanvas.addEventListener('touchend', stopDraw);
+
+    function startTrace(e) {
+      isTracing = true;
+      tCtx.beginPath();
+      const rect = tCanvas.getBoundingClientRect();
+      tCtx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+    }
+
+    function traceDraw(e) {
+      if (!isTracing) return;
+      const rect = tCanvas.getBoundingClientRect();
+      tCtx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+      tCtx.strokeStyle = '#ff0055'; // A rajzolt vonal neon magenta színű lesz
+      tCtx.lineWidth = 8;
+      tCtx.lineCap = 'round';
+      tCtx.stroke();
+    }
+
+    function clearTracing() {
+      // Újra kirajzoljuk az alapvezetőt
+      const activeTitle = document.getElementById('tracingTitle').innerText;
+      const cat = activeTitle.includes('Süni') ? 'boys' : 'girls';
+      drawTracingGuide(cat);
     }
 
     function goBackToMenu() {
       document.getElementById('galleryView').classList.remove('active');
+      document.getElementById('canvasView').classList.remove('active');
+      document.getElementById('tracingView').classList.remove('active');
       document.getElementById('mainMenuView').classList.add('active');
     }
 
