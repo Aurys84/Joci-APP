@@ -248,7 +248,7 @@
 
   <header>
     <h1>MÁTRIX LABOR</h1>
-    <p class="subtitle">Interaktív Fejlesztő & Kifestő Birodalom (6-10 év)</p>
+    <p class="subtitle">Interaktív Gyermek Fejlesztő & Kifestő Birodalom (6-10 év)</p>
   </header>
 
   <div class="container">
@@ -361,7 +361,7 @@
   </div>
 
   <footer>
-    Mátrix Labor Engine v1.13 • Projektigazgatás: Jordan & Nefi
+    Mátrix Labor Engine v1.14 • Projektigazgatás: Jordan & Nefi
   </footer>
 
   <script>
@@ -812,18 +812,30 @@
       drawShapeGuideAndArrows(tpl.id);
     }
 
-    function sampleShapeLine(x0, y0, x1, y1, steps = 15) {
+    function lineToAndSample(x0, y0, x1, y1, steps = 15) {
+      dCtx.lineTo(x1, y1);
       for (let i = 0; i <= steps; i++) {
         let t = i / steps;
         dotGuidePoints.push({ x: x0 + t * (x1 - x0), y: y0 + t * (y1 - y0) });
       }
     }
 
-    function sampleShapeBezier(x0, y0, c1x, c1y, c2x, c2y, x1, y1, steps = 25) {
+    function bezierToAndSample(x0, y0, c1x, c1y, c2x, c2y, x1, y1, steps = 25) {
+      dCtx.bezierCurveTo(c1x, c1y, c2x, c2y, x1, y1);
       for (let i = 0; i <= steps; i++) {
         let t = i / steps;
         let x = Math.pow(1-t, 3)*x0 + 3*Math.pow(1-t, 2)*t*c1x + 3*(1-t)*t*t*c2x + t*t*t*x1;
         let y = Math.pow(1-t, 3)*y0 + 3*Math.pow(1-t, 2)*t*c1y + 3*(1-t)*t*t*c2y + t*t*t*y1;
+        dotGuidePoints.push({ x, y });
+      }
+    }
+
+    function arcAndSample(cx, cy, radius, startAngle, endAngle, steps = 30) {
+      dCtx.arc(cx, cy, radius, startAngle, endAngle);
+      for (let i = 0; i <= steps; i++) {
+        let angle = startAngle + (i / steps) * (endAngle - startAngle);
+        let x = cx + radius * Math.cos(angle);
+        let y = cy + radius * Math.sin(angle);
         dotGuidePoints.push({ x, y });
       }
     }
@@ -857,90 +869,115 @@
       switch(id) {
         case 'dc_dino':
           dCtx.moveTo(150, 320);
-          sampleShapeLine(150, 320, 180, 200); sampleShapeLine(180, 200, 250, 150);
-          sampleShapeLine(250, 150, 320, 160); sampleShapeLine(320, 160, 350, 120);
-          sampleShapeLine(350, 120, 380, 180); sampleShapeLine(380, 180, 480, 200);
-          sampleShapeLine(480, 200, 360, 260); sampleShapeLine(360, 260, 350, 330);
-          sampleShapeLine(350, 330, 250, 330); sampleShapeLine(250, 330, 240, 260);
-          sampleShapeLine(240, 260, 150, 320);
+          lineToAndSample(150, 320, 180, 200, 15);
+          lineToAndSample(180, 200, 250, 150, 15);
+          lineToAndSample(250, 150, 320, 160, 15);
+          lineToAndSample(320, 160, 350, 120, 15);
+          lineToAndSample(350, 120, 380, 180, 15);
+          lineToAndSample(380, 180, 480, 200, 20);
+          lineToAndSample(480, 200, 360, 260, 20);
+          lineToAndSample(360, 260, 350, 330, 15);
+          lineToAndSample(350, 330, 250, 330, 15);
+          lineToAndSample(250, 330, 240, 260, 15);
+          lineToAndSample(240, 260, 150, 320, 15);
           arrowMarkers = [{x: 200, y: 175, angle: -0.6}, {x: 420, y: 195, angle: 0.2}, {x: 300, y: 330, angle: 3.14}];
           break;
 
         case 'dc_car':
           dCtx.moveTo(120, 280);
-          sampleShapeLine(120, 280, 150, 220); sampleShapeLine(150, 220, 220, 180);
-          sampleShapeLine(220, 180, 380, 180); sampleShapeLine(380, 180, 450, 220);
-          sampleShapeLine(450, 220, 480, 280); sampleShapeLine(480, 280, 120, 280);
+          lineToAndSample(120, 280, 150, 220, 15);
+          lineToAndSample(150, 220, 220, 180, 15);
+          lineToAndSample(220, 180, 380, 180, 20);
+          lineToAndSample(380, 180, 450, 220, 15);
+          lineToAndSample(450, 220, 480, 280, 15);
+          lineToAndSample(480, 280, 120, 280, 25);
           arrowMarkers = [{x: 180, y: 200, angle: -0.5}, {x: 300, y: 180, angle: 0}, {x: 465, y: 250, angle: 1.57}];
           break;
 
         case 'dc_rocket':
           dCtx.moveTo(300, 70);
-          sampleShapeLine(300, 70, 370, 200); sampleShapeLine(370, 200, 420, 330);
-          sampleShapeLine(420, 330, 300, 280); sampleShapeLine(300, 280, 180, 330);
-          sampleShapeLine(180, 330, 230, 200); sampleShapeLine(230, 200, 300, 70);
+          lineToAndSample(300, 70, 370, 200, 15);
+          lineToAndSample(370, 200, 420, 330, 15);
+          lineToAndSample(420, 330, 300, 280, 15);
+          lineToAndSample(300, 280, 180, 330, 15);
+          lineToAndSample(180, 330, 230, 200, 15);
+          lineToAndSample(230, 200, 300, 70, 15);
           arrowMarkers = [{x: 335, y: 135, angle: 1.1}, {x: 360, y: 305, angle: -2.75}, {x: 205, y: 265, angle: -0.7}];
           break;
 
         case 'dc_mermaid':
           dCtx.moveTo(250, 80);
-          sampleShapeLine(250, 80, 300, 120); sampleShapeLine(300, 120, 350, 80);
-          sampleShapeLine(350, 80, 330, 200); sampleShapeLine(330, 200, 400, 320);
-          sampleShapeLine(400, 320, 300, 280); sampleShapeLine(300, 280, 200, 320);
-          sampleShapeLine(200, 320, 270, 200); sampleShapeLine(270, 200, 250, 80);
+          lineToAndSample(250, 80, 300, 120, 15);
+          lineToAndSample(300, 120, 350, 80, 15);
+          lineToAndSample(350, 80, 330, 200, 15);
+          lineToAndSample(330, 200, 400, 320, 20);
+          lineToAndSample(400, 320, 300, 280, 15);
+          lineToAndSample(300, 280, 200, 320, 15);
+          lineToAndSample(200, 320, 270, 200, 20);
+          lineToAndSample(270, 200, 250, 80, 15);
           arrowMarkers = [{x: 340, y: 140, angle: 1.2}, {x: 350, y: 260, angle: 0.8}, {x: 235, y: 260, angle: -2.3}];
           break;
 
         case 'dc_unicorn':
           dCtx.moveTo(200, 300);
-          sampleShapeLine(200, 300, 200, 180); sampleShapeLine(200, 180, 300, 100);
-          sampleShapeLine(300, 100, 350, 60);
-          sampleShapeLine(350, 60, 400, 180);
-          sampleShapeLine(400, 180, 400, 300); sampleShapeLine(400, 300, 200, 300);
+          lineToAndSample(200, 300, 200, 180, 15);
+          lineToAndSample(200, 180, 300, 100, 15);
+          lineToAndSample(300, 100, 350, 60, 10);
+          lineToAndSample(350, 60, 400, 180, 15);
+          lineToAndSample(400, 180, 400, 300, 15);
+          lineToAndSample(400, 300, 200, 300, 20);
           arrowMarkers = [{x: 250, y: 140, angle: -0.7}, {x: 375, y: 120, angle: -0.9}, {x: 300, y: 300, angle: 3.14}];
           break;
 
         case 'dc_crown':
           dCtx.moveTo(150, 280);
-          sampleShapeLine(150, 280, 180, 140); sampleShapeLine(180, 140, 240, 220);
-          sampleShapeLine(240, 220, 300, 100); sampleShapeLine(300, 100, 360, 220);
-          sampleShapeLine(360, 220, 420, 140); sampleShapeLine(420, 140, 450, 280);
-          sampleShapeLine(450, 280, 150, 280);
+          lineToAndSample(150, 280, 180, 140, 15);
+          lineToAndSample(180, 140, 240, 220, 15);
+          lineToAndSample(240, 220, 300, 100, 15);
+          lineToAndSample(300, 100, 360, 220, 15);
+          lineToAndSample(360, 220, 420, 140, 15);
+          lineToAndSample(420, 140, 450, 280, 15);
+          lineToAndSample(450, 280, 150, 280, 20);
           arrowMarkers = [{x: 165, y: 210, angle: -1.35}, {x: 270, y: 160, angle: -1.1}, {x: 390, y: 180, angle: 0.9}];
           break;
 
         case 'dc_castle':
           dCtx.moveTo(150, 320);
-          sampleShapeLine(150, 320, 150, 180); sampleShapeLine(150, 180, 200, 130);
-          sampleShapeLine(200, 130, 250, 180); sampleShapeLine(250, 180, 350, 180);
-          sampleShapeLine(350, 180, 400, 130); sampleShapeLine(400, 130, 450, 180);
-          sampleShapeLine(450, 180, 450, 320); sampleShapeLine(450, 320, 150, 320);
+          lineToAndSample(150, 320, 150, 180, 15);
+          lineToAndSample(150, 180, 200, 130, 15);
+          lineToAndSample(200, 130, 250, 180, 15);
+          lineToAndSample(250, 180, 350, 180, 15);
+          lineToAndSample(350, 180, 400, 130, 15);
+          lineToAndSample(400, 130, 450, 180, 15);
+          lineToAndSample(450, 180, 450, 320, 15);
+          lineToAndSample(450, 320, 150, 320, 20);
           arrowMarkers = [{x: 150, y: 250, angle: -1.57}, {x: 300, y: 180, angle: 0}, {x: 450, y: 250, angle: 1.57}];
           break;
 
         case 'dc_butterfly':
           dCtx.moveTo(300, 200);
-          sampleShapeBezier(300, 200, 450, 50, 520, 250, 300, 330);
-          sampleShapeBezier(300, 330, 80, 250, 150, 50, 300, 200);
+          bezierToAndSample(300, 200, 450, 50, 520, 250, 300, 330, 25);
+          bezierToAndSample(300, 330, 80, 250, 150, 50, 300, 200, 25);
           arrowMarkers = [{x: 420, y: 130, angle: 0.5}, {x: 210, y: 130, angle: -2.6}];
           break;
 
         case 'dc_flower':
           dCtx.moveTo(300, 340);
-          sampleShapeLine(300, 340, 300, 220);
-          sampleArc(300, 170, 60, 0, 2 * Math.PI);
+          lineToAndSample(300, 340, 300, 220, 15);
+          arcAndSample(300, 170, 60, 0, 2 * Math.PI, 30);
           arrowMarkers = [{x: 300, y: 280, angle: -1.57}, {x: 360, y: 170, angle: 0}];
           break;
 
         case 'dc_heart':
           dCtx.moveTo(300, 330);
-          sampleShapeBezier(300, 330, 120, 220, 120, 80, 300, 180);
-          sampleShapeBezier(300, 180, 480, 80, 480, 220, 300, 330);
+          bezierToAndSample(300, 330, 120, 220, 120, 80, 300, 180, 25);
+          bezierToAndSample(300, 180, 480, 80, 480, 220, 300, 330, 25);
           arrowMarkers = [{x: 180, y: 150, angle: -0.8}, {x: 420, y: 150, angle: 0.8}];
           break;
 
         default:
-          sampleArc(300, 200, 110, 0, 2 * Math.PI);
+          dCtx.moveTo(190, 200);
+          arcAndSample(300, 200, 110, 0, 2 * Math.PI, 30);
           arrowMarkers = [{x: 410, y: 200, angle: 1.57}];
       }
 
