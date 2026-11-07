@@ -269,7 +269,7 @@
           <div class="task-list">
             <button class="task-btn" onclick="openGallery('boys', 'szinezo')">🎨 Csak Színezős (Galéria)</button>
             <button class="task-btn" onclick="openTracingGallery('boys')">✏️ Átrajzolós / Vonalvezetés (10 féle)</button>
-            <button class="task-btn" onclick="openDotConnectGallery('boys')">⭐ Nyilas Pontösszekötő (10 féle)</button>
+            <button class="task-btn" onclick="openDotConnectGallery('boys')">🦖 Nyilas & Formarajzoló Dínók/Járművek (10)</button>
             <button class="task-btn" onclick="openModule('boys', 'szamolos')">🔢 Számolós & Logikai Feladatok</button>
           </div>
         </div>
@@ -280,7 +280,7 @@
           <div class="task-list">
             <button class="task-btn" onclick="openGallery('girls', 'szinezo')">🎨 Csak Színezős (Galéria)</button>
             <button class="task-btn" onclick="openTracingGallery('girls')">✏️ Átrajzolós / Vonalvezetés (10 féle)</button>
-            <button class="task-btn" onclick="openDotConnectGallery('girls')">⭐ Nyilas Pontösszekötő (10 féle)</button>
+            <button class="task-btn" onclick="openDotConnectGallery('girls')">🧜‍♀️ Nyilas & Formarajzoló Hableányok (10)</button>
             <button class="task-btn" onclick="openModule('girls', 'szamolos')">💖 Pötty-Számláló Challenge</button>
           </div>
         </div>
@@ -302,10 +302,10 @@
       <div id="tracingGalleryContainer" class="gallery-grid"></div>
     </div>
 
-    <!-- VIEW 2.6: PONTÖSSZEKÖTŐ GALÉRIA -->
+    <!-- VIEW 2.6: PONTÖSSZEKÖTŐ / FORMARAJZOLÓ GALÉRIA -->
     <div id="dotConnectGalleryView" class="view-section">
       <button class="btn btn-danger" onclick="goBackToMenu()" style="margin-bottom: 10px;">❮ Vissza a Főmenübe</button>
-      <h2 style="color: var(--neon-cyan); text-align: center; margin-top: 0; font-size: 1.1rem;">Válassz egy pontösszekötő feladatot!</h2>
+      <h2 style="color: var(--neon-cyan); text-align: center; margin-top: 0; font-size: 1.1rem;">Válassz egy formarajzoló feladatot!</h2>
       <div id="dotConnectGalleryContainer" class="gallery-grid"></div>
     </div>
 
@@ -341,18 +341,18 @@
       </div>
     </div>
 
-    <!-- VIEW 5: PONTÖSSZEKÖTŐ MUNKATERÜLET -->
+    <!-- VIEW 5: FORMARAJZOLÓ & NYILAS MUNKATERÜLET -->
     <div id="dotConnectView" class="view-section">
-      <button class="btn btn-danger" onclick="goBackToDotConnectGallery()" style="margin-bottom: 8px;">❮ Vissza a Pontösszekötő Galériába</button>
+      <button class="btn btn-danger" onclick="goBackToDotConnectGallery()" style="margin-bottom: 8px;">❮ Vissza a Formarajzoló Galériába</button>
       
       <div class="canvas-workspace">
-        <h3 id="dotConnectTitle" style="color: var(--neon-cyan); margin: 0; font-size: 1rem;">Pontösszekötő Challenge</h3>
-        <p style="font-size: 0.8rem; color: #aaa; margin: 0;">Kattints a pontokra sorban (1 -> 2 -> 3...), hogy kirajzolódjon az ábra!</p>
+        <h3 id="dotConnectTitle" style="color: var(--neon-cyan); margin: 0; font-size: 1rem;">Formarajzoló & Nyilas Követés</h3>
+        <p style="font-size: 0.8rem; color: #aaa; margin: 0;">Kövesd kézzel a nyilak irányát a szaggatott minta mentén!</p>
         
         <canvas id="dotCanvas" class="interactive-canvas" width="600" height="400"></canvas>
 
         <div class="action-row">
-          <button class="btn btn-danger" onclick="resetDotConnect()">Újrakezdés 🔄</button>
+          <button class="btn btn-danger" onclick="resetDotConnect()">Törlés / Újra 🔄</button>
           <button class="btn btn-success" onclick="checkDotConnectResult()">Kész / Ellenőrzés ⭐</button>
         </div>
       </div>
@@ -361,7 +361,7 @@
   </div>
 
   <footer>
-    Mátrix Labor Engine v1.12 • Projektigazgatás: Jordan & Nefi
+    Mátrix Labor Engine v1.13 • Projektigazgatás: Jordan & Nefi
   </footer>
 
   <script>
@@ -407,31 +407,30 @@
       ]
     };
 
-    // 10-10 Különleges Pontösszekötő Sablon (Dínó, Autó, Hableány, Alapformák stb.)
     const dotConnectTemplates = {
       boys: [
-        { id: 'dc_dino', name: '🦖 T-Rex Dínó', desc: 'Kös össze a dínó pontjait!' },
-        { id: 'dc_car', name: '🏎️ Sportautó', desc: 'Gyorsaság a pályán' },
-        { id: 'dc_rocket', name: '🚀 Mátrix Rakéta', desc: 'Indulás a csillagokba' },
-        { id: 'dc_train', name: '🚂 Gőzmozdony', desc: 'Pöfögő kerekek' },
-        { id: 'dc_robot', name: '🤖 Robot Robi', desc: 'Mechanikus barátunk' },
-        { id: 'dc_ball', name: '⚽ Focilabda', desc: 'Gól a hálóban!' },
-        { id: 'dc_ship', name: '⚓ Kalózhajó', desc: 'Hajózzunk a tengeren' },
-        { id: 'dc_star', name: '⭐ Óriási Csillag', desc: 'Fénylő alakzat' },
-        { id: 'dc_triangle', name: '🔺 Háromszög Pálya', desc: 'Geometriai összekötés' },
-        { id: 'dc_square', name: '🟦 Négyzet Doboz', desc: 'Egyenlő oldalak' }
+        { id: 'dc_dino', name: '🦖 T-Rex Dínó', desc: 'Rajzold át a dínó formáját!' },
+        { id: 'dc_car', name: '🏎️ Sportautó', desc: 'Gyors versenyautó vonalai' },
+        { id: 'dc_rocket', name: '🚀 Mátrix Űrhajó', desc: 'Rakéta sziluett' },
+        { id: 'dc_robot', name: '🤖 Robot Robi', desc: 'A vidám robot kontúrja' },
+        { id: 'dc_train', name: '🚂 Gőzmozdony', desc: 'Vonat formája' },
+        { id: 'dc_ship', name: '⚓ Kalózhajó', desc: 'Hajó a vízen' },
+        { id: 'dc_ball', name: '⚽ Focilabda', desc: 'Kerek labda minta' },
+        { id: 'dc_star', name: '⭐ Csillag', desc: 'Ragyogó csillag forma' },
+        { id: 'dc_triangle', name: '🔺 Háromszög', desc: 'Alapforma gyakorlat' },
+        { id: 'dc_square', name: '🟦 Négyzet', desc: 'Doboz alakzat' }
       ],
       girls: [
-        { id: 'dc_mermaid', name: '🧜‍♀️ Hableány Palota', desc: 'Víz alatti csoda' },
-        { id: 'dc_unicorn', name: '🦄 Unikornis Kaland', desc: 'Szivárványos paripa' },
-        { id: 'dc_crown', name: '👑 Hercegnő Korona', desc: 'Ékköves korona' },
-        { id: 'dc_castle', name: '🏰 Varázskastély', desc: 'Magas tornyok' },
-        { id: 'dc_butterfly', name: '🦋 Pillangó Tánc', desc: 'Színes szárnyak' },
-        { id: 'dc_flower', name: '🌸 Tavaszi Virág', desc: 'Illatos szirmok' },
-        { id: 'dc_heart', name: '💖 Szívecske', desc: 'Szeretet alakzat' },
-        { id: 'dc_star', name: '⭐ Csillagfény', desc: 'Ragyogó pontok' },
+        { id: 'dc_mermaid', name: '🧜‍♀️ Hableány Palota', desc: 'Hableány farkasszonnyal' },
+        { id: 'dc_unicorn', name: '🦄 Unikornis Kaland', desc: 'Unikornis fej és szarv' },
+        { id: 'dc_crown', name: '👑 Hercegnő Korona', desc: 'Királyi ékszeres korona' },
+        { id: 'dc_castle', name: '🏰 Varázskastély', desc: 'Tornyos várkastély' },
+        { id: 'dc_butterfly', name: '🦋 Pillangó Szárny', desc: 'Színes pillangó' },
+        { id: 'dc_flower', name: '🌸 Tavaszi Virág', desc: 'Virágfej szirmokkal' },
+        { id: 'dc_heart', name: '💖 Szívecske', desc: 'Szeretet szimbólum' },
+        { id: 'dc_fairy', name: '🧚‍♀️ Tündér Pálca', desc: 'Varázspálca csillaga' },
         { id: 'dc_circle', name: '🔵 Kör Alakzat', desc: 'Zárt kerek pálya' },
-        { id: 'dc_fairy', name: '🧚‍♀️ Tündér Pálca', desc: 'Varázslatos csillag' }
+        { id: 'dc_star', name: '⭐ Csillagfény', desc: 'Fénylő pontok' }
       ]
     };
 
@@ -440,11 +439,10 @@
     let guideSamplePoints = [];
     let userStrokePoints = [];
 
-    // Pontösszekötő állapota
     let currentDotTpl = null;
-    let dotList = [];
-    let connectedLines = [];
-    let nextExpectedDot = 1;
+    let dotGuidePoints = [];
+    let dotUserPoints = [];
+    let isDotDrawing = false;
 
     const canvas = document.getElementById('coloringCanvas');
     const ctx = canvas.getContext('2d');
@@ -472,7 +470,6 @@
       paletteContainer.appendChild(btn);
     });
 
-    // Színező Galéria
     function openGallery(category, type) {
       document.getElementById('mainMenuView').classList.remove('active');
       document.getElementById('galleryView').classList.add('active');
@@ -538,10 +535,9 @@
       context.stroke();
     }
 
-    function stopDraw() { isDrawing = false; isTracing = false; }
+    function stopDraw() { isDrawing = false; isTracing = false; isDotDrawing = false; }
     function clearCanvas() { ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height); }
 
-    // Vonalvezetés Galéria
     function openTracingGallery(category) {
       document.getElementById('mainMenuView').classList.remove('active');
       document.getElementById('tracingGalleryView').classList.add('active');
@@ -773,9 +769,7 @@
       let strayCount = 0;
       userStrokePoints.forEach(up => {
         let minDist = Math.min(...guideSamplePoints.map(gp => Math.hypot(up.x - gp.x, up.y - gp.y)));
-        if (minDist > 25) {
-          strayCount++;
-        }
+        if (minDist > 25) { strayCount++; }
       });
       let strayPercent = (strayCount / userStrokePoints.length) * 100;
 
@@ -788,8 +782,6 @@
       }
     }
 
-
-    // --- PONTÖSSZEKÖTŐ (DOT-CONNECT) LOGIKA ---
     function openDotConnectGallery(category) {
       document.getElementById('mainMenuView').classList.remove('active');
       document.getElementById('dotConnectGalleryView').classList.add('active');
@@ -801,7 +793,7 @@
         const card = document.createElement('div');
         card.className = 'gallery-item';
         card.innerHTML = `
-          <div style="font-size: 1.8rem; margin-bottom: 4px;">⭐</div>
+          <div style="font-size: 1.8rem; margin-bottom: 4px;">🎯</div>
           <h3>${tpl.name}</h3>
           <p style="font-size: 0.7rem; color: #aaa; margin: 2px 0 0 0;">${tpl.desc}</p>
         `;
@@ -815,147 +807,210 @@
       document.getElementById('dotConnectGalleryView').classList.remove('active');
       document.getElementById('dotConnectView').classList.add('active');
       document.getElementById('dotConnectTitle').innerText = tpl.name;
+      dotUserPoints = [];
 
-      resetDotConnectState(tpl.id);
-      renderDotCanvas();
+      drawShapeGuideAndArrows(tpl.id);
     }
 
-    function resetDotConnectState(id) {
-      nextExpectedDot = 1;
-      connectedLines = [];
-      dotList = [];
-
-      // Generálunk pontokat a sablon ID alapján (6-8 pont formánként)
-      let cx = 300, cy = 200;
-      switch(id) {
-        case 'dc_dino':
-          dotList = [
-            {id: 1, x: 150, y: 300}, {id: 2, x: 200, y: 250}, {id: 3, x: 250, y: 200},
-            {id: 4, x: 350, y: 150}, {id: 5, x: 450, y: 180}, {id: 6, x: 480, y: 250},
-            {id: 7, x: 350, y: 300}, {id: 8, x: 250, y: 330}
-          ];
-          break;
-        case 'dc_car':
-          dotList = [
-            {id: 1, x: 150, y: 280}, {id: 2, x: 180, y: 220}, {id: 3, x: 250, y: 180},
-            {id: 4, x: 380, y: 180}, {id: 5, x: 450, y: 220}, {id: 6, x: 480, y: 280},
-            {id: 7, x: 420, y: 320}, {id: 8, x: 200, y: 320}
-          ];
-          break;
-        case 'dc_rocket':
-          dotList = [
-            {id: 1, x: 300, y: 80}, {id: 2, x: 360, y: 200}, {id: 3, x: 400, y: 320},
-            {id: 4, x: 300, y: 270}, {id: 5, x: 200, y: 320}, {id: 6, x: 240, y: 200}
-          ];
-          break;
-        case 'dc_triangle':
-        case 'triangle':
-          dotList = [
-            {id: 1, x: 300, y: 100}, {id: 2, x: 480, y: 320}, {id: 3, x: 120, y: 320}
-          ];
-          break;
-        case 'dc_square':
-        case 'square':
-          dotList = [
-            {id: 1, x: 180, y: 100}, {id: 2, x: 420, y: 100},
-            {id: 3, x: 420, y: 300}, {id: 4, x: 180, y: 300}
-          ];
-          break;
-        case 'dc_circle':
-        case 'circle':
-          for (let i = 0; i < 8; i++) {
-            let angle = (i / 8) * 2 * Math.PI;
-            dotList.push({id: i+1, x: 300 + 100 * Math.cos(angle), y: 200 + 100 * Math.sin(angle)});
-          }
-          break;
-        default: // Általános csillag / kör
-          for (let i = 0; i < 6; i++) {
-            let angle = (i / 6) * 2 * Math.PI;
-            dotList.push({id: i+1, x: 300 + 110 * Math.cos(angle), y: 200 + 110 * Math.sin(angle)});
-          }
+    function sampleShapeLine(x0, y0, x1, y1, steps = 15) {
+      for (let i = 0; i <= steps; i++) {
+        let t = i / steps;
+        dotGuidePoints.push({ x: x0 + t * (x1 - x0), y: y0 + t * (y1 - y0) });
       }
     }
 
-    function renderDotCanvas() {
+    function sampleShapeBezier(x0, y0, c1x, c1y, c2x, c2y, x1, y1, steps = 25) {
+      for (let i = 0; i <= steps; i++) {
+        let t = i / steps;
+        let x = Math.pow(1-t, 3)*x0 + 3*Math.pow(1-t, 2)*t*c1x + 3*(1-t)*t*t*c2x + t*t*t*x1;
+        let y = Math.pow(1-t, 3)*y0 + 3*Math.pow(1-t, 2)*t*c1y + 3*(1-t)*t*t*c2y + t*t*t*y1;
+        dotGuidePoints.push({ x, y });
+      }
+    }
+
+    function drawArrow(ctx, x, y, angle) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(angle);
+      ctx.fillStyle = '#00ffcc';
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(-10, -5);
+      ctx.lineTo(-10, 5);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function drawShapeGuideAndArrows(id) {
       dCtx.fillStyle = '#ffffff';
       dCtx.fillRect(0, 0, dCanvas.width, dCanvas.height);
 
-      // Eddigi összekötött vonalak rajzolása
-      dCtx.strokeStyle = '#ff0055';
-      dCtx.lineWidth = 4;
-      connectedLines.forEach(line => {
-        dCtx.beginPath();
-        dCtx.moveTo(line.from.x, line.from.y);
-        dCtx.lineTo(line.to.x, line.to.y);
-        dCtx.stroke();
-      });
+      dCtx.strokeStyle = '#0088ff';
+      dCtx.lineWidth = 5;
+      dCtx.setLineDash([8, 8]);
+      dCtx.beginPath();
+      dotGuidePoints = [];
 
-      // Pontok és sorszámok rajzolása
-      dotList.forEach(dot => {
-        dCtx.beginPath();
-        dCtx.arc(dot.x, dot.y, 12, 0, 2 * Math.PI);
-        dCtx.fillStyle = dot.id < nextExpectedDot ? '#00cc66' : (dot.id === nextExpectedDot ? '#ffcc00' : '#0088ff');
-        dCtx.fill();
-        dCtx.lineWidth = 2;
-        dCtx.strokeStyle = '#ffffff';
-        dCtx.stroke();
+      let arrowMarkers = [];
 
-        dCtx.font = 'bold 14px Courier New';
-        dCtx.fillStyle = '#000000';
-        dCtx.textAlign = 'center';
-        dCtx.textBaseline = 'middle';
-        dCtx.fillText(dot.id, dot.x, dot.y);
-      });
+      switch(id) {
+        case 'dc_dino':
+          dCtx.moveTo(150, 320);
+          sampleShapeLine(150, 320, 180, 200); sampleShapeLine(180, 200, 250, 150);
+          sampleShapeLine(250, 150, 320, 160); sampleShapeLine(320, 160, 350, 120);
+          sampleShapeLine(350, 120, 380, 180); sampleShapeLine(380, 180, 480, 200);
+          sampleShapeLine(480, 200, 360, 260); sampleShapeLine(360, 260, 350, 330);
+          sampleShapeLine(350, 330, 250, 330); sampleShapeLine(250, 330, 240, 260);
+          sampleShapeLine(240, 260, 150, 320);
+          arrowMarkers = [{x: 200, y: 175, angle: -0.6}, {x: 420, y: 195, angle: 0.2}, {x: 300, y: 330, angle: 3.14}];
+          break;
+
+        case 'dc_car':
+          dCtx.moveTo(120, 280);
+          sampleShapeLine(120, 280, 150, 220); sampleShapeLine(150, 220, 220, 180);
+          sampleShapeLine(220, 180, 380, 180); sampleShapeLine(380, 180, 450, 220);
+          sampleShapeLine(450, 220, 480, 280); sampleShapeLine(480, 280, 120, 280);
+          arrowMarkers = [{x: 180, y: 200, angle: -0.5}, {x: 300, y: 180, angle: 0}, {x: 465, y: 250, angle: 1.57}];
+          break;
+
+        case 'dc_rocket':
+          dCtx.moveTo(300, 70);
+          sampleShapeLine(300, 70, 370, 200); sampleShapeLine(370, 200, 420, 330);
+          sampleShapeLine(420, 330, 300, 280); sampleShapeLine(300, 280, 180, 330);
+          sampleShapeLine(180, 330, 230, 200); sampleShapeLine(230, 200, 300, 70);
+          arrowMarkers = [{x: 335, y: 135, angle: 1.1}, {x: 360, y: 305, angle: -2.75}, {x: 205, y: 265, angle: -0.7}];
+          break;
+
+        case 'dc_mermaid':
+          dCtx.moveTo(250, 80);
+          sampleShapeLine(250, 80, 300, 120); sampleShapeLine(300, 120, 350, 80);
+          sampleShapeLine(350, 80, 330, 200); sampleShapeLine(330, 200, 400, 320);
+          sampleShapeLine(400, 320, 300, 280); sampleShapeLine(300, 280, 200, 320);
+          sampleShapeLine(200, 320, 270, 200); sampleShapeLine(270, 200, 250, 80);
+          arrowMarkers = [{x: 340, y: 140, angle: 1.2}, {x: 350, y: 260, angle: 0.8}, {x: 235, y: 260, angle: -2.3}];
+          break;
+
+        case 'dc_unicorn':
+          dCtx.moveTo(200, 300);
+          sampleShapeLine(200, 300, 200, 180); sampleShapeLine(200, 180, 300, 100);
+          sampleShapeLine(300, 100, 350, 60);
+          sampleShapeLine(350, 60, 400, 180);
+          sampleShapeLine(400, 180, 400, 300); sampleShapeLine(400, 300, 200, 300);
+          arrowMarkers = [{x: 250, y: 140, angle: -0.7}, {x: 375, y: 120, angle: -0.9}, {x: 300, y: 300, angle: 3.14}];
+          break;
+
+        case 'dc_crown':
+          dCtx.moveTo(150, 280);
+          sampleShapeLine(150, 280, 180, 140); sampleShapeLine(180, 140, 240, 220);
+          sampleShapeLine(240, 220, 300, 100); sampleShapeLine(300, 100, 360, 220);
+          sampleShapeLine(360, 220, 420, 140); sampleShapeLine(420, 140, 450, 280);
+          sampleShapeLine(450, 280, 150, 280);
+          arrowMarkers = [{x: 165, y: 210, angle: -1.35}, {x: 270, y: 160, angle: -1.1}, {x: 390, y: 180, angle: 0.9}];
+          break;
+
+        case 'dc_castle':
+          dCtx.moveTo(150, 320);
+          sampleShapeLine(150, 320, 150, 180); sampleShapeLine(150, 180, 200, 130);
+          sampleShapeLine(200, 130, 250, 180); sampleShapeLine(250, 180, 350, 180);
+          sampleShapeLine(350, 180, 400, 130); sampleShapeLine(400, 130, 450, 180);
+          sampleShapeLine(450, 180, 450, 320); sampleShapeLine(450, 320, 150, 320);
+          arrowMarkers = [{x: 150, y: 250, angle: -1.57}, {x: 300, y: 180, angle: 0}, {x: 450, y: 250, angle: 1.57}];
+          break;
+
+        case 'dc_butterfly':
+          dCtx.moveTo(300, 200);
+          sampleShapeBezier(300, 200, 450, 50, 520, 250, 300, 330);
+          sampleShapeBezier(300, 330, 80, 250, 150, 50, 300, 200);
+          arrowMarkers = [{x: 420, y: 130, angle: 0.5}, {x: 210, y: 130, angle: -2.6}];
+          break;
+
+        case 'dc_flower':
+          dCtx.moveTo(300, 340);
+          sampleShapeLine(300, 340, 300, 220);
+          sampleArc(300, 170, 60, 0, 2 * Math.PI);
+          arrowMarkers = [{x: 300, y: 280, angle: -1.57}, {x: 360, y: 170, angle: 0}];
+          break;
+
+        case 'dc_heart':
+          dCtx.moveTo(300, 330);
+          sampleShapeBezier(300, 330, 120, 220, 120, 80, 300, 180);
+          sampleShapeBezier(300, 180, 480, 80, 480, 220, 300, 330);
+          arrowMarkers = [{x: 180, y: 150, angle: -0.8}, {x: 420, y: 150, angle: 0.8}];
+          break;
+
+        default:
+          sampleArc(300, 200, 110, 0, 2 * Math.PI);
+          arrowMarkers = [{x: 410, y: 200, angle: 1.57}];
+      }
+
+      dCtx.stroke();
+      dCtx.setLineDash([]);
+      arrowMarkers.forEach(m => drawArrow(dCtx, m.x, m.y, m.angle));
     }
 
-    // Pontokra kattintás kezelése
-    dCanvas.addEventListener('click', e => {
+    dCanvas.addEventListener('mousedown', e => startDotDraw(e));
+    dCanvas.addEventListener('mousemove', e => dotDraw(e));
+    dCanvas.addEventListener('mouseup', stopDraw);
+    dCanvas.addEventListener('mouseleave', stopDraw);
+    dCanvas.addEventListener('touchstart', e => { e.preventDefault(); startDotDraw(e.touches[0]); });
+    dCanvas.addEventListener('touchmove', e => { e.preventDefault(); dotDraw(e.touches[0]); });
+    dCanvas.addEventListener('touchend', stopDraw);
+
+    function startDotDraw(e) {
+      isDotDrawing = true;
+      dCtx.beginPath();
       const rect = dCanvas.getBoundingClientRect();
-      const mouseX = e.clientX - rect.left;
-      const mouseY = e.clientY - rect.top;
+      let x = e.clientX - rect.left;
+      let y = e.clientY - rect.top;
+      dCtx.moveTo(x, y);
+      dotUserPoints.push({x, y});
+    }
 
-      dotList.forEach(dot => {
-        let dist = Math.hypot(mouseX - dot.x, mouseY - dot.y);
-        if (dist <= 20) { // ha ráklikkelt a pontra
-          if (dot.id === nextExpectedDot) {
-            if (nextExpectedDot > 1) {
-              let prevDot = dotList.find(d => d.id === nextExpectedDot - 1);
-              connectedLines.push({from: prevDot, to: dot});
-            }
-            nextExpectedDot++;
-            renderDotCanvas();
-
-            if (nextExpectedDot > dotList.length) {
-              // Ha az utolsó pontot is elértük, kössük be az elsőhöz is a zárt alakzatért!
-              let lastDot = dot;
-              let firstDot = dotList[0];
-              connectedLines.push({from: lastDot, to: firstDot});
-              renderDotCanvas();
-              setTimeout(() => {
-                alert('Hatalmas ügyesség! Sikeresen összekötötted az összes pontot a Mátrix Laborban! 🎉⭐');
-              }, 200);
-            }
-          } else if (dot.id >= nextExpectedDot) {
-            alert(`Hé! Előbb a(z) ${nextExpectedDot}-es pontot kösd össze! 🧐`);
-          }
-        }
-      });
-    });
+    function dotDraw(e) {
+      if (!isDotDrawing) return;
+      const rect = dCanvas.getBoundingClientRect();
+      let x = e.clientX - rect.left;
+      let y = e.clientY - rect.top;
+      dCtx.lineTo(x, y);
+      dCtx.strokeStyle = selectedColor;
+      dCtx.lineWidth = 8;
+      dCtx.lineCap = 'round';
+      dCtx.stroke();
+      dotUserPoints.push({x, y});
+    }
 
     function resetDotConnect() {
+      dotUserPoints = [];
       if (currentDotTpl) {
-        startDotConnect(currentDotTpl);
+        drawShapeGuideAndArrows(currentDotTpl.id);
       }
     }
 
     function checkDotConnectResult() {
-      if (nextExpectedDot > dotList.length) {
-        alert('Gratulálok, ez hibátlan teljesítmény! 🎉🚀');
+      if (dotUserPoints.length < 15) {
+        alert('Hé, kis művész! Előbb rajzold végig a formát a nyilak irányában! 🧐');
+        return;
+      }
+
+      let coveredCount = 0;
+      dotGuidePoints.forEach(gp => {
+        let isCovered = dotUserPoints.some(up => {
+          let dist = Math.hypot(up.x - gp.x, up.y - gp.y);
+          return dist <= 22;
+        });
+        if (isCovered) coveredCount++;
+      });
+      let coveragePercent = dotGuidePoints.length > 0 ? (coveredCount / dotGuidePoints.length) * 100 : 0;
+
+      if (coveragePercent < 65) {
+        alert('Ez még nem az igazi! Kövesd pontosabban a nyilakat és a formát! ⭐');
+      } else if (coveragePercent < 85) {
+        alert('Már nagyon szép a rajz, de menj végig rajta határozottabban! 🎯');
       } else {
-        alert(`Még van hátra pont! A(z) ${nextExpectedDot}-es pontnál tartasz. Folytasd! ⭐`);
+        alert('Hatalmas ügyesség! Tökéletes dínó- és formarajzolás a Mátrix Labor előírásai szerint! 🎉🚀');
       }
     }
-
 
     function goBackToMenu() {
       document.getElementById('galleryView').classList.remove('active');
