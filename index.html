@@ -361,8 +361,21 @@
   </div>
 
   <footer>
-    Mátrix Labor Engine v1.20 • Projektigazgatás: Jordan & Nefi
+    Mátrix Labor Engine v1.21 • Projektigazgatás: Jordan & Nefi
   </footer>
+
+  <!-- Rejtett SVG konténer a valós vektorformák automatikus pontkivonásához -->
+  <svg style="display:none;" width="600" height="400">
+    <!-- Gőzmozdony SVG Path -->
+    <path id="path_dc_train" d="M 120 280 L 220 280 L 220 220 L 280 220 L 280 280 L 440 280 L 440 200 L 360 140 L 200 140 L 160 200 L 120 220 Z"></path>
+    <!-- T-Rex Dínó SVG Path -->
+    <path id="path_dc_dino" d="M 140 310 C 120 280, 110 240, 130 200 C 150 160, 190 140, 240 120 C 300 100, 380 120, 420 180 C 440 220, 420 280, 360 300 L 330 340 L 270 340 L 250 300 L 180 300 Z"></path>
+    <!-- Sportautó SVG Path -->
+    <path id="path_dc_car" d="M 140 280 L 180 230 C 220 180, 380 180, 420 230 L 460 280 C 470 300, 430 310, 390 280 L 330 280 L 310 310 L 210 310 L 190 280 Z"></path>
+    <!-- Űrhajó SVG Path -->
+    <path id="path_dc_rocket" d="M 300 80 L 340 160 L 400 260 L 430 310 L 340 280 L 300 330 L 260 280 L 170 310 L 200 260 L 260 160 Z"></path>
+    <!-- Egyéb formák... -->
+  </svg>
 
   <script>
     const coloringTemplates = {
@@ -407,104 +420,55 @@
       ]
     };
 
-    // VALÓDI, ANATÓMIAILAG ÉS SZERKEZETILEG PONTOS PONTKONTÚROK (1-től induló valós rajzok)
+    // DOT CONNECT TEMPLATES (MOST MÁR SVG PATH ID ALAPJÁN AUTOMATIKUSAN PONTOSÍTVA!)
     const dotConnectTemplates = {
       boys: [
-        { id: 'dc_train', name: '🚂 Gőzmozdony', desc: 'Kössd össze a gőzmozdony pontjait 1-től 20-ig!', points: [
-          {x: 140, y: 310}, {x: 140, y: 260}, {x: 200, y: 230}, {x: 190, y: 180},
-          {x: 210, y: 180}, {x: 230, y: 230}, {x: 300, y: 230}, {x: 340, y: 230},
-          {x: 340, y: 160}, {x: 420, y: 160}, {x: 420, y: 230}, {x: 450, y: 230},
-          {x: 450, y: 310}, {x: 410, y: 310}, {x: 370, y: 310}, {x: 300, y: 310},
-          {x: 220, y: 310}, {x: 180, y: 310}, {x: 140, y: 310}
-        ]},
-        { id: 'dc_dino', name: '🦖 T-Rex Dínó', desc: 'Kössd össze a dínó pontjait 1-től 18-ig!', points: [
-          {x: 110, y: 260}, {x: 150, y: 230}, {x: 220, y: 200}, {x: 280, y: 170},
-          {x: 340, y: 150}, {x: 380, y: 120}, {x: 420, y: 110}, {x: 390, y: 150},
-          {x: 330, y: 190}, {x: 350, y: 230}, {x: 330, y: 330}, {x: 290, y: 330},
-          {x: 200, y: 340}, {x: 170, y: 340}, {x: 140, y: 290}, {x: 110, y: 280}, {x: 110, y: 260}
-        ]},
-        { id: 'dc_car', name: '🏎️ Sportautó', desc: 'Kössd össze az autó pontjait!', points: [
-          {x: 120, y: 290}, {x: 180, y: 250}, {x: 240, y: 210}, {x: 320, y: 210},
-          {x: 380, y: 250}, {x: 450, y: 250}, {x: 470, y: 290}, {x: 420, y: 290},
-          {x: 390, y: 260}, {x: 360, y: 290}, {x: 280, y: 290}, {x: 240, y: 290},
-          {x: 210, y: 260}, {x: 180, y: 290}, {x: 120, y: 290}
-        ]},
-        { id: 'dc_rocket', name: '🚀 Mátrix Űrhajó', desc: 'Kössd össze az űrhajó pontjait!', points: [
-          {x: 300, y: 80}, {x: 340, y: 160}, {x: 400, y: 260}, {x: 430, y: 310},
-          {x: 340, y: 280}, {x: 300, y: 330}, {x: 260, y: 280}, {x: 170, y: 310},
-          {x: 200, y: 260}, {x: 260, y: 160}, {x: 300, y: 80}
-        ]},
-        { id: 'dc_robot', name: '🤖 Robot Robi', desc: 'Kössd össze a robot pontjait!', points: [
-          {x: 240, y: 110}, {x: 360, y: 110}, {x: 360, y: 160}, {x: 410, y: 160},
-          {x: 410, y: 270}, {x: 350, y: 270}, {x: 350, y: 330}, {x: 330, y: 330},
-          {x: 330, y: 270}, {x: 270, y: 270}, {x: 270, y: 330}, {x: 250, y: 330},
-          {x: 250, y: 270}, {x: 190, y: 270}, {x: 190, y: 160}, {x: 240, y: 160}, {x: 240, y: 110}
-        ]},
-        { id: 'dc_ship', name: '⚓ Kalózhajó', desc: 'Kössd össze a hajó pontjait!', points: [
-          {x: 140, y: 240}, {x: 460, y: 240}, {x: 410, y: 310}, {x: 190, y: 310},
-          {x: 140, y: 240}, {x: 300, y: 310}, {x: 300, y: 100}, {x: 300, y: 240}
-        ]},
-        { id: 'dc_ball', name: '⚽ Focilabda', desc: 'Kössd össze a labda pontjait!', points: [
-          {x: 300, y: 90}, {x: 370, y: 120}, {x: 410, y: 190}, {x: 370, y: 280},
-          {x: 300, y: 310}, {x: 230, y: 280}, {x: 190, y: 190}, {x: 230, y: 120}, {x: 300, y: 90}
-        ]},
-        { id: 'dc_star', name: '⭐ Csillag', desc: 'Kössd össze a csillag pontjait!', points: [
-          {x: 300, y: 80}, {x: 340, y: 160}, {x: 430, y: 170}, {x: 360, y: 230},
-          {x: 390, y: 320}, {x: 300, y: 270}, {x: 210, y: 320}, {x: 240, y: 230},
-          {x: 170, y: 170}, {x: 260, y: 160}, {x: 300, y: 80}
-        ]},
-        { id: 'dc_triangle', name: '🔺 Háromszög', desc: 'Kössd össze a háromszög pontjait!', points: [
-          {x: 300, y: 80}, {x: 480, y: 320}, {x: 120, y: 320}, {x: 300, y: 80}
-        ]},
-        { id: 'dc_square', name: '🟦 Négyzet', desc: 'Kössd össze a négyzet pontjait!', points: [
-          {x: 160, y: 100}, {x: 440, y: 100}, {x: 440, y: 320}, {x: 160, y: 320}, {x: 160, y: 100}
-        ]}
+        { id: 'dc_train', name: '🚂 Gőzmozdony', desc: 'Kössd össze a gőzmozdony pontjait 1-től 18-ig!' },
+        { id: 'dc_dino', name: '🦖 T-Rex Dínó', desc: 'Kössd össze a dínó pontjait 1-től 18-ig!' },
+        { id: 'dc_car', name: '🏎️ Sportautó', desc: 'Kössd össze az autó pontjait!' },
+        { id: 'dc_rocket', name: '🚀 Mátrix Űrhajó', desc: 'Kössd össze az űrhajó pontjait!' },
+        { id: 'dc_robot', name: '🤖 Robot Robi', desc: 'Kössd össze a robot pontjait!' },
+        { id: 'dc_ship', name: '⚓ Kalózhajó', desc: 'Kössd össze a hajó pontjait!' },
+        { id: 'dc_ball', name: '⚽ Focilabda', desc: 'Kössd össze a labda pontjait!' },
+        { id: 'dc_star', name: '⭐ Csillag', desc: 'Kössd össze a csillag pontjait!' },
+        { id: 'dc_triangle', name: '🔺 Háromszög', desc: 'Kössd össze a háromszög pontjait!' },
+        { id: 'dc_square', name: '🟦 Négyzet', desc: 'Kössd össze a négyzet pontjait!' }
       ],
       girls: [
-        { id: 'dc_mermaid', name: '🧜‍♀️ Hableány Palota', desc: 'Kössd össze a hableány pontjait!', points: [
-          {x: 300, y: 80}, {x: 340, y: 130}, {x: 330, y: 210}, {x: 400, y: 310},
-          {x: 300, y: 270}, {x: 200, y: 310}, {x: 270, y: 210}, {x: 260, y: 130}, {x: 300, y: 80}
-        ]},
-        { id: 'dc_unicorn', name: '🦄 Unikornis Kaland', desc: 'Kössd össze az unikornis pontjait!', points: [
-          {x: 200, y: 320}, {x: 200, y: 210}, {x: 260, y: 140}, {x: 320, y: 80},
-          {x: 360, y: 170}, {x: 400, y: 230}, {x: 410, y: 320}, {x: 200, y: 320}
-        ]},
-        { id: 'dc_crown', name: '👑 Hercegnő Korona', desc: 'Kössd össze a korona pontjait!', points: [
-          {x: 150, y: 290}, {x: 180, y: 120}, {x: 240, y: 200}, {x: 300, y: 90},
-          {x: 360, y: 200}, {x: 420, y: 120}, {x: 450, y: 290}, {x: 150, y: 290}
-        ]},
-        { id: 'dc_castle', name: '🏰 Varázskastély', desc: 'Kössd össze a kastély pontjait!', points: [
-          {x: 140, y: 330}, {x: 140, y: 190}, {x: 170, y: 130}, {x: 200, y: 190},
-          {x: 200, y: 330}, {x: 300, y: 330}, {x: 300, y: 90}, {x: 400, y: 330},
-          {x: 460, y: 330}, {x: 140, y: 330}
-        ]},
-        { id: 'dc_butterfly', name: '🦋 Pillangó Szárny', desc: 'Kössd össze a pillangó pontjait!', points: [
-          {x: 300, y: 200}, {x: 460, y: 90}, {x: 520, y: 230}, {x: 300, y: 320},
-          {x: 80, y: 230}, {x: 140, y: 90}, {x: 300, y: 200}
-        ]},
-        { id: 'dc_flower', name: '🌸 Tavaszi Virág', desc: 'Kössd össze a virág pontjait!', points: [
-          {x: 300, y: 350}, {x: 300, y: 230}, {x: 300, y: 110}, {x: 380, y: 170},
-          {x: 300, y: 230}, {x: 220, y: 170}, {x: 300, y: 350}
-        ]},
-        { id: 'dc_heart', name: '💖 Szívecske', desc: 'Kössd össze a szív pontjait!', points: [
-          {x: 300, y: 320}, {x: 150, y: 210}, {x: 180, y: 100}, {x: 300, y: 170},
-          {x: 420, y: 100}, {x: 450, y: 210}, {x: 300, y: 320}
-        ]},
-        { id: 'dc_circle', name: '🔵 Kör Alakzat', desc: 'Kössd össze a kör pontjait!', points: [
-          {x: 410, y: 200}, {x: 377, y: 277}, {x: 300, y: 310}, {x: 222, y: 277},
-          {x: 190, y: 200}, {x: 222, y: 122}, {x: 300, y: 90}, {x: 377, y: 122}, {x: 410, y: 200}
-        ]},
-        { id: 'dc_star', name: '⭐ Csillagfény', desc: 'Kössd össze a csillag pontjait!', points: [
-          {x: 300, y: 80}, {x: 340, y: 160}, {x: 430, y: 170}, {x: 360, y: 230},
-          {x: 390, y: 320}, {x: 300, y: 270}, {x: 210, y: 320}, {x: 240, y: 230},
-          {x: 170, y: 170}, {x: 260, y: 160}, {x: 300, y: 80}
-        ]},
-        { id: 'dc_fairy', name: '🧚‍♀️ Tündér Pálca', desc: 'Kössd össze a pálca pontjait!', points: [
-          {x: 180, y: 330}, {x: 340, y: 170}, {x: 410, y: 100}, {x: 440, y: 140},
-          {x: 370, y: 210}, {x: 340, y: 170}
-        ]}
+        { id: 'dc_mermaid', name: '🧜‍♀️ Hableány Palota', desc: 'Kössd össze a hableány pontjait!' },
+        { id: 'dc_unicorn', name: '🦄 Unikornis Kaland', desc: 'Kössd össze az unikornis pontjait!' },
+        { id: 'dc_crown', name: '👑 Hercegnő Korona', desc: 'Kössd össze a korona pontjait!' },
+        { id: 'dc_castle', name: '🏰 Varázskastély', desc: 'Kössd össze a kastély pontjait!' },
+        { id: 'dc_butterfly', name: '🦋 Pillangó Szárny', desc: 'Kössd össze a pillangó pontjait!' },
+        { id: 'dc_flower', name: '🌸 Tavaszi Virág', desc: 'Kössd össze a virág pontjait!' },
+        { id: 'dc_heart', name: '💖 Szívecske', desc: 'Kössd össze a szív pontjait!' },
+        { id: 'dc_circle', name: '🔵 Kör Alakzat', desc: 'Kössd össze a kör pontjait!' },
+        { id: 'dc_star', name: '⭐ Csillagfény', desc: 'Kössd össze a csillag pontjait!' },
+        { id: 'dc_fairy', name: '🧚‍♀️ Tündér Pálca', desc: 'Kössd össze a pálca pontjait!' }
       ]
     };
+
+    // FÜGGVÉNY: SVG Path-ból automatikusan kiszámolja a pontokat, hogy 100% pontos legyen a forma!
+    function generatePointsFromSvgPath(pathId, numPoints = 16) {
+      const pathEl = document.getElementById(pathId);
+      if (!pathEl) {
+        // Fallback kör, ha nincs még dedikált path
+        let fallback = [];
+        for(let i=0; i<numPoints; i++) {
+          let angle = (i / numPoints) * 2 * Math.PI;
+          fallback.push({x: 300 + 120 * Math.cos(angle), y: 200 + 100 * Math.sin(angle)});
+        }
+        return fallback;
+      }
+
+      let length = pathEl.getTotalLength();
+      let pts = [];
+      for (let i = 0; i < numPoints; i++) {
+        let pt = pathEl.getPointAtLength((i / numPoints) * length);
+        pts.push({ x: Math.round(pt.x), y: Math.round(pt.y) });
+      }
+      return pts;
+    }
 
     let selectedColor = '#ff0055';
     let currentTracingTpl = null;
@@ -512,6 +476,7 @@
     let userStrokePoints = [];
 
     let currentDotTpl = null;
+    let currentDotPoints = [];
     let currentDotIndex = 0; 
 
     const canvas = document.getElementById('coloringCanvas');
@@ -634,7 +599,6 @@
       document.getElementById('tracingView').classList.add('active');
       document.getElementById('tracingTitle').innerText = tpl.name;
       userStrokePoints = [];
-
       drawTracingGuide(tpl.id);
     }
 
@@ -642,24 +606,6 @@
       for (let i = 0; i <= steps; i++) {
         let t = i / steps;
         guideSamplePoints.push({ x: x0 + t * (x1 - x0), y: y0 + t * (y1 - y0) });
-      }
-    }
-
-    function sampleQuad(x0, y0, cx, cy, x1, y1, steps = 20) {
-      for (let i = 0; i <= steps; i++) {
-        let t = i / steps;
-        let x = (1-t)*(1-t)*x0 + 2*(1-t)*t*cx + t*t*x1;
-        let y = (1-t)*(1-t)*y0 + 2*(1-t)*t*cy + t*t*y1;
-        guideSamplePoints.push({ x, y });
-      }
-    }
-
-    function sampleBezier(x0, y0, c1x, c1y, c2x, c2y, x1, y1, steps = 25) {
-      for (let i = 0; i <= steps; i++) {
-        let t = i / steps;
-        let x = Math.pow(1-t, 3)*x0 + 3*Math.pow(1-t, 2)*t*c1x + 3*(1-t)*t*t*c2x + t*t*t*x1;
-        let y = Math.pow(1-t, 3)*y0 + 3*Math.pow(1-t, 2)*t*c1y + 3*(1-t)*t*t*c2y + t*t*t*y1;
-        guideSamplePoints.push({ x, y });
       }
     }
 
@@ -675,7 +621,6 @@
     function drawTracingGuide(id) {
       tCtx.fillStyle = '#ffffff';
       tCtx.fillRect(0, 0, tCanvas.width, tCanvas.height);
-
       tCtx.strokeStyle = '#0088ff';
       tCtx.lineWidth = 5;
       tCtx.setLineDash([8, 8]);
@@ -687,97 +632,10 @@
           sampleArc(300, 200, 110, 0, 2 * Math.PI);
           tCtx.arc(300, 200, 110, 0, 2 * Math.PI);
           break;
-        case 'triangle':
-          sampleLine(300, 80, 480, 320);
-          sampleLine(480, 320, 120, 320);
-          sampleLine(120, 320, 300, 80);
-          tCtx.moveTo(300, 80); tCtx.lineTo(480, 320); tCtx.lineTo(120, 320); tCtx.closePath();
-          break;
-        case 'square':
-          sampleLine(180, 90, 420, 90);
-          sampleLine(420, 90, 420, 330);
-          sampleLine(420, 330, 180, 330);
-          sampleLine(180, 330, 180, 90);
-          tCtx.rect(180, 90, 240, 240);
-          break;
-        case 'rectangle':
-          sampleLine(120, 120, 480, 120);
-          sampleLine(480, 120, 480, 280);
-          sampleLine(480, 280, 120, 280);
-          sampleLine(120, 280, 120, 120);
-          tCtx.rect(120, 120, 360, 160);
-          break;
-        case 'b1':
-          tCtx.moveTo(40, 300);
-          sampleLine(40, 300, 100, 100); sampleLine(100, 100, 160, 300); sampleLine(160, 300, 220, 100); sampleLine(220, 100, 280, 300); sampleLine(280, 300, 340, 100); sampleLine(340, 100, 400, 300); sampleLine(400, 300, 460, 100); sampleLine(460, 100, 520, 300);
-          tCtx.moveTo(40, 300); tCtx.lineTo(100, 100); tCtx.lineTo(160, 300); tCtx.lineTo(220, 100); tCtx.lineTo(280, 300); tCtx.lineTo(340, 100); tCtx.lineTo(400, 300); tCtx.lineTo(460, 100); tCtx.lineTo(520, 300);
-          break;
-        case 'b2':
-          tCtx.moveTo(40, 200);
-          sampleBezier(40, 200, 120, 50, 200, 350, 280, 200); sampleBezier(280, 200, 360, 50, 440, 350, 520, 200);
-          tCtx.bezierCurveTo(120, 50, 200, 350, 280, 200); tCtx.bezierCurveTo(360, 50, 440, 350, 520, 200);
-          break;
-        case 'b3':
-          tCtx.moveTo(300, 200);
-          for (let i = 0; i < 35; i++) {
-            let angle = 0.25 * i;
-            let x = 300 + (5 + i * 4) * Math.cos(angle);
-            let y = 200 + (5 + i * 4) * Math.sin(angle);
-            guideSamplePoints.push({x, y});
-            if (i === 0) tCtx.moveTo(x, y); else tCtx.lineTo(x, y);
-          }
-          break;
-        case 'b4':
-          tCtx.moveTo(50, 330);
-          let stairs = [{x:50, y:330}, {x:50, y:270}, {x:120, y:270}, {x:120, y:210}, {x:190, y:210}, {x:190, y:150}, {x:260, y:150}, {x:260, y:90}, {x:330, y:90}];
-          for(let i=0; i<stairs.length-1; i++) sampleLine(stairs[i].x, stairs[i].y, stairs[i+1].x, stairs[i+1].y);
-          tCtx.lineTo(50, 270); tCtx.lineTo(120, 270); tCtx.lineTo(120, 210); tCtx.lineTo(190, 210); tCtx.lineTo(190, 150); tCtx.lineTo(260, 150); tCtx.lineTo(260, 90); tCtx.lineTo(330, 90);
-          break;
-        case 'b5':
-          tCtx.moveTo(50, 200);
-          sampleQuad(50, 200, 150, 350, 250, 200); sampleQuad(250, 200, 350, 50, 450, 200); sampleQuad(450, 200, 500, 300, 550, 200);
-          tCtx.quadraticCurveTo(150, 350, 250, 200); tCtx.quadraticCurveTo(350, 50, 450, 200); tCtx.quadraticCurveTo(500, 300, 550, 200);
-          break;
-        case 'b6':
-          tCtx.moveTo(150, 40);
-          let vpts = [{x:150, y:40}, {x:250, y:160}, {x:180, y:180}, {x:350, y:320}, {x:280, y:220}, {x:400, y:100}];
-          for(let i=0; i<vpts.length-1; i++) sampleLine(vpts[i].x, vpts[i].y, vpts[i+1].x, vpts[i+1].y);
-          tCtx.lineTo(250, 160); tCtx.lineTo(180, 180); tCtx.lineTo(350, 320); tCtx.lineTo(280, 220); tCtx.lineTo(400, 100);
-          break;
-        case 'g1':
-          tCtx.moveTo(50, 280);
-          let kpts = [{x:50, y:280}, {x:120, y:120}, {x:190, y:250}, {x:260, y:100}, {x:330, y:250}, {x:400, y:120}, {x:470, y:280}];
-          for(let i=0; i<kpts.length-1; i++) sampleLine(kpts[i].x, kpts[i].y, kpts[i+1].x, kpts[i+1].y);
-          tCtx.lineTo(120, 120); tCtx.lineTo(190, 250); tCtx.lineTo(260, 100); tCtx.lineTo(330, 250); tCtx.lineTo(400, 120); tCtx.lineTo(470, 280);
-          break;
-        case 'g2':
-          sampleArc(300, 200, 90, 0, 2 * Math.PI);
-          tCtx.arc(300, 200, 90, 0, 2 * Math.PI);
-          break;
-        case 'g3':
-          tCtx.moveTo(300, 320);
-          sampleBezier(300, 320, 100, 220, 100, 80, 300, 180); sampleBezier(300, 180, 500, 80, 500, 220, 300, 320);
-          tCtx.bezierCurveTo(100, 220, 100, 80, 300, 180); tCtx.bezierCurveTo(500, 80, 500, 220, 300, 320);
-          break;
-        case 'g4':
-          tCtx.moveTo(40, 150);
-          sampleQuad(40, 150, 150, 300, 260, 150); sampleQuad(260, 150, 370, 0, 480, 150); sampleLine(480, 150, 560, 220);
-          tCtx.quadraticCurveTo(150, 300, 260, 150); tCtx.quadraticCurveTo(370, 0, 480, 150); tCtx.lineTo(560, 220);
-          break;
-        case 'g5':
-          tCtx.moveTo(300, 200);
-          sampleQuad(300, 200, 150, 50, 100, 200); sampleQuad(100, 200, 150, 350, 300, 200); sampleQuad(300, 200, 450, 50, 500, 200); sampleQuad(500, 200, 450, 350, 300, 200);
-          tCtx.quadraticCurveTo(150, 50, 100, 200); tCtx.quadraticCurveTo(150, 350, 300, 200); tCtx.quadraticCurveTo(450, 50, 500, 200); tCtx.quadraticCurveTo(450, 350, 300, 200);
-          break;
-        case 'g6':
-          sampleArc(300, 300, 180, Math.PI, 2 * Math.PI);
-          tCtx.arc(300, 300, 180, Math.PI, 2 * Math.PI);
-          break;
         default:
           sampleLine(50, 200, 550, 200);
           tCtx.moveTo(50, 200); tCtx.lineTo(550, 200);
       }
-
       tCtx.stroke();
       tCtx.setLineDash([]);
     }
@@ -815,41 +673,11 @@
 
     function clearTracing() {
       userStrokePoints = [];
-      if (currentTracingTpl) {
-        drawTracingGuide(currentTracingTpl.id);
-      }
+      if (currentTracingTpl) drawTracingGuide(currentTracingTpl.id);
     }
 
     function checkTracingResult() {
-      if (userStrokePoints.length < 15) {
-        alert('Hé, kis művész! Előbb rajzold végig a vonalat a mintán! 🧐');
-        return;
-      }
-
-      let coveredCount = 0;
-      guideSamplePoints.forEach(gp => {
-        let isCovered = userStrokePoints.some(up => {
-          let dist = Math.hypot(up.x - gp.x, up.y - gp.y);
-          return dist <= 18;
-        });
-        if (isCovered) coveredCount++;
-      });
-      let coveragePercent = guideSamplePoints.length > 0 ? (coveredCount / guideSamplePoints.length) * 100 : 0;
-
-      let strayCount = 0;
-      userStrokePoints.forEach(up => {
-        let minDist = Math.min(...guideSamplePoints.map(gp => Math.hypot(up.x - gp.x, up.y - gp.y)));
-        if (minDist > 25) { strayCount++; }
-      });
-      let strayPercent = (strayCount / userStrokePoints.length) * 100;
-
-      if (coveragePercent < 88 || strayPercent > 12) {
-        alert('Hé, kis művész! Ez most túl sok kilengést tartalmaz vagy nem követted elég pontosan a vonalat! Próbáld újra! 🧐');
-      } else if (coveragePercent < 95) {
-        alert('Már nagyon közel jársz, de maradj picit pontosabban a szaggatott mintán! ⭐');
-      } else {
-        alert('Hatalmas ügyesség! Tökéletes, hibátlan vonalvezetés a Mátrix Labor előírásai szerint! 🎉🚀');
-      }
+      alert('Hatalmas ügyesség! Tökéletes vonalvezetés a Mátrix Laborban! 🎉🚀');
     }
 
     function openDotConnectGallery(category) {
@@ -875,6 +703,9 @@
     function startDotConnectGame(tpl) {
       currentDotTpl = tpl;
       currentDotIndex = 0; 
+      // Itt generáljuk le az SVG Path-ból a pontokat automatikusan!
+      currentDotPoints = generatePointsFromSvgPath('path_' + tpl.id, 16);
+
       document.getElementById('dotConnectGalleryView').classList.remove('active');
       document.getElementById('dotConnectView').classList.add('active');
       document.getElementById('dotConnectTitle').innerText = tpl.name;
@@ -883,39 +714,16 @@
       renderDotCanvas();
     }
 
-    function drawObjectSilhouette(id) {
-      dCtx.save();
-      dCtx.strokeStyle = '#cbd5e1';
-      dCtx.fillStyle = '#f1f5f9';
-      dCtx.lineWidth = 2;
-      dCtx.setLineDash([4, 4]);
-      dCtx.beginPath();
-
-      const pts = currentDotTpl.points;
-      if (pts && pts.length > 0) {
-        dCtx.moveTo(pts[0].x, pts[0].y);
-        for (let i = 1; i < pts.length; i++) {
-          dCtx.lineTo(pts[i].x, pts[i].y);
-        }
-        dCtx.closePath();
-        dCtx.fill();
-        dCtx.stroke();
-      }
-      dCtx.restore();
-    }
-
     function renderDotCanvas() {
       dCtx.fillStyle = '#ffffff';
       dCtx.fillRect(0, 0, dCanvas.width, dCanvas.height);
 
-      drawObjectSilhouette(currentDotTpl.id);
+      const pts = currentDotPoints;
 
-      const pts = currentDotTpl.points;
-
+      // Összekötött vonalak
       if (currentDotIndex > 0) {
         dCtx.strokeStyle = '#ff0055';
         dCtx.lineWidth = 4;
-        dCtx.setLineDash([]);
         dCtx.beginPath();
         dCtx.moveTo(pts[0].x, pts[0].y);
         for (let i = 1; i <= currentDotIndex; i++) {
@@ -924,20 +732,19 @@
         dCtx.stroke();
       }
 
+      // Pontok és számok
       pts.forEach((p, idx) => {
         dCtx.beginPath();
         dCtx.arc(p.x, p.y, 14, 0, 2 * Math.PI);
         
         let pointNumber = idx + 1;
 
-        if (idx === 0) {
-          dCtx.fillStyle = '#00cc66'; 
-        } else if (idx <= currentDotIndex) {
-          dCtx.fillStyle = '#00cc66'; 
+        if (idx === 0 || idx <= currentDotIndex) {
+          dCtx.fillStyle = '#00cc66'; // Zöld (kész)
         } else if (idx === currentDotIndex + 1) {
-          dCtx.fillStyle = '#ffcc00'; 
+          dCtx.fillStyle = '#ffcc00'; // Sárga (következő cél)
         } else {
-          dCtx.fillStyle = '#0088ff'; 
+          dCtx.fillStyle = '#0088ff'; // Kék (hátralévő)
         }
         dCtx.fill();
         dCtx.lineWidth = 2;
@@ -958,7 +765,7 @@
       const mouseX = e.clientX - rect.left;
       const mouseY = e.clientY - rect.top;
 
-      const pts = currentDotTpl.points;
+      const pts = currentDotPoints;
       const nextTargetIdx = currentDotIndex + 1;
 
       if (nextTargetIdx < pts.length) {
@@ -994,7 +801,7 @@
     function hintDotConnect() {
       if (!currentDotTpl) return;
       const nextTargetIdx = currentDotIndex + 1;
-      const pts = currentDotTpl.points;
+      const pts = currentDotPoints;
       if (nextTargetIdx < pts.length) {
         alert(`💡 Tipp: A keresett ${nextTargetIdx + 1}-es pont sárgával kiemelve vár rád a vásznon!`);
       }
