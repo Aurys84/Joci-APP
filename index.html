@@ -147,7 +147,7 @@
 
     .task-btn:active { background: rgba(0, 255, 204, 0.4); }
 
-    /* Galéria rács */
+    /* Galéria rács (Közös a színezőhöz és vonalvezetéshez) */
     .gallery-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -164,6 +164,8 @@
       cursor: pointer;
       transition: transform 0.2s, box-shadow 0.2s;
     }
+
+    .category-card.girls ~ * .gallery-item { /* ha lányos */ }
 
     .gallery-item:hover {
       transform: translateY(-2px);
@@ -268,7 +270,7 @@
           <h2>🚀 Kalandok & Járművek</h2>
           <div class="task-list">
             <button class="task-btn" onclick="openGallery('boys', 'szinezo')">🎨 Csak Színezős (Galéria)</button>
-            <button class="task-btn" onclick="openTracing('boys')">✏️ Átrajzolós / Vonalvezetés (Süni Samu)</button>
+            <button class="task-btn" onclick="openTracingGallery('boys')">✏️ Átrajzolós / Vonalvezetés (10 féle)</button>
             <button class="task-btn" onclick="openModule('boys', 'pontosszekoto')">⭐ Nyilas Pontösszekötő</button>
             <button class="task-btn" onclick="openModule('boys', 'szamolos')">🔢 Számolós & Logikai Feladatok</button>
           </div>
@@ -279,7 +281,7 @@
           <h2>👑 Varázsvilág & Hercegnők</h2>
           <div class="task-list">
             <button class="task-btn" onclick="openGallery('girls', 'szinezo')">🎨 Csak Színezős (Galéria)</button>
-            <button class="task-btn" onclick="openTracing('girls')">✏️ Átrajzolós (Varázskorona & Ívek)</button>
+            <button class="task-btn" onclick="openTracingGallery('girls')">✏️ Átrajzolós / Vonalvezetés (10 féle)</button>
             <button class="task-btn" onclick="openModule('girls', 'pontosszekoto')">⭐ Nyilas Pontösszekötő</button>
             <button class="task-btn" onclick="openModule('girls', 'szamolos')">💖 Pötty-Számláló Challenge</button>
           </div>
@@ -291,8 +293,15 @@
     <!-- VIEW 2: SZÍNEZŐ GALÉRIA (Almenü) -->
     <div id="galleryView" class="view-section">
       <button class="btn btn-danger" onclick="goBackToMenu()" style="margin-bottom: 10px;">❮ Vissza a Főmenübe</button>
-      <h2 id="galleryTitle" style="color: var(--neon-cyan); text-align: center; margin-top: 0; font-size: 1.1rem;">Válassz egy képet a színezéshez!</h2>
+      <h2 style="color: var(--neon-cyan); text-align: center; margin-top: 0; font-size: 1.1rem;">Válassz egy képet a színezéshez!</h2>
       <div id="galleryContainer" class="gallery-grid"></div>
+    </div>
+
+    <!-- VIEW 2.5: VONALVEZETÉS GALÉRIA (Almenü) -->
+    <div id="tracingGalleryView" class="view-section">
+      <button class="btn btn-danger" onclick="goBackToMenu()" style="margin-bottom: 10px;">❮ Vissza a Főmenübe</button>
+      <h2 style="color: var(--neon-cyan); text-align: center; margin-top: 0; font-size: 1.1rem;">Válassz egy vonalvezetési feladatot!</h2>
+      <div id="tracingGalleryContainer" class="gallery-grid"></div>
     </div>
 
     <!-- VIEW 3: SZÍNEZŐ MUNKATERÜLET (Canvas) -->
@@ -310,13 +319,13 @@
       </div>
     </div>
 
-    <!-- VIEW 4: ÁTRAJZOLÓS / VONALVEZETÉS MUNKATERÜLET (Tracing) -->
+    <!-- VIEW 4: VONALVEZETÉS MUNKATERÜLET (Tracing Canvas) -->
     <div id="tracingView" class="view-section">
-      <button class="btn btn-danger" onclick="goBackToMenu()" style="margin-bottom: 8px;">❮ Vissza a Főmenübe</button>
+      <button class="btn btn-danger" onclick="goBackToTracingGallery()" style="margin-bottom: 8px;">❮ Vissza a Vonalvezetés Galériába</button>
       
       <div class="canvas-workspace">
         <h3 id="tracingTitle" style="color: var(--neon-cyan); margin: 0; font-size: 1rem;">Vonalvezetés Gyakorlat</h3>
-        <p style="font-size: 0.8rem; color: #aaa; margin: 0;">Kövesd az ujjaddal vagy egérrel a szaggatott vonalat!</p>
+        <p style="font-size: 0.8rem; color: #aaa; margin: 0;">Kövesd pontosan az ujjaddal vagy egérrel a szaggatott vonalat!</p>
         
         <canvas id="tracingCanvas" class="interactive-canvas" width="600" height="400"></canvas>
 
@@ -330,7 +339,7 @@
   </div>
 
   <footer>
-    Mátrix Labor Engine v1.5 • Projektigazgatás: Jordan & Nefi
+    Mátrix Labor Engine v1.6 • Projektigazgatás: Jordan & Nefi
   </footer>
 
   <script>
@@ -350,14 +359,43 @@
       ]
     };
 
+    // 10-10 Különböző Vonalvezetés Sablon (Tracing Templates)
+    const tracingTemplates = {
+      boys: [
+        { id: 'zigzag', name: '⚡ Süni Cikk-cakk', desc: 'Éles tüskék vonalvezetése' },
+        { id: 'waves', name: '🌊 Tengeri Hullámok', desc: 'Simogató íves vonalak' },
+        { id: 'spiral', name: '🌀 Galaktikus Csiga', desc: 'Körbeforgó spirál' },
+        { id: 'stairs', name: '🪜 Rakéta Lépcső', desc: 'Szögletes emelkedők' },
+        { id: 'loop', name: '➰ Hurok Expressz', desc: 'Bukfencező pályák' },
+        { id: 'lightning', name: '⚡ Villám Csapás', desc: 'Gyors, ferde vonalak' },
+        { id: 'hills', name: '⛰️ Hegyvonulat', desc: 'Magas csúcsok és völgyek' },
+        { id: 'bridge', name: '🌉 Íves Híd', desc: 'Szép lekerekített ívek' },
+        { id: 'zigzag2', name: '📐 Cikk-cakk Alagút', desc: 'Szoros kanyarok' },
+        { id: 'star_path', name: '⭐ Csillagösvény', desc: 'Pontos irányváltások' }
+      ],
+      girls: [
+        { id: 'crown_curve', name: '👑 Varázskorona Ívek', desc: 'Elegáns koronagörbék' },
+        { id: 'flower_petals', name: '🌸 Virágszirom Körök', desc: 'Lágy virágminták' },
+        { id: 'heart_wave', name: '💖 Szív Hurok', desc: 'Szeretetteljes kanyarok' },
+        { id: 'fairy_trail', name: '🧚‍♀️ Tündér Porhintő', desc: 'Varázslatos hullámok' },
+        { id: 'butterfly_wing', name: '🦋 Pillangó Szárny', desc: 'Szimmetrikus ívek' },
+        { id: 'rainbow', name: '🌈 Szivárvány Ív', desc: 'Színes magas ívek' },
+        { id: 'castle_wall', name: '🏰 Kastély Bástya', desc: 'Derékszögű bástyafalak' },
+        { id: 'star_dust', name: '⭐ Csillagpor Cseppek', desc: 'Lágy hullámzó vonalak' },
+        { id: 'pearl_string', name: '💎 Gyöngysor Ív', desc: 'Egyenletes kis dombok' },
+        { id: 'magic_wand', name: '🪄 Varázspálca Csapás', desc: 'Csillogó egyenesek és ívek' }
+      ]
+    };
+
     let selectedColor = '#ff0055';
-    
-    // Színező Canvas
+    let currentTracingTpl = null;
+    let currentTracingCat = 'boys';
+
+    // Canvas elemek
     const canvas = document.getElementById('coloringCanvas');
     const ctx = canvas.getContext('2d');
     let isDrawing = false;
 
-    // Tracing Canvas (Vonalvezetés)
     const tCanvas = document.getElementById('tracingCanvas');
     const tCtx = tCanvas.getContext('2d');
     let isTracing = false;
@@ -378,6 +416,7 @@
       paletteContainer.appendChild(btn);
     });
 
+    // Színező Galéria megnyitás
     function openGallery(category, type) {
       document.getElementById('mainMenuView').classList.remove('active');
       document.getElementById('galleryView').classList.add('active');
@@ -448,46 +487,98 @@
     function stopDraw() { isDrawing = false; isTracing = false; }
     function clearCanvas() { ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height); }
 
-    // --- TRACING (Vonalvezetés) MUNKATERÜLET LOGIKA ---
-    function openTracing(category) {
-      document.getElementById('mainMenuView').classList.remove('active');
-      document.getElementById('tracingView').classList.add('active');
-      
-      const title = category === 'boys' ? '✏️ Süni Samu Tüskéi (Cikk-cakk vonalvezetés)' : '✏️ Varázskorona Ívei (Finommotorika)';
-      document.getElementById('tracingTitle').innerText = title;
 
-      drawTracingGuide(category);
+    // --- VONALVEZETÉS (TRACING) GALÉRIA ÉS MUNKATERÜLET ---
+    function openTracingGallery(category) {
+      currentTracingCat = category;
+      document.getElementById('mainMenuView').classList.remove('active');
+      document.getElementById('tracingGalleryView').classList.add('active');
+
+      const container = document.getElementById('tracingGalleryContainer');
+      container.innerHTML = '';
+
+      const templates = tracingTemplates[category] || [];
+      templates.forEach(tpl => {
+        const card = document.createElement('div');
+        card.className = 'gallery-item';
+        card.innerHTML = `
+          <div style="font-size: 1.8rem; margin-bottom: 4px;">✏️</div>
+          <h3>${tpl.name}</h3>
+          <p style="font-size: 0.7rem; color: #aaa; margin: 2px 0 0 0;">${tpl.desc}</p>
+        `;
+        card.onclick = () => startTracing(tpl);
+        container.appendChild(card);
+      });
     }
 
-    function drawTracingGuide(category) {
+    function startTracing(tpl) {
+      currentTracingTpl = tpl;
+      document.getElementById('tracingGalleryView').classList.remove('active');
+      document.getElementById('tracingView').classList.add('active');
+      document.getElementById('tracingTitle').innerText = tpl.name;
+
+      drawTracingGuide(tpl.id);
+    }
+
+    function drawTracingGuide(id) {
       tCtx.fillStyle = '#ffffff';
       tCtx.fillRect(0, 0, tCanvas.width, tCanvas.height);
 
-      // Szaggatott vezetővonal rajzolása
       tCtx.strokeStyle = '#0088ff';
       tCtx.lineWidth = 6;
-      tCtx.setLineDash([10, 10]); // Szaggatott vonal
+      tCtx.setLineDash([10, 10]);
       tCtx.beginPath();
 
-      if (category === 'boys') {
-        // Cikk-cakk vonal (Süni tüskék)
-        tCtx.moveTo(50, 300);
-        tCtx.lineTo(150, 100);
-        tCtx.lineTo(250, 300);
-        tCtx.lineTo(350, 100);
-        tCtx.lineTo(450, 300);
-        tCtx.lineTo(550, 100);
-      } else {
-        // Hullámos / Íves vonal (Varázskorona)
-        tCtx.moveTo(50, 200);
-        tCtx.quadraticCurveTo(175, 50, 300, 200);
-        tCtx.quadraticCurveTo(425, 350, 550, 200);
+      switch(id) {
+        case 'zigzag':
+        case 'zigzag2':
+          tCtx.moveTo(50, 300); tCtx.lineTo(130, 100); tCtx.lineTo(210, 300); tCtx.lineTo(290, 100); tCtx.lineTo(370, 300); tCtx.lineTo(450, 100); tCtx.lineTo(530, 300);
+          break;
+        case 'waves':
+        case 'rainbow':
+          tCtx.moveTo(50, 250); tCtx.quadraticCurveTo(150, 100, 250, 250); tCtx.quadraticCurveTo(350, 400, 450, 250); tCtx.quadraticCurveTo(520, 150, 570, 250);
+          break;
+        case 'spiral':
+          tCtx.moveTo(300, 200);
+          for (let i = 0; i < 30; i++) {
+            let angle = 0.2 * i;
+            let x = 300 + (10 + i * 5) * Math.cos(angle);
+            let y = 200 + (10 + i * 5) * Math.sin(angle);
+            tCtx.lineTo(x, y);
+          }
+          break;
+        case 'stairs':
+        case 'castle_wall':
+          tCtx.moveTo(50, 320); tCtx.lineTo(50, 250); tCtx.lineTo(130, 250); tCtx.lineTo(130, 180); tCtx.lineTo(210, 180); tCtx.lineTo(210, 110); tCtx.lineTo(290, 110);
+          break;
+        case 'loop':
+          tCtx.moveTo(50, 200); tCtx.bezierCurveTo(150, 50, 250, 350, 350, 200); tCtx.bezierCurveTo(450, 50, 550, 350, 570, 200);
+          break;
+        case 'lightning':
+        case 'magic_wand':
+          tCtx.moveTo(100, 50); tCtx.lineTo(250, 180); tCtx.lineTo(180, 220); tCtx.lineTo(450, 350);
+          break;
+        case 'hills':
+        case 'crown_curve':
+          tCtx.moveTo(50, 300); tCtx.quadraticCurveTo(175, 80, 300, 300); tCtx.quadraticCurveTo(425, 80, 550, 300);
+          break;
+        case 'bridge':
+        case 'pearl_string':
+          tCtx.moveTo(50, 200); tCtx.quadraticCurveTo(300, 50, 550, 200);
+          break;
+        case 'flower_petals':
+        case 'star_dust':
+          tCtx.arc(300, 200, 100, 0, 2 * Math.PI);
+          break;
+        default:
+          tCtx.moveTo(50, 200); tCtx.lineTo(550, 200);
       }
+
       tCtx.stroke();
-      tCtx.setLineDash([]); // Visszaállíték a sima vonalra a rajzoláshoz
+      tCtx.setLineDash([]);
     }
 
-    // Tracing egér / érintés események
+    // Tracing események
     tCanvas.addEventListener('mousedown', e => startTrace(e));
     tCanvas.addEventListener('mousemove', e => traceDraw(e));
     tCanvas.addEventListener('mouseup', stopDraw);
@@ -507,21 +598,21 @@
       if (!isTracing) return;
       const rect = tCanvas.getBoundingClientRect();
       tCtx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
-      tCtx.strokeStyle = '#ff0055'; // A rajzolt vonal neon magenta színű lesz
+      tCtx.strokeStyle = '#ff0055';
       tCtx.lineWidth = 8;
       tCtx.lineCap = 'round';
       tCtx.stroke();
     }
 
     function clearTracing() {
-      // Újra kirajzoljuk az alapvezetőt
-      const activeTitle = document.getElementById('tracingTitle').innerText;
-      const cat = activeTitle.includes('Süni') ? 'boys' : 'girls';
-      drawTracingGuide(cat);
+      if (currentTracingTpl) {
+        drawTracingGuide(currentTracingTpl.id);
+      }
     }
 
     function goBackToMenu() {
       document.getElementById('galleryView').classList.remove('active');
+      document.getElementById('tracingGalleryView').classList.remove('active');
       document.getElementById('canvasView').classList.remove('active');
       document.getElementById('tracingView').classList.remove('active');
       document.getElementById('mainMenuView').classList.add('active');
@@ -530,6 +621,11 @@
     function goBackToGallery() {
       document.getElementById('canvasView').classList.remove('active');
       document.getElementById('galleryView').classList.add('active');
+    }
+
+    function goBackToTracingGallery() {
+      document.getElementById('tracingView').classList.remove('active');
+      document.getElementById('tracingGalleryView').classList.add('active');
     }
 
     function openModule(category, type) {
