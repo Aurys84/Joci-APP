@@ -341,13 +341,13 @@
       </div>
     </div>
 
-    <!-- VIEW 5: VALÓDI KÉPALAPÚ SZÁMSZEKÖTŐS (ÜVEGLAP MÓD) -->
+    <!-- VIEW 5: SZÁMSZEKÖTŐS KÉP (ÜVEGLAP MÓD - HÁTTÉRKÉP + RAJZOLÓ) -->
     <div id="dotConnectView" class="view-section">
       <button class="btn btn-danger" onclick="goBackToDotConnectGallery()" style="margin-bottom: 8px;">❮ Vissza a Számösszekötős Galériába</button>
       
       <div class="canvas-workspace">
         <h3 id="dotConnectTitle" style="color: var(--neon-cyan); margin: 0; font-size: 1rem;">Számösszekötős Kép (Üveglap Mód)</h3>
-        <p style="font-size: 0.8rem; color: var(--accent-gold); margin: 0;">Alul a letöltött kép, rajta a pontok! Kösd össze szabad kézzel a filccel!</p>
+        <p style="font-size: 0.8rem; color: var(--accent-gold); margin: 0;">Alul a számösszekötős kép, rajta a pontok! Kösd össze szabad kézzel a filccel!</p>
         
         <canvas id="dotCanvas" class="interactive-canvas" width="650" height="420"></canvas>
 
@@ -361,7 +361,7 @@
   </div>
 
   <footer>
-    Mátrix Labor Engine v1.36 • Projektigazgatás: Jordan & Nefi
+    Mátrix Labor Engine v1.37 • Projektigazgatás: Jordan & Nefi
   </footer>
 
   <script>
@@ -407,7 +407,6 @@
       ]
     };
 
-    // VALÓDI KÉPALAPÚ SZÁMSZEKÖTŐS FÁJLOK (A KÉPEK A HÁTTÉRBEN)
     const dotConnectTemplates = {
       boys: [
         { id: 'train', name: '🚂 Gőzmozdony Számösszekötő', img: 'images/dot_train.png', desc: 'Gőzmozdony pontösszekötős kép.' },
@@ -608,6 +607,13 @@
           sampleLine(175, 335, 175, 85);
           tCtx.rect(175, 85, 300, 250);
           break;
+        case 'rectangle':
+          sampleLine(100, 110, 550, 110);
+          sampleLine(550, 110, 550, 310);
+          sampleLine(550, 310, 100, 310);
+          sampleLine(100, 310, 100, 110);
+          tCtx.rect(100, 110, 450, 200);
+          break;
         default:
           sampleArc(325, 210, 120, 0, 2 * Math.PI);
           tCtx.arc(325, 210, 120, 0, 2 * Math.PI);
@@ -660,7 +666,7 @@
       alert('Hatalmas ügyesség! Tökéletes, hibátlan vonalvezetés a Mátrix Labor előírásai szerint! 🎉🚀');
     }
 
-    // --- VALÓDI KÉPALAPÚ SZÁMSZEKÖTŐS (ÜVEGLAP MÓD - KÉP BETÖLTÉSE ALULRA) ---
+    // --- SZÁMSZEKÖTŐS KÉPEK GALÉRIA ÉS ÜVEGLAP MÓD ---
     function openDotConnectGallery(category) {
       document.getElementById('mainMenuView').classList.remove('active');
       document.getElementById('dotConnectGalleryView').classList.add('active');
@@ -690,17 +696,15 @@
       dCtx.fillStyle = '#ffffff';
       dCtx.fillRect(0, 0, dCanvas.width, dCanvas.height);
 
-      // Kép betöltése a háttérbe (üveglap alá)
       const img = new Image();
       img.src = tpl.img;
       img.onload = function() {
         dCtx.drawImage(img, 50, 40, 550, 340);
       };
       img.onerror = function() {
-        // Fallback, ha a képfájl még nem érkezett meg a mappába
-        dCtx.fillStyle = '#f1f5f9';
-        dCtx.fillRect(50, 40, 550, 340);
-        dCtx.font = '16px Courier New';
+        dCtx.fillStyle = '#ffffff';
+        dCtx.fillRect(0, 0, dCanvas.width, dCanvas.height);
+        dCtx.font = '15px Courier New';
         dCtx.fillStyle = '#64748b';
         dCtx.textAlign = 'center';
         dCtx.fillText('Helyezd el a képet itt: ' + tpl.img, dCanvas.width / 2, dCanvas.height / 2);
