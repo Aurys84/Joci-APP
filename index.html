@@ -341,13 +341,13 @@
       </div>
     </div>
 
-    <!-- VIEW 5: SZÁMSZEKÖTŐS KÉP (ÜVEGLAP MÓD - HÁTTÉRKÉP + RAJZOLÓ) -->
+    <!-- VIEW 5: LETÖLTÖTT KÉPALAPÚ SZÁMSZEKÖTŐS (ÜVEGLAP MÓD) -->
     <div id="dotConnectView" class="view-section">
       <button class="btn btn-danger" onclick="goBackToDotConnectGallery()" style="margin-bottom: 8px;">❮ Vissza a Számösszekötős Galériába</button>
       
       <div class="canvas-workspace">
         <h3 id="dotConnectTitle" style="color: var(--neon-cyan); margin: 0; font-size: 1rem;">Számösszekötős Kép (Üveglap Mód)</h3>
-        <p style="font-size: 0.8rem; color: var(--accent-gold); margin: 0;">Alul a számösszekötős kép, rajta a pontok! Kösd össze szabad kézzel a filccel!</p>
+        <p style="font-size: 0.8rem; color: var(--accent-gold); margin: 0;">Alul a letöltött kép, rajta a számok! Kösd össze szabad kézzel a filccel!</p>
         
         <canvas id="dotCanvas" class="interactive-canvas" width="650" height="420"></canvas>
 
@@ -361,7 +361,7 @@
   </div>
 
   <footer>
-    Mátrix Labor Engine v1.37 • Projektigazgatás: Jordan & Nefi
+    Mátrix Labor Engine v1.38 • Projektigazgatás: Jordan & Nefi
   </footer>
 
   <script>
@@ -407,6 +407,7 @@
       ]
     };
 
+    // LETÖLTÖTT KÉPEK BEHÍVÁSA A SZÁMÖSSZEKÖTŐS ÜVEGLAP ALÁ
     const dotConnectTemplates = {
       boys: [
         { id: 'train', name: '🚂 Gőzmozdony Számösszekötő', img: 'images/dot_train.png', desc: 'Gőzmozdony pontösszekötős kép.' },
@@ -666,7 +667,7 @@
       alert('Hatalmas ügyesség! Tökéletes, hibátlan vonalvezetés a Mátrix Labor előírásai szerint! 🎉🚀');
     }
 
-    // --- SZÁMSZEKÖTŐS KÉPEK GALÉRIA ÉS ÜVEGLAP MÓD ---
+    // --- SZÁMSZEKÖTŐS KÉPEK GALÉRIA ÉS ÜVEGLAP (KÉP BEHÍVÁS) ---
     function openDotConnectGallery(category) {
       document.getElementById('mainMenuView').classList.remove('active');
       document.getElementById('dotConnectGalleryView').classList.add('active');
@@ -707,7 +708,7 @@
         dCtx.font = '15px Courier New';
         dCtx.fillStyle = '#64748b';
         dCtx.textAlign = 'center';
-        dCtx.fillText('Helyezd el a képet itt: ' + tpl.img, dCanvas.width / 2, dCanvas.height / 2);
+        dCtx.fillText('Letöltött kép betöltése: ' + tpl.img, dCanvas.width / 2, dCanvas.height / 2);
       };
     }
 
