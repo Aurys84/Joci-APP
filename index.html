@@ -361,8 +361,35 @@
   </div>
 
   <footer>
-    Mátrix Labor Engine v1.25 • Projektigazgatás: Jordan & Nefi
+    Mátrix Labor Engine v1.26 • Projektigazgatás: Jordan & Nefi
   </footer>
+
+  <!-- REJTETT SVG KONTÉNER A RÉSZLETES VEKTOR KONTÚROKHOZ ÉS AUTOMATIKUS PONTKIOSZTÁSHOZ -->
+  <svg style="display:none;" width="600" height="400">
+    <!-- Fiús & Univerzális Útvonalak -->
+    <path id="path_dc_train" d="M 120 280 L 220 280 L 220 230 L 270 230 L 270 280 L 440 280 L 440 200 L 360 140 L 200 140 L 160 200 L 120 230 Z"></path>
+    <path id="path_dc_dino" d="M 140 310 C 120 280, 110 240, 130 200 C 150 160, 190 140, 240 120 C 300 100, 380 120, 420 180 C 440 220, 420 280, 360 300 L 330 340 L 270 340 L 250 300 L 180 300 Z"></path>
+    <path id="path_dc_car" d="M 140 280 L 180 230 C 220 180, 380 180, 420 230 L 460 280 C 470 300, 430 310, 390 280 L 330 280 L 310 310 L 210 310 L 190 280 Z"></path>
+    <path id="path_dc_rocket" d="M 300 70 L 340 150 L 390 260 L 420 320 L 340 290 L 300 340 L 260 290 L 180 320 L 210 260 L 260 150 Z"></path>
+    <path id="path_dc_robot" d="M 240 100 L 360 100 L 360 150 L 410 150 L 410 270 L 350 270 L 350 340 L 330 340 L 330 270 L 270 270 L 270 340 L 250 340 L 250 270 L 190 270 L 190 150 L 240 150 Z"></path>
+    <path id="path_dc_ship" d="M 150 240 L 450 240 L 410 320 L 190 320 Z M 300 240 L 300 80 L 380 160 Z"></path>
+    <path id="path_dc_ball" d="M 300 80 C 370 80, 430 140, 430 200 C 430 270, 370 330, 300 330 C 230 330, 170 270, 170 200 C 170 140, 230 80, 300 80 Z"></path>
+    <path id="path_dc_star" d="M 300 70 L 340 150 L 430 160 L 360 220 L 390 310 L 300 260 L 210 310 L 240 220 L 170 160 L 260 150 Z"></path>
+    <path id="path_dc_triangle" d="M 300 70 L 480 330 L 120 330 Z"></path>
+    <path id="path_dc_square" d="M 160 100 L 440 100 L 440 320 L 160 320 Z"></path>
+
+    <!-- Lányos & Hercegnős Útvonalak -->
+    <path id="path_dc_mermaid" d="M 300 70 C 350 120, 350 200, 420 320 C 350 280, 250 280, 180 320 C 250 200, 250 120, 300 70 Z"></path>
+    <path id="path_dc_unicorn" d="M 180 330 C 180 220, 250 140, 320 60 C 360 150, 400 220, 420 330 Z"></path>
+    <path id="path_dc_crown" d="M 150 300 L 180 120 L 240 210 L 300 70 L 360 210 L 420 120 L 450 300 Z"></path>
+    <path id="path_dc_castle" d="M 130 340 L 130 190 L 160 120 L 190 190 L 190 340 L 300 340 L 300 80 L 410 340 Z"></path>
+    <path id="path_dc_butterfly" d="M 300 200 C 400 100, 500 150, 450 280 C 400 350, 300 250, 300 250 C 300 250, 200 350, 150 280 C 100 150, 200 100, 300 200 Z"></path>
+    <path id="path_dc_flower" d="M 300 360 L 300 220 C 380 200, 380 100, 300 120 C 220 100, 220 200, 300 220 Z"></path>
+    <path id="path_dc_heart" d="M 300 340 C 200 240, 140 180, 160 100 C 180 60, 250 70, 300 160 C 350 70, 420 60, 440 100 C 460 180, 400 240, 300 340 Z"></path>
+    <path id="path_dc_circle" d="M 420 200 C 420 270, 370 330, 300 330 C 230 330, 180 270, 180 200 C 180 130, 230 80, 300 80 C 370 80, 420 130, 420 200 Z"></path>
+    <path id="path_dc_star" d="M 300 70 L 340 150 L 430 160 L 360 220 L 390 310 L 300 260 L 210 310 L 240 220 L 170 160 L 260 150 Z"></path>
+    <path id="path_dc_fairy" d="M 160 340 L 340 160 L 430 80 L 460 120 L 380 200 Z"></path>
+  </svg>
 
   <script>
     const coloringTemplates = {
@@ -407,105 +434,53 @@
       ]
     };
 
-    // RÉSZLETES, GAZDAG, 18-22 PONTOS VALÓDI KÉP-KONTÚROK A PONTRÓL PONTRA JÁTÉKHOZ
+    // PONTÖSSZEKÖTŐ LISTA (AZONOSÍTÓK A REJTETT SVG PATH-OKHOZ)
     const dotConnectTemplates = {
       boys: [
-        { id: 'dc_train', name: '🚂 Gőzmozdony', desc: 'Kössd össze a gőzmozdony pontjait 1-től 20-ig!', points: [
-          {x: 140, y: 300}, {x: 220, y: 300}, {x: 220, y: 330}, {x: 260, y: 330}, {x: 260, y: 300},
-          {x: 360, y: 300}, {x: 360, y: 330}, {x: 400, y: 330}, {x: 400, y: 300}, {x: 460, y: 300},
-          {x: 460, y: 230}, {x: 400, y: 190}, {x: 350, y: 140}, {x: 230, y: 140},
-          {x: 180, y: 180}, {x: 140, y: 220}, {x: 140, y: 300}
-        ]},
-        { id: 'dc_dino', name: '🦖 T-Rex Dínó', desc: 'Kössd össze a dínó pontjait 1-től 18-ig!', points: [
-          {x: 130, y: 280}, {x: 170, y: 240}, {x: 220, y: 280}, {x: 250, y: 340},
-          {x: 290, y: 340}, {x: 280, y: 270}, {x: 340, y: 320}, {x: 380, y: 320},
-          {x: 350, y: 250}, {x: 410, y: 200}, {x: 440, y: 150}, {x: 400, y: 130},
-          {x: 350, y: 160}, {x: 290, y: 130}, {x: 230, y: 150}, {x: 180, y: 190},
-          {x: 150, y: 230}, {x: 130, y: 280}
-        ]},
-        { id: 'dc_car', name: '🏎️ Sportautó', desc: 'Kössd össze az autó pontjait!', points: [
-          {x: 140, y: 290}, {x: 180, y: 240}, {x: 230, y: 190}, {x: 330, y: 190},
-          {x: 390, y: 240}, {x: 440, y: 280}, {x: 460, y: 300}, {x: 410, y: 300},
-          {x: 360, y: 270}, {x: 330, y: 300}, {x: 270, y: 300}, {x: 240, y: 270},
-          {x: 190, y: 300}, {x: 140, y: 290}
-        ]},
-        { id: 'dc_rocket', name: '🚀 Mátrix Űrhajó', desc: 'Kössd össze az űrhajó pontjait!', points: [
-          {x: 300, y: 60}, {x: 330, y: 130}, {x: 350, y: 230}, {x: 410, y: 310},
-          {x: 350, y: 280}, {x: 300, y: 340}, {x: 250, y: 280}, {x: 190, y: 310},
-          {x: 250, y: 230}, {x: 270, y: 130}, {x: 300, y: 60}
-        ]},
-        { id: 'dc_robot', name: '🤖 Robot Robi', desc: 'Kössd össze a robot pontjait!', points: [
-          {x: 250, y: 90}, {x: 350, y: 90}, {x: 350, y: 140}, {x: 410, y: 140},
-          {x: 410, y: 260}, {x: 350, y: 260}, {x: 350, y: 340}, {x: 330, y: 340},
-          {x: 330, y: 260}, {x: 270, y: 260}, {x: 270, y: 340}, {x: 250, y: 340},
-          {x: 250, y: 260}, {x: 190, y: 260}, {x: 190, y: 140}, {x: 250, y: 140}, {x: 250, y: 90}
-        ]},
-        { id: 'dc_ship', name: '⚓ Kalózhajó', desc: 'Kössd össze a hajó pontjait!', points: [
-          {x: 300, y: 60}, {x: 300, y: 220}, {x: 460, y: 220}, {x: 410, y: 320},
-          {x: 190, y: 320}, {x: 140, y: 220}, {x: 300, y: 220}, {x: 300, y: 60}
-        ]},
-        { id: 'dc_ball', name: '⚽ Focilabda', desc: 'Kössd össze a labda pontjait!', points: [
-          {x: 300, y: 80}, {x: 380, y: 110}, {x: 430, y: 180}, {x: 420, y: 260},
-          {x: 360, y: 320}, {x: 300, y: 330}, {x: 240, y: 320}, {x: 180, y: 260},
-          {x: 170, y: 180}, {x: 220, y: 110}, {x: 300, y: 80}
-        ]},
-        { id: 'dc_star', name: '⭐ Csillag', desc: 'Kössd össze a csillag pontjait!', points: [
-          {x: 300, y: 70}, {x: 340, y: 150}, {x: 440, y: 160}, {x: 360, y: 220},
-          {x: 390, y: 320}, {x: 300, y: 260}, {x: 210, y: 320}, {x: 240, y: 220},
-          {x: 160, y: 160}, {x: 260, y: 150}, {x: 300, y: 70}
-        ]},
-        { id: 'dc_triangle', name: '🔺 Háromszög', desc: 'Kössd össze a háromszög pontjait!', points: [
-          {x: 300, y: 70}, {x: 500, y: 330}, {x: 100, y: 330}, {x: 300, y: 70}
-        ]},
-        { id: 'dc_square', name: '🟦 Négyzet', desc: 'Kössd össze a négyzet pontjait!', points: [
-          {x: 150, y: 90}, {x: 450, y: 90}, {x: 450, y: 330}, {x: 150, y: 330}, {x: 150, y: 90}
-        ]}
+        { id: 'dc_train', name: '🚂 Gőzmozdony', desc: 'Kössd össze a gőzmozdony pontjait!' },
+        { id: 'dc_dino', name: '🦖 T-Rex Dínó', desc: 'Kössd össze a dínó pontjait!' },
+        { id: 'dc_car', name: '🏎️ Sportautó', desc: 'Kössd össze az autó pontjait!' },
+        { id: 'dc_rocket', name: '🚀 Mátrix Űrhajó', desc: 'Kössd össze az űrhajó pontjait!' },
+        { id: 'dc_robot', name: '🤖 Robot Robi', desc: 'Kössd össze a robot pontjait!' },
+        { id: 'dc_ship', name: '⚓ Kalózhajó', desc: 'Kössd össze a hajó pontjait!' },
+        { id: 'dc_ball', name: '⚽ Focilabda', desc: 'Kössd össze a labda pontjait!' },
+        { id: 'dc_star', name: '⭐ Csillag', desc: 'Kössd össze a csillag pontjait!' },
+        { id: 'dc_triangle', name: '🔺 Háromszög', desc: 'Kössd össze a háromszög pontjait!' },
+        { id: 'dc_square', name: '🟦 Négyzet', desc: 'Kössd össze a négyzet pontjait!' }
       ],
       girls: [
-        { id: 'dc_mermaid', name: '🧜‍♀️ Hableány Palota', desc: 'Kössd össze a hableány pontjait!', points: [
-          {x: 300, y: 60}, {x: 350, y: 120}, {x: 340, y: 210}, {x: 430, y: 320},
-          {x: 300, y: 270}, {x: 170, y: 320}, {x: 260, y: 210}, {x: 250, y: 120}, {x: 300, y: 60}
-        ]},
-        { id: 'dc_unicorn', name: '🦄 Unikornis Kaland', desc: 'Kössd össze az unikornis pontjait!', points: [
-          {x: 180, y: 330}, {x: 180, y: 200}, {x: 250, y: 130}, {x: 330, y: 60},
-          {x: 370, y: 150}, {x: 420, y: 220}, {x: 430, y: 330}, {x: 180, y: 330}
-        ]},
-        { id: 'dc_crown', name: '👑 Hercegnő Korona', desc: 'Kössd össze a korona pontjait!', points: [
-          {x: 140, y: 300}, {x: 170, y: 110}, {x: 230, y: 190}, {x: 300, y: 70},
-          {x: 370, y: 190}, {x: 430, y: 110}, {x: 460, y: 300}, {x: 140, y: 300}
-        ]},
-        { id: 'dc_castle', name: '🏰 Varázskastély', desc: 'Kössd össze a kastély pontjait!', points: [
-          {x: 120, y: 340}, {x: 120, y: 180}, {x: 160, y: 110}, {x: 200, y: 180},
-          {x: 200, y: 340}, {x: 300, y: 340}, {x: 300, y: 70}, {x: 400, y: 340},
-          {x: 480, y: 340}, {x: 120, y: 340}
-        ]},
-        { id: 'dc_butterfly', name: '🦋 Pillangó Szárny', desc: 'Kössd össze a pillangó pontjait!', points: [
-          {x: 300, y: 190}, {x: 480, y: 80}, {x: 540, y: 220}, {x: 300, y: 330},
-          {x: 60, y: 220}, {x: 120, y: 80}, {x: 300, y: 190}
-        ]},
-        { id: 'dc_flower', name: '🌸 Tavaszi Virág', desc: 'Kössd össze a virág pontjait!', points: [
-          {x: 300, y: 360}, {x: 300, y: 220}, {x: 300, y: 90}, {x: 400, y: 150},
-          {x: 300, y: 220}, {x: 200, y: 150}, {x: 300, y: 360}
-        ]},
-        { id: 'dc_heart', name: '💖 Szívecske', desc: 'Kössd össze a szív pontjait!', points: [
-          {x: 300, y: 340}, {x: 130, y: 200}, {x: 160, y: 80}, {x: 300, y: 160},
-          {x: 440, y: 80}, {x: 470, y: 200}, {x: 300, y: 340}
-        ]},
-        { id: 'dc_circle', name: '🔵 Kör Alakzat', desc: 'Kössd össze a kör pontjait!', points: [
-          {x: 420, y: 200}, {x: 380, y: 283}, {x: 300, y: 320}, {x: 220, y: 283},
-          {x: 180, y: 200}, {x: 220, y: 117}, {x: 300, y: 80}, {x: 380, y: 117}, {x: 420, y: 200}
-        ]},
-        { id: 'dc_star', name: '⭐ Csillagfény', desc: 'Kössd össze a csillag pontjait!', points: [
-          {x: 300, y: 70}, {x: 340, y: 150}, {x: 440, y: 160}, {x: 360, y: 220},
-          {x: 390, y: 320}, {x: 300, y: 260}, {x: 210, y: 320}, {x: 240, y: 220},
-          {x: 160, y: 160}, {x: 260, y: 150}, {x: 300, y: 70}
-        ]},
-        { id: 'dc_fairy', name: '🧚‍♀️ Tündér Pálca', desc: 'Kössd össze a pálca pontjait!', points: [
-          {x: 160, y: 340}, {x: 340, y: 160}, {x: 420, y: 80}, {x: 460, y: 120},
-          {x: 380, y: 200}, {x: 340, y: 160}
-        ]}
+        { id: 'dc_mermaid', name: '🧜‍♀️ Hableány Palota', desc: 'Kössd össze a hableány pontjait!' },
+        { id: 'dc_unicorn', name: '🦄 Unikornis Kaland', desc: 'Kössd össze az unikornis pontjait!' },
+        { id: 'dc_crown', name: '👑 Hercegnő Korona', desc: 'Kössd össze a korona pontjait!' },
+        { id: 'dc_castle', name: '🏰 Varázskastély', desc: 'Kössd össze a kastély pontjait!' },
+        { id: 'dc_butterfly', name: '🦋 Pillangó Szárny', desc: 'Kössd össze a pillangó pontjait!' },
+        { id: 'dc_flower', name: '🌸 Tavaszi Virág', desc: 'Kössd össze a virág pontjait!' },
+        { id: 'dc_heart', name: '💖 Szívecske', desc: 'Kössd össze a szív pontjait!' },
+        { id: 'dc_circle', name: '🔵 Kör Alakzat', desc: 'Kössd össze a kör pontjait!' },
+        { id: 'dc_star', name: '⭐ Csillagfény', desc: 'Kössd össze a csillag pontjait!' },
+        { id: 'dc_fairy', name: '🧚‍♀️ Tündér Pálca', desc: 'Kössd össze a pálca pontjait!' }
       ]
     };
+
+    // AUTOMATIKUS VEKTOROS PONTKIVONÁS (SVG PATH MENTÉN 24 RÉSZLETES PONT)
+    function generatePointsFromSvgPath(pathId, numPoints = 24) {
+      const pathEl = document.getElementById(pathId);
+      if (!pathEl) {
+        let fallback = [];
+        for(let i=0; i<numPoints; i++) {
+          let angle = (i / numPoints) * 2 * Math.PI;
+          fallback.push({x: Math.round(300 + 120 * Math.cos(angle)), y: Math.round(200 + 100 * Math.sin(angle))});
+        }
+        return fallback;
+      }
+      let length = pathEl.getTotalLength();
+      let pts = [];
+      for (let i = 0; i < numPoints; i++) {
+        let pt = pathEl.getPointAtLength((i / numPoints) * length);
+        pts.push({ x: Math.round(pt.x), y: Math.round(pt.y) });
+      }
+      return pts;
+    }
 
     let selectedColor = '#ff0055';
     let currentTracingTpl = null;
@@ -513,6 +488,7 @@
     let userStrokePoints = [];
 
     let currentDotTpl = null;
+    let currentDotPoints = [];
     let currentDotConnectedCount = 0; 
 
     const canvas = document.getElementById('coloringCanvas');
@@ -751,7 +727,7 @@
           for(let i=0; i<kpts.length-1; i++) sampleLine(kpts[i].x, kpts[i].y, kpts[i+1].x, kpts[i+1].y);
           tCtx.lineTo(120, 120); tCtx.lineTo(190, 250); tCtx.lineTo(260, 100); tCtx.lineTo(330, 250); tCtx.lineTo(400, 120); tCtx.lineTo(470, 280);
           break;
-        case 'g2': // JAVÍTVA: Igazi többszirmú virág (középpont + 6 szirom)
+        case 'g2':
           let cx = 300, cy = 200, r = 40;
           sampleArc(cx, cy, r, 0, 2 * Math.PI);
           tCtx.arc(cx, cy, r, 0, 2 * Math.PI);
@@ -862,7 +838,7 @@
       }
     }
 
-    // --- PONTRÓL PONTRA / SZÁMSZEKÖTŐ LOGIKA ÉS RÉSZLETES KONTÚROK ---
+    // --- PONTRÓL PONTRA / SZÁMSZEKÖTŐ LOGIKA (AUTOMATIKUS VEKTOR PATH PONTKIVONÁSSAL) ---
     function openDotConnectGallery(category) {
       document.getElementById('mainMenuView').classList.remove('active');
       document.getElementById('dotConnectGalleryView').classList.add('active');
@@ -886,6 +862,9 @@
     function startDotConnectGame(tpl) {
       currentDotTpl = tpl;
       currentDotConnectedCount = 0; 
+      // Itt generáljuk le a rejtett SVG path-ból a 24 precíz pontot automatikusan!
+      currentDotPoints = generatePointsFromSvgPath('path_' + tpl.id, 24);
+
       document.getElementById('dotConnectGalleryView').classList.remove('active');
       document.getElementById('dotConnectView').classList.add('active');
       document.getElementById('dotConnectTitle').innerText = tpl.name;
@@ -894,23 +873,20 @@
       renderDotCanvas();
     }
 
-    function drawObjectSilhouette(id) {
+    function drawObjectSilhouette(pathId) {
       dCtx.save();
       dCtx.strokeStyle = '#cbd5e1';
       dCtx.fillStyle = '#f8fafc';
       dCtx.lineWidth = 2;
       dCtx.setLineDash([4, 4]);
-      dCtx.beginPath();
 
-      const pts = currentDotTpl.points;
-      if (pts && pts.length > 0) {
-        dCtx.moveTo(pts[0].x, pts[0].y);
-        for (let i = 1; i < pts.length; i++) {
-          dCtx.lineTo(pts[i].x, pts[i].y);
-        }
-        dCtx.closePath();
-        dCtx.fill();
-        dCtx.stroke();
+      const pathEl = document.getElementById(pathId);
+      if (pathEl) {
+        dCtx.beginPath();
+        // Átküldjük a Path2D-t a Canvas-ra
+        let p2d = new Path2D(pathEl.getAttribute('d'));
+        dCtx.fill(p2d);
+        dCtx.stroke(p2d);
       }
       dCtx.restore();
     }
@@ -919,9 +895,10 @@
       dCtx.fillStyle = '#ffffff';
       dCtx.fillRect(0, 0, dCanvas.width, dCanvas.height);
 
+      // Háttér sziluett kirajzolása a valós SVG path alapján
       drawObjectSilhouette(currentDotTpl.id);
 
-      const pts = currentDotTpl.points;
+      const pts = currentDotPoints;
 
       if (currentDotConnectedCount > 0) {
         dCtx.strokeStyle = '#ff0055';
@@ -937,16 +914,16 @@
 
       pts.forEach((p, idx) => {
         dCtx.beginPath();
-        dCtx.arc(p.x, p.y, 14, 0, 2 * Math.PI);
+        dCtx.arc(p.x, p.y, 12, 0, 2 * Math.PI);
         
         let pointNumber = idx + 1;
 
         if (idx < currentDotConnectedCount) {
-          dCtx.fillStyle = '#00cc66'; 
+          dCtx.fillStyle = '#00cc66'; // Zöld (kész)
         } else if (idx === currentDotConnectedCount) {
-          dCtx.fillStyle = '#ffcc00'; 
+          dCtx.fillStyle = '#ffcc00'; // Sárga (következő cél)
         } else {
-          dCtx.fillStyle = '#0088ff'; 
+          dCtx.fillStyle = '#0088ff'; // Kék (hátralévő)
         }
         dCtx.fill();
         dCtx.lineWidth = 2;
@@ -954,7 +931,7 @@
         dCtx.stroke();
 
         dCtx.fillStyle = '#ffffff';
-        dCtx.font = 'bold 11px Courier New';
+        dCtx.font = 'bold 10px Courier New';
         dCtx.textAlign = 'center';
         dCtx.textBaseline = 'middle';
         dCtx.fillText(pointNumber, p.x, p.y);
@@ -967,7 +944,7 @@
       const mouseX = e.clientX - rect.left;
       const mouseY = e.clientY - rect.top;
 
-      const pts = currentDotTpl.points;
+      const pts = currentDotPoints;
       const targetIdx = currentDotConnectedCount + 1; 
 
       if (targetIdx < pts.length) {
@@ -1003,7 +980,7 @@
     function hintDotConnect() {
       if (!currentDotTpl) return;
       const targetIdx = currentDotConnectedCount;
-      const pts = currentDotTpl.points;
+      const pts = currentDotPoints;
       if (targetIdx < pts.length) {
         alert(`💡 Tipp: A keresett ${targetIdx + 1}-es pont sárgával kiemelve vár rád a vásznon!`);
       }
