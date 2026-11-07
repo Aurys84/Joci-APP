@@ -337,7 +337,7 @@
   </div>
 
   <footer>
-    Mátrix Labor Engine v1.10 • Projektigazgatás: Jordan & Nefi
+    Mátrix Labor Engine v1.11 • Projektigazgatás: Jordan & Nefi
   </footer>
 
   <script>
@@ -356,7 +356,6 @@
       ]
     };
 
-    // Bővített vonalvezetés sablonok alappal (Kör, Háromszög, Négyzet, Téglalap beépítve)
     const tracingTemplates = {
       boys: [
         { id: 'circle', name: '🔵 Tökéletes Kör', desc: 'Kerek alapforma gyakorlat' },
@@ -694,29 +693,39 @@
       }
     }
 
-    // --- ULTRA SZIGORÚ GEOMETRIAI ÚTVONAL-ELLENŐRZŐ ---
+    // --- KETTŐS SZŰRŐS ELLENŐRZŐ (Lefedettség + Kilengés büntetés) ---
     function checkTracingResult() {
       if (userStrokePoints.length < 15) {
         alert('Hé, kis művész! Előbb rajzold végig a vonalat a mintán! 🧐');
         return;
       }
 
+      // 1. Lefedettség ellenőrzés
       let coveredCount = 0;
       guideSamplePoints.forEach(gp => {
         let isCovered = userStrokePoints.some(up => {
           let dist = Math.hypot(up.x - gp.x, up.y - gp.y);
-          return dist <= 22; // Szigorúbb tűrés (22 pixel)
+          return dist <= 18; // Picit szigorúbb tűrés (18 pixel)
         });
         if (isCovered) coveredCount++;
       });
-
       let coveragePercent = guideSamplePoints.length > 0 ? (coveredCount / guideSamplePoints.length) * 100 : 0;
 
-      // Magasabb küszöbök (Nincs többé csalás!)
-      if (coveragePercent < 60) {
-        alert('Ez így még nagyon kevés vagy máshová ment! Kövesd pontosan a kék szaggatott mintát! ⭐');
-      } else if (coveragePercent < 82) {
-        alert('Már szép próbálkozás, de látszik, hogy lemaradt a vonal egy része. Húzd végig mindent! 🎯');
+      // 2. Kilengés / stray ellenőrzés (Ha túl sokat kóborolt a vonal a mintán kívül)
+      let strayCount = 0;
+      userStrokePoints.forEach(up => {
+        let minDist = Math.min(...guideSamplePoints.map(gp => Math.hypot(up.x - gp.x, up.y - gp.y)));
+        if (minDist > 25) { // Ha 25 pixelnél messzebb kóborolt a mintától
+          strayCount++;
+        }
+      });
+      let strayPercent = (strayCount / userStrokePoints.length) * 100;
+
+      // Szigorú döntés: Magas lefedettség ÉS kevés kilengés kell!
+      if (coveragePercent < 88 || strayPercent > 12) {
+        alert('Hé, kis művész! Ez most túl sok kilengést tartalmaz vagy nem követted elég pontosan a vonalat! Próbáld újra! 🧐');
+      } else if (coveragePercent < 95) {
+        alert('Már nagyon közel jársz, de maradj picit pontosabban a szaggatott mintán! ⭐');
       } else {
         alert('Hatalmas ügyesség! Tökéletes, hibátlan vonalvezetés a Mátrix Labor előírásai szerint! 🎉🚀');
       }
