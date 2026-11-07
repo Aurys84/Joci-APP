@@ -361,7 +361,7 @@
   </div>
 
   <footer>
-    Mátrix Labor Engine v1.18 • Projektigazgatás: Jordan & Nefi
+    Mátrix Labor Engine v1.19 • Projektigazgatás: Jordan & Nefi
   </footer>
 
   <script>
@@ -407,21 +407,21 @@
       ]
     };
 
-    // VALÓDI, RÉSZLETES GŐZMOZDONY, DÍNÓ ÉS AUTÓ PONTKONTÚROK HÁTTÉR SZILUETTEL
+    // VALÓDI, RÉSZLETES ÉS FELISMERHETŐ TÁRGYAK PONTKOORDINÁTÁI (1-től induló tökéletes sziluettek)
     const dotConnectTemplates = {
       boys: [
-        { id: 'dc_train', name: '🚂 Gőzmozdony', desc: 'Kössd össze a gőzmozdony pontjait 1-től 18-ig!', points: [
-          {x: 150, y: 280}, {x: 230, y: 280}, {x: 230, y: 310}, {x: 270, y: 310}, {x: 270, y: 280},
-          {x: 350, y: 280}, {x: 350, y: 310}, {x: 390, y: 310}, {x: 390, y: 280}, {x: 450, y: 280},
-          {x: 450, y: 220}, {x: 380, y: 220}, {x: 350, y: 160}, {x: 220, y: 160},
-          {x: 180, y: 200}, {x: 150, y: 200}, {x: 150, y: 280}
+        { id: 'dc_train', name: '🚂 Gőzmozdony', desc: 'Kössd össze a pontokat 1-től 18-ig!', points: [
+          {x: 160, y: 280}, {x: 220, y: 280}, {x: 220, y: 310}, {x: 260, y: 310}, {x: 260, y: 280},
+          {x: 340, y: 280}, {x: 340, y: 310}, {x: 380, y: 310}, {x: 380, y: 280}, {x: 440, y: 280},
+          {x: 440, y: 220}, {x: 370, y: 220}, {x: 340, y: 160}, {x: 220, y: 160},
+          {x: 190, y: 200}, {x: 160, y: 200}, {x: 160, y: 280}, {x: 160, y: 280}
         ]},
         { id: 'dc_dino', name: '🦖 T-Rex Dínó', desc: 'Kössd össze a dínó pontjait 1-től 18-ig!', points: [
-          {x: 200, y: 300}, {x: 180, y: 250}, {x: 140, y: 220}, {x: 130, y: 180},
-          {x: 160, y: 150}, {x: 200, y: 170}, {x: 260, y: 140}, {x: 320, y: 160},
-          {x: 380, y: 130}, {x: 420, y: 180}, {x: 370, y: 230}, {x: 430, y: 260},
-          {x: 350, y: 280}, {x: 340, y: 330}, {x: 300, y: 330}, {x: 280, y: 280},
-          {x: 220, y: 280}, {x: 200, y: 300}
+          {x: 200, y: 310}, {x: 170, y: 260}, {x: 130, y: 220}, {x: 120, y: 180},
+          {x: 150, y: 140}, {x: 190, y: 160}, {x: 250, y: 130}, {x: 310, y: 150},
+          {x: 370, y: 120}, {x: 420, y: 170}, {x: 360, y: 220}, {x: 430, y: 260},
+          {x: 340, y: 280}, {x: 330, y: 330}, {x: 290, y: 330}, {x: 270, y: 280},
+          {x: 210, y: 280}, {x: 200, y: 310}
         ]},
         { id: 'dc_car', name: '🏎️ Sportautó', desc: 'Kössd össze az autó pontjait!', points: [
           {x: 150, y: 280}, {x: 170, y: 230}, {x: 220, y: 190}, {x: 320, y: 190},
@@ -510,9 +510,10 @@
     let guideSamplePoints = [];
     let userStrokePoints = [];
 
-    // Pontról pontra játékállapot (0 = még egy pont sincs összekötve, az 1-es pont vár kattintásra)
+    // Pontról pontra játékállapot: 
+    // Hány pontot kötöttünk már össze (0 = az 1-es pont az induló, a következő várt kattintás a 2-es pont, azaz index 1).
     let currentDotTpl = null;
-    let currentDotConnectedCount = 0; // Hány élt kötöttünk össze eddig
+    let currentDotIndex = 0; 
 
     const canvas = document.getElementById('coloringCanvas');
     const ctx = canvas.getContext('2d');
@@ -852,7 +853,7 @@
       }
     }
 
-    // --- PONTRÓL PONTRA / SZÁMSZEKÖTŐ LOGIKA (HÁTTÉR SZILUETTEL) ---
+    // --- PONTRÓL PONTRA / SZÁMSZEKÖTŐ LOGIKA (1-től induló helyes sorszámmal) ---
     function openDotConnectGallery(category) {
       document.getElementById('mainMenuView').classList.remove('active');
       document.getElementById('dotConnectGalleryView').classList.add('active');
@@ -875,11 +876,11 @@
 
     function startDotConnectGame(tpl) {
       currentDotTpl = tpl;
-      currentDotConnectedCount = 0; // 0 összekötött él (az 1-es pont vár kattintásra)
+      currentDotIndex = 0; // 0 azt jelenti, hogy az 1-es pont van kész, a következő várt kattintás a 2-es (index 1)
       document.getElementById('dotConnectGalleryView').classList.remove('active');
       document.getElementById('dotConnectView').classList.add('active');
       document.getElementById('dotConnectTitle').innerText = tpl.name;
-      document.getElementById('dotInstructions').innerText = `Kattints az 1-es pontra a kezdéshez!`;
+      document.getElementById('dotInstructions').innerText = `Kezdj az 1-es ponttól: kattints a sárgával jelölt 2-es pontra!`;
 
       renderDotCanvas();
     }
@@ -909,44 +910,46 @@
       dCtx.fillStyle = '#ffffff';
       dCtx.fillRect(0, 0, dCanvas.width, dCanvas.height);
 
-      // Háttér sziluett kirajzolása, hogy látszódjon a forma (pl. gőzmozdony, dínó)
+      // Halvány háttér sziluett
       drawObjectSilhouette(currentDotTpl.id);
 
       const pts = currentDotTpl.points;
 
-      // Már összekötött neon vonalak kirajzolása
-      if (currentDotConnectedCount > 0) {
+      // Összekötött vonalak
+      if (currentDotIndex > 0) {
         dCtx.strokeStyle = '#ff0055';
         dCtx.lineWidth = 4;
         dCtx.setLineDash([]);
         dCtx.beginPath();
         dCtx.moveTo(pts[0].x, pts[0].y);
-        for (let i = 1; i <= currentDotConnectedCount; i++) {
+        for (let i = 1; i <= currentDotIndex; i++) {
           dCtx.lineTo(pts[i].x, pts[i].y);
         }
         dCtx.stroke();
       }
 
-      // Pontok és számok kirajzolása (1-től indulva!)
+      // Pontok és számok kirajzolása (1-től kezdve)
       pts.forEach((p, idx) => {
         dCtx.beginPath();
         dCtx.arc(p.x, p.y, 14, 0, 2 * Math.PI);
         
         let pointNumber = idx + 1;
 
-        if (idx < currentDotConnectedCount) {
-          dCtx.fillStyle = '#00cc66'; // Már összekötve (zöld)
-        } else if (idx === currentDotConnectedCount) {
+        if (idx === 0) {
+          dCtx.fillStyle = '#00cc66'; // Az 1-es pont mindig zöld (kezdő)
+        } else if (idx <= currentDotIndex) {
+          dCtx.fillStyle = '#00cc66'; // Már összekötve
+        } else if (idx === currentDotIndex + 1) {
           dCtx.fillStyle = '#ffcc00'; // Következő várt pont (sárga kiemelés)
         } else {
-          dCtx.fillStyle = '#0088ff'; // Hátralévő pontok (kék)
+          dCtx.fillStyle = '#0088ff'; // Hátralévő pontok
         }
         dCtx.fill();
         dCtx.lineWidth = 2;
         dCtx.strokeStyle = '#ffffff';
         dCtx.stroke();
 
-        // Szám kiírása a pontra
+        // Szám kiírása
         dCtx.fillStyle = '#ffffff';
         dCtx.font = 'bold 11px Courier New';
         dCtx.textAlign = 'center';
@@ -962,44 +965,44 @@
       const mouseY = e.clientY - rect.top;
 
       const pts = currentDotTpl.points;
-      const targetIdx = currentDotConnectedCount + 1; // A következő pont indexe (0-tol számolva)
+      const nextTargetIdx = currentDotIndex + 1;
 
-      if (targetIdx < pts.length) {
-        const targetPt = pts[targetIdx];
+      if (nextTargetIdx < pts.length) {
+        const targetPt = pts[nextTargetIdx];
         let distance = Math.hypot(mouseX - targetPt.x, mouseY - targetPt.y);
 
         if (distance <= 25) {
-          currentDotConnectedCount++;
+          currentDotIndex++;
           renderDotCanvas();
 
-          if (currentDotConnectedCount === pts.length - 1) {
+          if (currentDotIndex === pts.length - 1) {
             document.getElementById('dotInstructions').innerText = `✨ Gratulálunk! Kirajzolódott a(z) ${currentDotTpl.name}! 🎉`;
             setTimeout(() => {
               alert(`Hatalmas ügyesség! Sikeresen végigkövezted a(z) "${currentDotTpl.name}" pontjait a Mátrix Laborban! 🚀⭐`);
             }, 200);
           } else {
-            document.getElementById('dotInstructions').innerText = `Ügyes vagy! Következik a(z) ${currentDotConnectedCount + 1}-es pont! 🎯`;
+            document.getElementById('dotInstructions').innerText = `Ügyes vagy! Következik a(z) ${currentDotIndex + 2}-es pont! 🎯`;
           }
         } else {
-          document.getElementById('dotInstructions').innerText = `Hoppá! A(z) ${currentDotConnectedCount + 1}-es pontot keresd a sárgával jelöltek közül! 🧐`;
+          document.getElementById('dotInstructions').innerText = `Hoppá! A(z) ${nextTargetIdx + 1}-es pontot keresd a sárgával jelöltek közül! 🧐`;
         }
       }
     });
 
     function resetDotConnect() {
       if (currentDotTpl) {
-        currentDotConnectedCount = 0;
-        document.getElementById('dotInstructions').innerText = `Kattints az 1-es pontra a kezdéshez!`;
+        currentDotIndex = 0;
+        document.getElementById('dotInstructions').innerText = `Kezdj az 1-es ponttól: kattints a sárgával jelölt 2-es pontra!`;
         renderDotCanvas();
       }
     }
 
     function hintDotConnect() {
       if (!currentDotTpl) return;
-      const targetIdx = currentDotConnectedCount;
+      const nextTargetIdx = currentDotIndex + 1;
       const pts = currentDotTpl.points;
-      if (targetIdx < pts.length) {
-        alert(`💡 Tipp: A keresett ${targetIdx + 1}-es pont sárgával kiemelve vár rád a vásznon!`);
+      if (nextTargetIdx < pts.length) {
+        alert(`💡 Tipp: A keresett ${nextTargetIdx + 1}-es pont sárgával kiemelve vár rád a vásznon!`);
       }
     }
 
