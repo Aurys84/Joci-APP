@@ -391,7 +391,7 @@
   </div>
 
   <footer>
-    Mátrix Labor Engine v1.44 • Projektigazgatás: Jordan & Nefi
+    Mátrix Labor Engine v1.45 • Projektigazgatás: Jordan & Nefi
   </footer>
 
   <script>
@@ -442,6 +442,7 @@
       girls: Array.from({length: 15}, (_, i) => ({ id: 'l' + (i + 1), num: String(i + 1).padStart(2, '0'), img: 'l' + (i + 1) + '.png' }))
     };
 
+    // 15 DB FIÚS ÉS 15 DB LÁNYOS MATEK FELADAT - TŰPONTOS SZINKRONBAN A RAJZPALETTÁVAL
     const mathTemplates = {
       boys: Array.from({length: 15}, (_, i) => {
         let n1 = (i % 7) + 3;
@@ -455,7 +456,7 @@
           num: String(i + 1).padStart(2, '0'),
           n1: n1, n2: n2, op: op, ans: ans,
           color1: '#ff3333', color2: '#0088ff',
-          shape1: 'kör', shape2: 'háromszög',
+          shape1: 'piros kör', shape2: 'kék háromszög',
           desc: `Piros kör: ${n1}, Kék háromszög: ${n2}. Számold meg külön őket!`
         };
       }),
@@ -471,7 +472,7 @@
           num: String(i + 1).padStart(2, '0'),
           n1: n1, n2: n2, op: op, ans: ans,
           color1: '#ff00ff', color2: '#00cc66',
-          shape1: 'csillag', shape2: 'szív',
+          shape1: 'rózsaszín csillag', shape2: 'zöld szív',
           desc: `Rózsaszín csillag: ${n1}, Zöld szív: ${n2}. Számold meg külön őket!`
         };
       })
@@ -955,12 +956,14 @@
       mCtx.fillStyle = '#ffffff';
       mCtx.fillRect(0, 0, mCanvas.width, mCanvas.height);
 
+      // Első csoport formái és színei
       for (let i = 0; i < tpl.n1; i++) {
         let x = 40 + (i % 6) * 85;
         let y = 40 + Math.floor(i / 6) * 65;
         drawShape(mCtx, x, y, tpl.shape1, tpl.color1);
       }
 
+      // Második csoport formái és színei
       let startX2 = 40 + (Math.min(tpl.n1, 6) * 85) + 15;
       if (startX2 > 480) startX2 = 40;
       let startY2 = tpl.n1 > 6 ? 170 : 40;
@@ -972,27 +975,28 @@
       }
     }
 
-    function drawShape(context, x, y, shape, color) {
+    function drawShape(context, x, y, shapeDesc, color) {
       context.fillStyle = color;
       context.strokeStyle = '#222';
       context.lineWidth = 2;
       context.beginPath();
 
-      if (shape === 'kör') {
+      if (shapeDesc.includes('kör')) {
         context.arc(x + 22, y + 22, 18, 0, 2 * Math.PI);
         context.fill(); context.stroke();
-      } else if (shape === 'háromszög') {
+      } else if (shapeDesc.includes('háromszög')) {
         context.moveTo(x + 22, y);
         context.lineTo(x + 44, y + 38);
         context.lineTo(x, y + 38);
         context.closePath();
         context.fill(); context.stroke();
-      } else if (shape === 'csillag') {
+      } else if (shapeDesc.includes('csillag')) {
+        // Pontos csillag / kör minta
         context.arc(x + 22, y + 22, 18, 0, 2 * Math.PI);
         context.fill(); context.stroke();
-      } else if (shape === 'szív') {
-        context.arc(x + 12, y + 12, 12, 0, Math.PI);
-        context.arc(x + 32, y + 12, 12, 0, Math.PI);
+      } else if (shapeDesc.includes('szív')) {
+        context.arc(x + 12, y + 16, 12, 0, Math.PI);
+        context.arc(x + 32, y + 16, 12, 0, Math.PI);
         context.lineTo(x + 22, y + 38);
         context.closePath();
         context.fill(); context.stroke();
