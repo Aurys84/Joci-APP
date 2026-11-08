@@ -412,23 +412,23 @@
   </div>
 
   <footer>
-    Mátrix Labor Engine v1.62 • Projektigazgatás: Jordan & Nefi
+    Mátrix Labor Engine v1.63 • Projektigazgatás: Jordan & Nefi
   </footer>
 
   <script>
-    // 15-15 SORSZÁMOZOTT ONLINE KIFESTŐ KÉP (szl1-15 és szf1-15)
+    // 15-15 SORSZÁMOZOTT KIFESTŐ KÉP (szf1-15 és szl1-15)
     const coloringTemplates = {
       boys: Array.from({length: 15}, (_, i) => ({
         id: 'szf' + (i + 1),
         name: `Fiús Kifestő #${i + 1}`,
         img: `szf${i + 1}.png`,
-        desc: `Kaland & Járművek kép #${i + 1}`
+        imgAlt: `szf${i + 1}.jpg`
       })),
       girls: Array.from({length: 15}, (_, i) => ({
         id: 'szl' + (i + 1),
         name: `Lányos Kifestő #${i + 1}`,
         img: `szl${i + 1}.png`,
-        desc: `Varázsvilág kép #${i + 1}`
+        imgAlt: `szl${i + 1}.jpg`
       }))
     };
 
@@ -459,10 +459,20 @@
       ]
     };
 
-    // PONTOS SORSZÁMOZÁS 1-TŐL 15-IG (F ÉS L ELTAGGAL)
+    // PONTOS F1-F15 ÉS L1-L15 ELTAGGAL ELLÁTOTT SZÁMÖSSZEKÖTŐS TÖMB
     const dotConnectTemplates = {
-      boys: Array.from({length: 15}, (_, i) => ({ id: 'f' + (i + 1), num: (i + 1).toString(), img: 'f' + (i + 1) + '.png' })),
-      girls: Array.from({length: 15}, (_, i) => ({ id: 'l' + (i + 1), num: (i + 1).toString(), img: 'l' + (i + 1) + '.png' }))
+      boys: Array.from({length: 15}, (_, i) => ({
+        id: 'f' + (i + 1),
+        num: (i + 1).toString(),
+        img: `f${i + 1}.png`,
+        imgAlt: `f${i + 1}.jpg`
+      })),
+      girls: Array.from({length: 15}, (_, i) => ({
+        id: 'l' + (i + 1),
+        num: (i + 1).toString(),
+        img: `l${i + 1}.png`,
+        imgAlt: `l${i + 1}.jpg`
+      }))
     };
 
     const mathTemplates = {
@@ -532,7 +542,7 @@
     let currentMathTpl = null;
 
     const canvas = document.getElementById('coloringCanvas');
-    const ctx = canvas ? canvas.getContext('2d', { willNotReadFrequently: false }) : null;
+    const ctx = canvas ? canvas.getContext('2d', { willReadFrequently: true }) : null;
 
     const tCanvas = document.getElementById('tracingCanvas');
     const tCtx = tCanvas ? tCanvas.getContext('2d') : null;
@@ -581,40 +591,43 @@
       });
     }
 
-    // EGYESÍTETT KIFESTŐ MOTOR (A háttér és a fekete kontúr tökéletes kezelésével)
+    function loadImageSmart(imgObj, src1, src2, onsuccess, onerror) {
+      imgObj.src = src1;
+      imgObj.onload = () => onsuccess(imgObj);
+      imgObj.onerror = () => {
+        imgObj.src = src2;
+        imgObj.onload = () => onsuccess(imgObj);
+        imgObj.onerror = onerror;
+      };
+    }
+
     function startColoring(tpl) {
       currentActiveTemplate = tpl;
       document.getElementById('galleryView').classList.remove('active');
       document.getElementById('canvasView').classList.add('active');
-      document.getElementById('activeTemplateTitle',).innerText = tpl.name;
+      document.getElementById('activeTemplateTitle').innerText = tpl.name;
 
       if (!ctx) return;
       ctx.fillStyle = '#ffffff';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       const img = new Image();
-      img.src = tpl.img;
-      img.onload = function() {
-        ctx.drawImage(img, 10, 10, canvas.width - 20, canvas.height - 20);
-      };
-      img.onerror = function() {
-        if (img.src.endsWith('.png')) {
-          img.src = tpl.img.replace('.png', '.jpg');
-        } else {
-          ctx.fillStyle = '#ffffff';
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
-          ctx.strokeStyle = '#222';
-          ctx.lineWidth = 3;
-          ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
-          ctx.font = '15px Courier New';
-          ctx.fillStyle = '#ff3333';
-          ctx.textAlign = 'center';
-          ctx.fillText('Nem található képfájl: ' + tpl.img, canvas.width / 2, canvas.height / 2);
-        }
-      };
+      loadImageSmart(img, tpl.img, tpl.imgAlt, (loadedImg) => {
+        ctx.drawImage(loadedImg, 10, 10, canvas.width - 20, canvas.height - 20);
+      }, () => {
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.strokeStyle = '#222';
+        ctx.lineWidth = 3;
+        ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
+        ctx.font = '14px Courier New';
+        ctx.fillStyle = '#ff3333';
+        ctx.textAlign = 'center';
+        ctx.fillText('Nem található képfájl: ' + tpl.img, canvas.width / 2, canvas.height / 2);
+      });
     }
 
-    // OKOS FLOOD FILL KITÖLTÉS (Csak a belső területeket színezni, fekete vonalnál megállni)
+    // OKOS FLOOD FILL KITÖLTÉS (Csak a fehér/világos belső területeket színezi, megáll a kontúrnál)
     if (canvas) {
       canvas.addEventListener('click', e => {
         if (!ctx) return;
@@ -632,8 +645,8 @@
         const targetIdx = (startY * width + startX) * 4;
         const targetR = data[targetIdx], targetG = data[targetIdx + 1], targetB = data[targetIdx + 2];
         
-        // Ha fekete kontúrra kattint, ne csináljon semmit
-        if (targetR < 80 && targetG < 80 && targetB < 80) return;
+        // Ha fekete vonalra kattint, ne csináljon semmit
+        if (targetR < 70 && targetG < 70 && targetB < 70) return;
 
         const [fillR, fillG, fillB] = hexToRgb(selectedColor);
         if (Math.abs(targetR - fillR) < 5 && Math.abs(targetG - fillG) < 5 && Math.abs(targetB - fillB) < 5) return;
@@ -651,10 +664,10 @@
           let r = data[pIdx], g = data[pIdx + 1], b = data[pIdx + 2];
 
           // Megáll a fekete vonalaknál (kontúrok)
-          if (r < 80 && g < 80 && b < 80) continue;
+          if (r < 70 && g < 70 && b < 70) continue;
 
-          // Hasonlóság ellenőrzés, hogy tiszta területet töltsön ki
-          if (Math.abs(r - targetR) > 30 || Math.abs(g - targetG) > 30 || Math.abs(b - targetB) > 30) continue;
+          // Hasonlóság ellenőrzés
+          if (Math.abs(r - targetR) > 35 || Math.abs(g - targetG) > 35 || Math.abs(b - targetB) > 35) continue;
 
           data[pIdx] = fillR;
           data[pIdx + 1] = fillG;
@@ -964,18 +977,16 @@
       dCtx.fillRect(0, 0, dCanvas.width, dCanvas.height);
 
       const img = new Image();
-      img.src = tpl.img;
-      img.onload = function() {
-        dCtx.drawImage(img, 40, 20, 520, 360);
-      };
-      img.onerror = function() {
+      loadImageSmart(img, tpl.img, tpl.imgAlt, (loadedImg) => {
+        dCtx.drawImage(loadedImg, 40, 20, 520, 360);
+      }, () => {
         dCtx.fillStyle = '#ffffff';
         dCtx.fillRect(0, 0, dCanvas.width, dCanvas.height);
         dCtx.font = '14px Courier New';
         dCtx.fillStyle = '#ff3333';
         dCtx.textAlign = 'center';
         dCtx.fillText('Nem található képfájl: ' + tpl.img, dCanvas.width / 2, dCanvas.height / 2);
-      };
+      });
     }
 
     if (dCanvas) {
