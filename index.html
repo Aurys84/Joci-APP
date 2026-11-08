@@ -6,8 +6,8 @@
   <title>Mátrix Labor — Interaktív Gyermek Fejlesztő & Kifestő</title>
   <style>
     :root {
-      --bg-color: #02040a;
-      --panel-bg: rgba(12, 27, 42, 0.92);
+      --bg-color: #010206;
+      --panel-bg: rgba(8, 20, 35, 0.95);
       --neon-cyan: #00ffcc;
       --neon-magenta: #ff00ff;
       --neon-blue: #0088ff;
@@ -16,7 +16,7 @@
     }
 
     body {
-      background: radial-gradient(circle at center, #15002b 0%, var(--bg-color) 100%);
+      background: radial-gradient(circle at center, #110022 0%, var(--bg-color) 100%);
       color: var(--text-main);
       font-family: 'Courier New', Courier, monospace, sans-serif;
       margin: 0;
@@ -33,25 +33,27 @@
     }
 
     h1 {
-      font-size: 1.4rem;
+      font-size: 1.5rem;
       color: var(--neon-cyan);
-      text-shadow: 0 0 15px rgba(0,255,204,0.7);
+      text-shadow: 0 0 20px rgba(0,255,204,0.8);
       margin: 6px 0 2px 0;
+      letter-spacing: 1px;
     }
 
     p.subtitle {
       font-size: 0.8rem;
       color: var(--neon-magenta);
       margin: 0;
+      text-shadow: 0 0 10px rgba(255,0,255,0.5);
     }
 
     .container {
       width: 100%;
       max-width: 900px;
       background: var(--panel-bg);
-      border: 3px solid var(--neon-cyan);
-      border-radius: 15px;
-      box-shadow: 0 0 30px rgba(0, 255, 204, 0.3);
+      border: 2px solid var(--neon-cyan);
+      border-radius: 16px;
+      box-shadow: 0 0 35px rgba(0, 255, 204, 0.25), inset 0 0 15px rgba(0, 136, 255, 0.15);
       padding: 15px;
       box-sizing: border-box;
       position: relative;
@@ -60,12 +62,13 @@
 
     /* Profil sáv */
     .profile-box {
-      background: rgba(0, 0, 0, 0.6);
+      background: rgba(0, 0, 0, 0.7);
       border: 1px solid var(--neon-blue);
       border-radius: 10px;
       padding: 8px;
       text-align: center;
       margin-bottom: 12px;
+      box-shadow: inset 0 0 8px rgba(0,136,255,0.2);
     }
 
     .profile-box label {
@@ -86,6 +89,8 @@
       width: 80%;
       max-width: 260px;
       font-family: inherit;
+      outline: none;
+      box-shadow: 0 0 8px rgba(0,255,204,0.3);
     }
 
     /* Nézetkezelő */
@@ -104,10 +109,11 @@
     }
 
     .category-card {
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(0, 0, 0, 0.6);
       border: 2px solid;
       border-radius: 12px;
       padding: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
     }
 
     .category-card.boys { border-color: var(--neon-blue); }
@@ -117,6 +123,7 @@
       font-size: 1.05rem;
       margin-top: 0;
       text-align: center;
+      letter-spacing: 0.5px;
     }
     .category-card.boys h2 { color: var(--neon-cyan); }
     .category-card.girls h2 { color: #ff99cc; }
@@ -128,10 +135,10 @@
     }
 
     .task-btn {
-      background: rgba(0, 255, 204, 0.15);
+      background: rgba(0, 255, 204, 0.12);
       border: 1px solid var(--neon-cyan);
       color: var(--text-main);
-      padding: 10px;
+      padding: 10px 12px;
       font-size: 0.9rem;
       border-radius: 8px;
       cursor: pointer;
@@ -140,13 +147,19 @@
       display: flex;
       align-items: center;
       gap: 8px;
+      transition: all 0.2s;
       position: relative;
       z-index: 20;
     }
 
     .category-card.girls .task-btn {
-      background: rgba(255, 0, 255, 0.15);
+      background: rgba(255, 0, 255, 0.12);
       border-color: var(--neon-magenta);
+    }
+
+    .task-btn:hover {
+      background: rgba(0, 255, 204, 0.25);
+      box-shadow: 0 0 10px rgba(0,255,204,0.4);
     }
 
     .task-btn:active { background: rgba(0, 255, 204, 0.4); }
@@ -176,7 +189,8 @@
 
     .gallery-item:hover {
       transform: translateY(-2px);
-      box-shadow: 0 0 12px rgba(0,255,204,0.5);
+      box-shadow: 0 0 15px rgba(0,255,204,0.6);
+      border-color: var(--accent-gold);
     }
 
     .gallery-item h3 {
@@ -199,7 +213,7 @@
       border-radius: 10px;
       cursor: crosshair;
       max-width: 100%;
-      box-shadow: 0 0 20px rgba(0,255,204,0.4);
+      box-shadow: 0 0 25px rgba(0,255,204,0.4);
     }
 
     /* 50+ Színű Gigantikus Paletta */
@@ -214,6 +228,7 @@
       border-radius: 8px;
       border: 1px solid var(--neon-blue);
       box-sizing: border-box;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
     }
 
     .color-btn {
@@ -224,16 +239,21 @@
       cursor: pointer;
       transition: transform 0.1s;
     }
+    .color-btn:hover {
+      transform: scale(1.1);
+    }
     .color-btn:active, .color-btn.selected {
       transform: scale(1.25);
       border-color: var(--accent-gold);
-      box-shadow: 0 0 10px var(--accent-gold);
+      box-shadow: 0 0 12px var(--accent-gold);
       z-index: 5;
     }
 
     .action-row {
       display: flex;
       gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
       position: relative;
       z-index: 20;
     }
@@ -242,16 +262,24 @@
       background: var(--neon-blue);
       color: white;
       border: none;
-      padding: 8px 14px;
+      padding: 9px 16px;
       border-radius: 6px;
       font-family: inherit;
       cursor: pointer;
       font-size: 0.85rem;
+      font-weight: bold;
+      box-shadow: 0 0 10px rgba(0,136,255,0.4);
+      transition: all 0.2s;
       position: relative;
       z-index: 20;
     }
-    .btn-danger { background: #ff3333; }
-    .btn-success { background: #00cc66; }
+    .btn:hover {
+      box-shadow: 0 0 15px rgba(0,136,255,0.8);
+      filter: brightness(1.1);
+    }
+    .btn-danger { background: #ff3333; box-shadow: 0 0 10px rgba(255,51,51,0.4); }
+    .btn-success { background: #00cc66; box-shadow: 0 0 10px rgba(0,204,102,0.4); }
+    .btn-pdf { background: #9933ff; box-shadow: 0 0 10px rgba(153,51,255,0.4); }
 
     footer {
       margin-top: 12px;
@@ -333,7 +361,7 @@
       <div id="mathGalleryContainer" class="gallery-grid"></div>
     </div>
 
-    <!-- VIEW 3: SZÍNEZŐ MUNKATERÜLET (KATTINTÁSOS KITÖLTÉS & 50+ SZÍN) -->
+    <!-- VIEW 3: SZÍNEZŐ MUNKATERÜLET (PDF MENTÉS & KATTINTÁSOS KITÖLTÉS) -->
     <div id="canvasView" class="view-section">
       <button class="btn btn-danger" onclick="goBackToGallery()" style="margin-bottom: 8px;">❮ Vissza a Galériába</button>
       
@@ -344,6 +372,7 @@
         <canvas id="coloringCanvas" class="interactive-canvas" width="600" height="400"></canvas>
         <div class="action-row">
           <button class="btn btn-danger" onclick="clearCanvas()">Törlés / Újra 🔄</button>
+          <button class="btn btn-pdf" onclick="downloadAsPDF()">PDF Mentés 📄</button>
           <button class="btn btn-success" onclick="alert('Csodás alkotás! Mentve a Mátrix Labor archívumába! 💾✨')">Kész / Mentés ⭐</button>
         </div>
       </div>
@@ -409,11 +438,10 @@
   </div>
 
   <footer>
-    Mátrix Labor Engine v1.50 • Projektigazgatás: Jordan & Nefi
+    Mátrix Labor Engine v1.55 • Projektigazgatás: Jordan & Nefi
   </footer>
 
   <script>
-    // 5 DB FIÚS ÉS 5 DB LÁNYOS VÉKTOROS SZÍNEZŐ SABLON
     const coloringTemplates = {
       boys: [
         { id: 'train', name: '🚂 Gőzmozdony', desc: 'Klasszikus pöfögős vonat.' },
@@ -514,7 +542,7 @@
       })
     };
 
-    // 50+ DB GIGANTIKUS SZÍNREPERTOÁR A PALETTÁHOZ
+    // 50+ DB GIGANTIKUS SZÍNrepertoire
     const colors = [
       '#ff0000', '#ff3300', '#ff6600', '#ff9900', '#ffcc00', '#ffff00', '#ccff00', '#99ff00', '#66ff00', '#33ff00',
       '#00ff00', '#00ff33', '#00ff66', '#00ff99', '#00ffcc', '#00ffff', '#00ccff', '#0099ff', '#0066ff', '#0033ff',
@@ -540,7 +568,6 @@
 
     const dCanvas = document.getElementById('dotCanvas');
     const dCtx = dCanvas ? dCanvas.getContext('2d') : null;
-    let isDotDrawing = false;
 
     const paletteContainer = document.getElementById('colorPalette');
     
@@ -586,7 +613,6 @@
       renderColoringTemplate(tpl.id);
     }
 
-    // VEKTOROS KIFESTŐ SABLONOK KIRAJZOLÁSA KONTÚROKKAL
     function renderColoringTemplate(id) {
       if (!ctx) return;
       ctx.fillStyle = '#ffffff';
@@ -598,70 +624,87 @@
       ctx.lineCap = 'round';
 
       if (id === 'train') {
-        // Vonat kontúrok
-        ctx.strokeRect(100, 220, 180, 110); // Kocsik
-        ctx.strokeRect(300, 170, 160, 160); // Vezetőfülke
-        ctx.beginPath(); ctx.arc(140, 330, 25, 0, 2*Math.PI); ctx.arc(220, 330, 25, 0, 2*Math.PI); ctx.arc(350, 330, 25, 0, 2*Math.PI); ctx.arc(430, 330, 25, 0, 2*Math.PI); ctx.stroke(); // Kerekek
-        ctx.beginPath(); ctx.moveTo(460, 220); ctx.lineTo(520, 220); ctx.lineTo(500, 330); ctx.lineTo(460, 330); ctx.closePath(); ctx.stroke(); // Orr
-        ctx.beginPath(); ctx.arc(360, 130, 20, 0, Math.PI, true); ctx.lineTo(380, 170); ctx.lineTo(340, 170); ctx.closePath(); ctx.stroke(); // Kémény
+        ctx.strokeRect(100, 220, 180, 110);
+        ctx.strokeRect(300, 170, 160, 160);
+        ctx.beginPath(); ctx.arc(140, 330, 25, 0, 2*Math.PI); ctx.arc(220, 330, 25, 0, 2*Math.PI); ctx.arc(350, 330, 25, 0, 2*Math.PI); ctx.arc(430, 330, 25, 0, 2*Math.PI); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(460, 220); ctx.lineTo(520, 220); ctx.lineTo(500, 330); ctx.lineTo(460, 330); ctx.closePath(); ctx.stroke();
+        ctx.beginPath(); ctx.arc(360, 130, 20, 0, Math.PI, true); ctx.lineTo(380, 170); ctx.lineTo(340, 170); ctx.closePath(); ctx.stroke();
       } else if (id === 'rocket') {
-        // Rakéta
         ctx.beginPath(); ctx.moveTo(300, 60); ctx.lineTo(380, 200); ctx.lineTo(380, 300); ctx.lineTo(220, 300); ctx.lineTo(220, 200); ctx.closePath(); ctx.stroke();
-        ctx.beginPath(); ctx.arc(300, 180, 30, 0, 2*Math.PI); ctx.stroke(); // Ablak
-        ctx.beginPath(); ctx.moveTo(220, 250); ctx.lineTo(160, 320); ctx.lineTo(220, 300); ctx.closePath(); ctx.stroke(); // Bal szárny
-        ctx.beginPath(); ctx.moveTo(380, 250); ctx.lineTo(440, 320); ctx.lineTo(380, 300); ctx.closePath(); ctx.stroke(); // Jobb szárny
+        ctx.beginPath(); ctx.arc(300, 180, 30, 0, 2*Math.PI); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(220, 250); ctx.lineTo(160, 320); ctx.lineTo(220, 300); ctx.closePath(); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(380, 250); ctx.lineTo(440, 320); ctx.lineTo(380, 300); ctx.closePath(); ctx.stroke();
       } else if (id === 'robot') {
-        // Robot
-        ctx.strokeRect(240, 80, 120, 90); // Fej
-        ctx.strokeRect(210, 190, 180, 140); // Törzs
-        ctx.strokeRect(130, 190, 70, 110); // Bal kar
-        ctx.strokeRect(400, 190, 70, 110); // Jobb kar
-        ctx.strokeRect(240, 340, 45, 50); // Bal láb
-        ctx.strokeRect(315, 340, 45, 50); // Jobb láb
-        ctx.beginPath(); ctx.arc(280, 125, 18, 0, 2*Math.PI); ctx.stroke(); // Szem
-        ctx.beginPath(); ctx.moveTo(300, 50); ctx.lineTo(300, 80); ctx.stroke(); // Antenna
+        ctx.strokeRect(240, 80, 120, 90);
+        ctx.strokeRect(210, 190, 180, 140);
+        ctx.strokeRect(130, 190, 70, 110);
+        ctx.strokeRect(400, 190, 70, 110);
+        ctx.strokeRect(240, 340, 45, 50);
+        ctx.strokeRect(315, 340, 45, 50);
+        ctx.beginPath(); ctx.arc(280, 125, 18, 0, 2*Math.PI); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(300, 50); ctx.lineTo(300, 80); ctx.stroke();
       } else if (id === 'dino') {
-        // Dínó
-        ctx.beginPath(); ctx.arc(320, 240, 90, 0, 2*Math.PI); ctx.stroke(); // Test
-        ctx.beginPath(); ctx.arc(430, 160, 50, 0, 2*Math.PI); ctx.stroke(); // Fej
-        ctx.beginPath(); ctx.moveTo(230, 280); ctx.lineTo(130, 240); ctx.lineTo(200, 330); ctx.closePath(); ctx.stroke(); // Farkas
+        ctx.beginPath(); ctx.arc(320, 240, 90, 0, 2*Math.PI); ctx.stroke();
+        ctx.beginPath(); ctx.arc(430, 160, 50, 0, 2*Math.PI); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(230, 280); ctx.lineTo(130, 240); ctx.lineTo(200, 330); ctx.closePath(); ctx.stroke();
       } else if (id === 'car') {
-        // Versenyautó
         ctx.strokeRect(150, 200, 300, 80);
         ctx.beginPath(); ctx.arc(220, 280, 35, 0, 2*Math.PI); ctx.arc(380, 280, 35, 0, 2*Math.PI); ctx.stroke();
         ctx.beginPath(); ctx.moveTo(240, 200); ctx.lineTo(280, 140); ctx.lineTo(340, 140); ctx.lineTo(380, 200); ctx.closePath(); ctx.stroke();
       } else if (id === 'castle') {
-        // Varázskastély
-        ctx.strokeRect(220, 160, 160, 170); // Főépület
-        ctx.strokeRect(160, 120, 60, 210); // Bal torony
-        ctx.strokeRect(380, 120, 60, 210); // Jobb torony
+        ctx.strokeRect(220, 160, 160, 170);
+        ctx.strokeRect(160, 120, 60, 210);
+        ctx.strokeRect(380, 120, 60, 210);
         ctx.beginPath(); ctx.moveTo(160, 120); ctx.lineTo(190, 60); ctx.lineTo(220, 120); ctx.closePath(); ctx.stroke();
         ctx.beginPath(); ctx.moveTo(380, 120); ctx.lineTo(410, 60); ctx.lineTo(440, 120); ctx.closePath(); ctx.stroke();
       } else if (id === 'fairy') {
-        // Tündér
-        ctx.beginPath(); ctx.arc(300, 140, 35, 0, 2*Math.PI); ctx.stroke(); // Fej
-        ctx.beginPath(); ctx.ellipse(300, 250, 30, 70, 0, 0, 2*Math.PI); ctx.stroke(); // Törzs
-        ctx.beginPath(); ctx.ellipse(220, 230, 60, 35, -0.3, 0, 2*Math.PI); ctx.ellipse(380, 230, 60, 35, 0.3, 0, 2*Math.PI); ctx.stroke(); // Szárnyak
+        ctx.beginPath(); ctx.arc(300, 140, 35, 0, 2*Math.PI); ctx.stroke();
+        ctx.beginPath(); ctx.ellipse(300, 250, 30, 70, 0, 0, 2*Math.PI); ctx.stroke();
+        ctx.beginPath(); ctx.ellipse(220, 230, 60, 35, -0.3, 0, 2*Math.PI); ctx.ellipse(380, 230, 60, 35, 0.3, 0, 2*Math.PI); ctx.stroke();
       } else if (id === 'pegasus') {
-        // Unikornis
-        ctx.beginPath(); ctx.ellipse(320, 230, 90, 55, 0, 0, 2*Math.PI); ctx.stroke(); // Törzs
-        ctx.beginPath(); ctx.arc(420, 150, 45, 0, 2*Math.PI); ctx.stroke(); // Fej
-        ctx.beginPath(); ctx.moveTo(450, 120); ctx.lineTo(480, 70); ctx.lineTo(430, 100); ctx.closePath(); ctx.stroke(); // Szarv
+        ctx.beginPath(); ctx.ellipse(320, 230, 90, 55, 0, 0, 2*Math.PI); ctx.stroke();
+        ctx.beginPath(); ctx.arc(420, 150, 45, 0, 2*Math.PI); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(450, 120); ctx.lineTo(480, 70); ctx.lineTo(430, 100); ctx.closePath(); ctx.stroke();
       } else if (id === 'butterfly') {
-        // Pillangó
-        ctx.beginPath(); ctx.ellipse(300, 200, 15, 80, 0, 0, 2*Math.PI); ctx.stroke(); // Test
-        ctx.beginPath(); ctx.arc(300, 110, 22, 0, 2*Math.PI); ctx.stroke(); // Fej
+        ctx.beginPath(); ctx.ellipse(300, 200, 15, 80, 0, 0, 2*Math.PI); ctx.stroke();
+        ctx.beginPath(); ctx.arc(300, 110, 22, 0, 2*Math.PI); ctx.stroke();
         ctx.beginPath(); ctx.ellipse(210, 160, 70, 50, -0.5, 0, 2*Math.PI); ctx.ellipse(390, 160, 70, 50, 0.5, 0, 2*Math.PI); ctx.stroke();
         ctx.beginPath(); ctx.ellipse(220, 260, 60, 40, 0.5, 0, 2*Math.PI); ctx.ellipse(380, 260, 60, 40, -0.5, 0, 2*Math.PI); ctx.stroke();
       } else {
-        // Cuki Maci
-        ctx.beginPath(); ctx.arc(300, 220, 80, 0, 2*Math.PI); ctx.stroke(); // Test
-        ctx.beginPath(); ctx.arc(300, 130, 55, 0, 2*Math.PI); ctx.stroke(); // Fej
-        ctx.beginPath(); ctx.arc(245, 85, 22, 0, 2*Math.PI); ctx.arc(355, 85, 22, 0, 2*Math.PI); ctx.stroke(); // Fülek
+        ctx.beginPath(); ctx.arc(300, 220, 80, 0, 2*Math.PI); ctx.stroke();
+        ctx.beginPath(); ctx.arc(300, 130, 55, 0, 2*Math.PI); ctx.stroke();
+        ctx.beginPath(); ctx.arc(245, 85, 22, 0, 2*Math.PI); ctx.arc(355, 85, 22, 0, 2*Math.PI); ctx.stroke();
       }
     }
 
-    // KATTINTÁSOS FLOOD FILL (TERÜLETSZÍNEZŐ) ALGORITMUS
+    // PDF-BE MENTÉS FUNKCIÓ (LETÖLTÉS)
+    function downloadAsPDF() {
+      const dataUrl = canvas.toDataURL('image/png');
+      const win = window.open('');
+      win.document.write(`
+        <html>
+          <head>
+            <title>Mátrix Labor — Alkotás</title>
+            <style>
+              body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; background: #fff; font-family: sans-serif; }
+              img { max-width: 100%; height: auto; border: 2px solid #000; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+              h2 { color: #111; margin-bottom: 10px; }
+              p { color: #555; font-size: 0.9rem; }
+            </style>
+          </head>
+          <body>
+            <h2>Mátrix Labor Kifestő Mestermű</h2>
+            <p>Nyomtasd ki vagy mentsd el PDF-ként (Ctrl+P -> Mentés PDF-ként)!</p>
+            <img src="${dataUrl}" />
+            <script>
+              setTimeout(() => { window.print(); }, 500);
+            <\/script>
+          </body>
+        </html>
+      `);
+      win.document.close();
+    }
+
     if (canvas) {
       canvas.addEventListener('click', e => {
         if (!ctx) return;
@@ -675,7 +718,6 @@
       });
     }
 
-    // Színkonverzió segédfüggvények a kitöltéshez
     function hexToRgb(hex) {
       let bigint = parseInt(hex.replace('#',''), 16);
       return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255];
@@ -692,9 +734,7 @@
 
       const [fillR, fillG, fillB] = hexToRgb(fillColorHex);
 
-      // Ha a cél szín megegyezik a kitöltő színnel, nem csinálunk semmit
       if (Math.abs(targetR - fillR) < 10 && Math.abs(targetG - fillG) < 10 && Math.abs(targetB - fillB) < 10) return;
-      // Ne színezzük ki a fekete kontúrvonalakat
       if (targetR < 50 && targetG < 50 && targetB < 50) return;
 
       const queue = [[x, y]];
@@ -715,13 +755,9 @@
         let g = data[pIdx + 1];
         let b = data[pIdx + 2];
 
-        // Ha fekete vonalba ütközünk, megállunk
         if (r < 50 && g < 50 && b < 50) continue;
-
-        // Tolerancia ellenőrzés a meglévő színekhez
         if (Math.abs(r - targetR) > 25 || Math.abs(g - targetG) > 25 || Math.abs(b - targetB) > 25) continue;
 
-        // Kitöltés
         data[pIdx] = fillR;
         data[pIdx + 1] = fillG;
         data[pIdx + 2] = fillB;
@@ -742,7 +778,6 @@
       }
     }
 
-    // VONALVEZETÉS ÉS EGYÉB MODULOK
     function openTracingGallery(category) {
       document.getElementById('mainMenuView').classList.remove('active');
       document.getElementById('tracingGalleryView').classList.add('active');
@@ -779,24 +814,6 @@
       }
     }
 
-    function sampleQuad(x0, y0, cx, cy, x1, y1, steps = 20) {
-      for (let i = 0; i <= steps; i++) {
-        let t = i / steps;
-        let x = (1-t)*(1-t)*x0 + 2*(1-t)*t*cx + t*t*x1;
-        let y = (1-t)*(1-t)*y0 + 2*(1-t)*t*cy + t*t*y1;
-        guideSamplePoints.push({ x, y });
-      }
-    }
-
-    function sampleBezier(x0, y0, c1x, c1y, c2x, c2y, x1, y1, steps = 25) {
-      for (let i = 0; i <= steps; i++) {
-        let t = i / steps;
-        let x = Math.pow(1-t, 3)*x0 + 3*Math.pow(1-t, 2)*t*c1x + 3*(1-t)*t*t*c2x + t*t*t*x1;
-        let y = Math.pow(1-t, 3)*y0 + 3*Math.pow(1-t, 2)*t*c1y + 3*(1-t)*t*t*c2y + t*t*t*y1;
-        guideSamplePoints.push({ x, y });
-      }
-    }
-
     function sampleArc(cx, cy, radius, startAngle, endAngle, steps = 30) {
       for (let i = 0; i <= steps; i++) {
         let angle = startAngle + (i / steps) * (endAngle - startAngle);
@@ -810,41 +827,18 @@
       if (!tCtx) return;
       tCtx.fillStyle = '#ffffff';
       tCtx.fillRect(0, 0, tCanvas.width, tCanvas.height);
-
       tCtx.strokeStyle = '#0088ff';
       tCtx.lineWidth = 5;
       tCtx.setLineDash([8, 8]);
       tCtx.beginPath();
       guideSamplePoints = [];
 
-      switch(id) {
-        case 'circle':
-          sampleArc(300, 200, 110, 0, 2 * Math.PI);
-          tCtx.arc(300, 200, 110, 0, 2 * Math.PI);
-          break;
-        case 'triangle':
-          sampleLine(300, 80, 480, 320);
-          sampleLine(480, 320, 120, 320);
-          sampleLine(120, 320, 300, 80);
-          tCtx.moveTo(300, 80); tCtx.lineTo(480, 320); tCtx.lineTo(120, 320); tCtx.closePath();
-          break;
-        case 'square':
-          sampleLine(180, 90, 420, 90);
-          sampleLine(420, 90, 420, 330);
-          sampleLine(420, 330, 180, 330);
-          sampleLine(180, 330, 180, 90);
-          tCtx.rect(180, 90, 240, 240);
-          break;
-        case 'rectangle':
-          sampleLine(120, 120, 480, 120);
-          sampleLine(480, 120, 480, 280);
-          sampleLine(480, 280, 120, 280);
-          sampleLine(120, 280, 120, 120);
-          tCtx.rect(120, 120, 360, 160);
-          break;
-        default:
-          sampleLine(50, 200, 550, 200);
-          tCtx.moveTo(50, 200); tCtx.lineTo(550, 200);
+      if (id === 'circle') {
+        sampleArc(300, 200, 110, 0, 2 * Math.PI);
+        tCtx.arc(300, 200, 110, 0, 2 * Math.PI);
+      } else {
+        sampleLine(50, 200, 550, 200);
+        tCtx.moveTo(50, 200); tCtx.lineTo(550, 200);
       }
       tCtx.stroke();
       tCtx.setLineDash([]);
@@ -915,9 +909,6 @@
       if (!dCtx) return;
       dCtx.fillStyle = '#ffffff';
       dCtx.fillRect(0, 0, dCanvas.width, dCanvas.height);
-      dCtx.font = '16px Courier New';
-      dCtx.fillStyle = '#333';
-      dCtx.fillText('Számösszekötő feladat betöltve.', 150, 200);
     }
 
     function clearDotConnect() {
