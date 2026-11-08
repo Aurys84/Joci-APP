@@ -365,7 +365,7 @@
       </div>
     </div>
 
-    <!-- VIEW 6: SZÁMOLÓS MATEK KÉP MUNKATERÜLET (SZÖVEG + BEÍRHATÓ NÉGYZET) -->
+    <!-- VIEW 6: SZÁMOLÓS MATEK KÉP MUNKATERÜLET -->
     <div id="mathView" class="view-section">
       <button class="btn btn-danger" onclick="goBackToMathGallery()" style="margin-bottom: 8px;">❮ Vissza a Számolós Galériába</button>
       
@@ -375,7 +375,6 @@
         
         <canvas id="mathCanvas" class="interactive-canvas" width="600" height="340"></canvas>
 
-        <!-- Interaktív Matek Válasz Sáv Beírható Négyzettel -->
         <div style="display: flex; align-items: center; justify-content: center; gap: 12px; background: rgba(0,0,0,0.7); padding: 10px 20px; border-radius: 10px; border: 2px solid var(--neon-blue);">
           <span id="mathEquationLabel" style="font-size: 1.3rem; font-family: 'Courier New', monospace; color: #fff; font-weight: bold;">5 + 3 =</span>
           <input type="number" id="mathAnswerInput" placeholder="?" style="width: 60px; height: 45px; font-size: 1.4rem; text-align: center; background: #000; border: 2px solid var(--neon-cyan); color: var(--accent-gold); border-radius: 6px; font-family: inherit;">
@@ -392,7 +391,7 @@
   </div>
 
   <footer>
-    Mátrix Labor Engine v1.43 • Projektigazgatás: Jordan & Nefi
+    Mátrix Labor Engine v1.44 • Projektigazgatás: Jordan & Nefi
   </footer>
 
   <script>
@@ -443,12 +442,11 @@
       girls: Array.from({length: 15}, (_, i) => ({ id: 'l' + (i + 1), num: String(i + 1).padStart(2, '0'), img: 'l' + (i + 1) + '.png' }))
     };
 
-    // 15 DB FIÚS ÉS 15 DB LÁNYOS MATEK FELADAT (Összeadás és Kivonás, pontos leírással)
     const mathTemplates = {
       boys: Array.from({length: 15}, (_, i) => {
         let n1 = (i % 7) + 3;
         let n2 = ((i + 2) % 5) + 1;
-        let isMinus = (i % 3 === 0); // 5 db kivonás a nagyobbaknak
+        let isMinus = (i % 3 === 0);
         if (isMinus && n1 < n2) { let temp = n1; n1 = n2; n2 = temp; }
         let op = isMinus ? '-' : '+';
         let ans = isMinus ? (n1 - n2) : (n1 + n2);
@@ -458,13 +456,13 @@
           n1: n1, n2: n2, op: op, ans: ans,
           color1: '#ff3333', color2: '#0088ff',
           shape1: 'kör', shape2: 'háromszög',
-          desc: `Piros ${shape1}: ${n1}, Kék ${shape2}: ${n2}. Számold meg külön őket!`
+          desc: `Piros kör: ${n1}, Kék háromszög: ${n2}. Számold meg külön őket!`
         };
       }),
       girls: Array.from({length: 15}, (_, i) => {
         let n1 = ((i + 1) % 6) + 3;
         let n2 = (i % 4) + 2;
-        let isMinus = (i % 3 === 1); // 5 db kivonás itt is
+        let isMinus = (i % 3 === 1);
         if (isMinus && n1 < n2) { let temp = n1; n1 = n2; n2 = temp; }
         let op = isMinus ? '-' : '+';
         let ans = isMinus ? (n1 - n2) : (n1 + n2);
@@ -474,7 +472,7 @@
           n1: n1, n2: n2, op: op, ans: ans,
           color1: '#ff00ff', color2: '#00cc66',
           shape1: 'csillag', shape2: 'szív',
-          desc: `Rózsaszín ${shape1}: ${n1}, Zöld ${shape2}: ${n2}. Számold meg külön őket!`
+          desc: `Rózsaszín csillag: ${n1}, Zöld szív: ${n2}. Számold meg külön őket!`
         };
       })
     };
@@ -487,35 +485,37 @@
     let currentMathTpl = null;
 
     const canvas = document.getElementById('coloringCanvas');
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas ? canvas.getContext('2d') : null;
     let isDrawing = false;
 
     const tCanvas = document.getElementById('tracingCanvas');
-    const tCtx = tCanvas.getContext('2d');
+    const tCtx = tCanvas ? tCanvas.getContext('2d') : null;
     let isTracing = false;
 
     const dCanvas = document.getElementById('dotCanvas');
-    const dCtx = dCanvas.getContext('2d');
+    const dCtx = dCanvas ? dCanvas.getContext('2d') : null;
     let isDotDrawing = false;
 
     const mCanvas = document.getElementById('mathCanvas');
-    const mCtx = mCanvas.getContext('2d');
+    const mCtx = mCanvas ? mCanvas.getContext('2d') : null;
     let isMathDrawing = false;
 
     const colors = ['#ff0055', '#ff9900', '#ffff00', '#00cc66', '#00ffff', '#0088ff', '#9933ff', '#ff66b2', '#8b4513', '#333333'];
     const paletteContainer = document.getElementById('colorPalette');
     
-    colors.forEach((col, idx) => {
-      const btn = document.createElement('div');
-      btn.className = 'color-btn' + (idx === 0 ? ' selected' : '');
-      btn.style.backgroundColor = col;
-      btn.onclick = () => {
-        document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('selected'));
-        btn.classList.add('selected');
-        selectedColor = col;
-      };
-      paletteContainer.appendChild(btn);
-    });
+    if (paletteContainer) {
+      colors.forEach((col, idx) => {
+        const btn = document.createElement('div');
+        btn.className = 'color-btn' + (idx === 0 ? ' selected' : '');
+        btn.style.backgroundColor = col;
+        btn.onclick = () => {
+          document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('selected'));
+          btn.classList.add('selected');
+          selectedColor = col;
+        };
+        paletteContainer.appendChild(btn);
+      });
+    }
 
     function openGallery(category, type) {
       document.getElementById('mainMenuView').classList.remove('active');
@@ -542,6 +542,7 @@
       document.getElementById('canvasView').classList.add('active');
       document.getElementById('activeTemplateTitle').innerText = tpl.name;
 
+      if (!ctx) return;
       ctx.fillStyle = '#ffffff';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       
@@ -557,15 +558,18 @@
       ctx.fillText('Színezd ki az ujjal vagy egérrel!', canvas.width / 2, canvas.height / 2 + 25);
     }
 
-    canvas.addEventListener('mousedown', e => startDraw(e, canvas, ctx));
-    canvas.addEventListener('mousemove', e => draw(e, canvas, ctx));
-    canvas.addEventListener('mouseup', stopDraw);
-    canvas.addEventListener('mouseleave', stopDraw);
-    canvas.addEventListener('touchstart', e => { e.preventDefault(); startDraw(e.touches[0], canvas, ctx); });
-    canvas.addEventListener('touchmove', e => { e.preventDefault(); draw(e.touches[0], canvas, ctx); });
-    canvas.addEventListener('touchend', stopDraw);
+    if (canvas) {
+      canvas.addEventListener('mousedown', e => startDraw(e, canvas, ctx));
+      canvas.addEventListener('mousemove', e => draw(e, canvas, ctx));
+      canvas.addEventListener('mouseup', stopDraw);
+      canvas.addEventListener('mouseleave', stopDraw);
+      canvas.addEventListener('touchstart', e => { e.preventDefault(); startDraw(e.touches[0], canvas, ctx); });
+      canvas.addEventListener('touchmove', e => { e.preventDefault(); draw(e.touches[0], canvas, ctx); });
+      canvas.addEventListener('touchend', stopDraw);
+    }
 
     function startDraw(e, cvs, context) {
+      if (!context) return;
       isDrawing = true;
       context.beginPath();
       const rect = cvs.getBoundingClientRect();
@@ -573,7 +577,7 @@
     }
 
     function draw(e, cvs, context) {
-      if (!isDrawing) return;
+      if (!isDrawing || !context) return;
       const rect = cvs.getBoundingClientRect();
       context.lineTo(e.clientX - rect.left, e.clientY - rect.top);
       context.strokeStyle = selectedColor;
@@ -583,7 +587,7 @@
     }
 
     function stopDraw() { isDrawing = false; isTracing = false; isDotDrawing = false; isMathDrawing = false; }
-    function clearCanvas() { ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height); }
+    function clearCanvas() { if(ctx) { ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height); } }
 
     function openTracingGallery(category) {
       document.getElementById('mainMenuView').classList.remove('active');
@@ -649,6 +653,7 @@
     }
 
     function drawTracingGuide(id) {
+      if (!tCtx) return;
       tCtx.fillStyle = '#ffffff';
       tCtx.fillRect(0, 0, tCanvas.width, tCanvas.height);
 
@@ -767,15 +772,18 @@
       tCtx.setLineDash([]);
     }
 
-    tCanvas.addEventListener('mousedown', e => startTrace(e));
-    tCanvas.addEventListener('mousemove', e => traceDraw(e));
-    tCanvas.addEventListener('mouseup', stopDraw);
-    tCanvas.addEventListener('mouseleave', stopDraw);
-    tCanvas.addEventListener('touchstart', e => { e.preventDefault(); startTrace(e.touches[0]); });
-    tCanvas.addEventListener('touchmove', e => { e.preventDefault(); traceDraw(e.touches[0]); });
-    tCanvas.addEventListener('touchend', stopDraw);
+    if (tCanvas) {
+      tCanvas.addEventListener('mousedown', e => startTrace(e));
+      tCanvas.addEventListener('mousemove', e => traceDraw(e));
+      tCanvas.addEventListener('mouseup', stopDraw);
+      tCanvas.addEventListener('mouseleave', stopDraw);
+      tCanvas.addEventListener('touchstart', e => { e.preventDefault(); startTrace(e.touches[0]); });
+      tCanvas.addEventListener('touchmove', e => { e.preventDefault(); traceDraw(e.touches[0]); });
+      tCanvas.addEventListener('touchend', stopDraw);
+    }
 
     function startTrace(e) {
+      if (!tCtx) return;
       isTracing = true;
       tCtx.beginPath();
       const rect = tCanvas.getBoundingClientRect();
@@ -786,7 +794,7 @@
     }
 
     function traceDraw(e) {
-      if (!isTracing) return;
+      if (!isTracing || !tCtx) return;
       const rect = tCanvas.getBoundingClientRect();
       let x = e.clientX - rect.left;
       let y = e.clientY - rect.top;
@@ -837,7 +845,6 @@
       }
     }
 
-    // --- SZÁMÖSSZEKÖTŐS GALÉRIA ÉS JÁTÉK ---
     function openDotConnectGallery(category) {
       document.getElementById('mainMenuView').classList.remove('active');
       document.getElementById('dotConnectGalleryView').classList.add('active');
@@ -863,6 +870,7 @@
       document.getElementById('dotConnectView').classList.add('active');
       document.getElementById('dotConnectTitle').innerText = tpl.num;
 
+      if (!dCtx) return;
       dCtx.fillStyle = '#ffffff';
       dCtx.fillRect(0, 0, dCanvas.width, dCanvas.height);
 
@@ -881,15 +889,18 @@
       };
     }
 
-    dCanvas.addEventListener('mousedown', e => startDotDraw(e));
-    dCanvas.addEventListener('mousemove', e => dotDraw(e));
-    dCanvas.addEventListener('mouseup', stopDraw);
-    dCanvas.addEventListener('mouseleave', stopDraw);
-    dCanvas.addEventListener('touchstart', e => { e.preventDefault(); startDotDraw(e.touches[0]); });
-    dCanvas.addEventListener('touchmove', e => { e.preventDefault(); dotDraw(e.touches[0]); });
-    dCanvas.addEventListener('touchend', stopDraw);
+    if (dCanvas) {
+      dCanvas.addEventListener('mousedown', e => startDotDraw(e));
+      dCanvas.addEventListener('mousemove', e => dotDraw(e));
+      dCanvas.addEventListener('mouseup', stopDraw);
+      dCanvas.addEventListener('mouseleave', stopDraw);
+      dCanvas.addEventListener('touchstart', e => { e.preventDefault(); startDotDraw(e.touches[0]); });
+      dCanvas.addEventListener('touchmove', e => { e.preventDefault(); dotDraw(e.touches[0]); });
+      dCanvas.addEventListener('touchend', stopDraw);
+    }
 
     function startDotDraw(e) {
+      if (!dCtx) return;
       isDotDrawing = true;
       dCtx.beginPath();
       const rect = dCanvas.getBoundingClientRect();
@@ -897,7 +908,7 @@
     }
 
     function dotDraw(e) {
-      if (!isDotDrawing) return;
+      if (!isDotDrawing || !dCtx) return;
       const rect = dCanvas.getBoundingClientRect();
       dCtx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
       dCtx.strokeStyle = selectedColor;
@@ -912,7 +923,6 @@
       }
     }
 
-    // --- SZÁMOLÓS MATEK GALÉRIA ÉS PONTOS MATEK LÁTVÁNY ---
     function openMathGallery(category) {
       document.getElementById('mainMenuView').classList.remove('active');
       document.getElementById('mathGalleryView').classList.add('active');
@@ -941,24 +951,23 @@
       document.getElementById('mathEquationLabel').innerText = `${tpl.n1} ${tpl.op} ${tpl.n2} =`;
       document.getElementById('mathAnswerInput').value = '';
 
+      if (!mCtx) return;
       mCtx.fillStyle = '#ffffff';
       mCtx.fillRect(0, 0, mCanvas.width, mCanvas.height);
 
-      // Első csoport formái (pl. n1 darab)
       for (let i = 0; i < tpl.n1; i++) {
-        let x = 50 + (i % 6) * 80;
-        let y = 60 + Math.floor(i / 6) * 70;
+        let x = 40 + (i % 6) * 85;
+        let y = 40 + Math.floor(i / 6) * 65;
         drawShape(mCtx, x, y, tpl.shape1, tpl.color1);
       }
 
-      // Második csoport formái (pl. n2 darab)
-      let startX2 = 50 + (Math.min(tpl.n1, 6) * 80) + 20;
-      if (startX2 > 500) startX2 = 50;
-      let startY2 = tpl.n1 > 6 ? 180 : 60;
+      let startX2 = 40 + (Math.min(tpl.n1, 6) * 85) + 15;
+      if (startX2 > 480) startX2 = 40;
+      let startY2 = tpl.n1 > 6 ? 170 : 40;
 
       for (let i = 0; i < tpl.n2; i++) {
-        let x = startX2 + (i % 6) * 80;
-        let y = startY2 + Math.floor(i / 6) * 70;
+        let x = startX2 + (i % 6) * 85;
+        let y = startY2 + Math.floor(i / 6) * 65;
         drawShape(mCtx, x, y, tpl.shape2, tpl.color2);
       }
     }
@@ -970,32 +979,33 @@
       context.beginPath();
 
       if (shape === 'kör') {
-        context.arc(x + 25, y + 25, 22, 0, 2 * Math.PI);
+        context.arc(x + 22, y + 22, 18, 0, 2 * Math.PI);
         context.fill(); context.stroke();
       } else if (shape === 'háromszög') {
-        context.moveTo(x + 25, y);
-        context.lineTo(x + 50, y + 45);
-        context.lineTo(x, y + 45);
+        context.moveTo(x + 22, y);
+        context.lineTo(x + 44, y + 38);
+        context.lineTo(x, y + 38);
         context.closePath();
         context.fill(); context.stroke();
       } else if (shape === 'csillag') {
-        // Egyszerű csillag / korona forma
-        context.arc(x + 25, y + 25, 20, 0, 2 * Math.PI);
+        context.arc(x + 22, y + 22, 18, 0, 2 * Math.PI);
         context.fill(); context.stroke();
       } else if (shape === 'szív') {
-        context.arc(x + 15, y + 15, 15, 0, Math.PI);
-        context.arc(x + 35, y + 15, 15, 0, Math.PI);
-        context.lineTo(x + 25, y + 45);
+        context.arc(x + 12, y + 12, 12, 0, Math.PI);
+        context.arc(x + 32, y + 12, 12, 0, Math.PI);
+        context.lineTo(x + 22, y + 38);
         context.closePath();
         context.fill(); context.stroke();
       } else {
-        context.fillRect(x, y, 40, 40);
-        context.strokeRect(x, y, 40, 40);
+        context.fillRect(x, y, 35, 35);
+        context.strokeRect(x, y, 35, 35);
       }
     }
 
     function checkMathAnswer() {
-      let userVal = parseInt(document.getElementById('mathAnswerInput').value);
+      let inputElem = document.getElementById('mathAnswerInput');
+      if (!inputElem) return;
+      let userVal = parseInt(inputElem.value);
       if (isNaN(userVal)) {
         alert('Írd be a számot a négyzetbe, kis művész! 🧐');
         return;
@@ -1013,7 +1023,6 @@
       }
     }
 
-    // --- NAVIGÁCIÓS SEGÉDEK ---
     function goBackToMenu() {
       document.getElementById('galleryView').classList.remove('active');
       document.getElementById('tracingGalleryView').classList.remove('active');
