@@ -365,7 +365,7 @@
       </div>
     </div>
 
-    <!-- VIEW 6: SZÁMOLÓS MATEK KÉP MUNKATERÜLET -->
+    <!-- VIEW 6: SZÁMOLÓS MATEK KÉP MUNKATERÜLET (EGYMÁS ALÁ RENDEZETT CSOPORTOKKAL) -->
     <div id="mathView" class="view-section">
       <button class="btn btn-danger" onclick="goBackToMathGallery()" style="margin-bottom: 8px;">❮ Vissza a Számolós Galériába</button>
       
@@ -391,7 +391,7 @@
   </div>
 
   <footer>
-    Mátrix Labor Engine v1.45 • Projektigazgatás: Jordan & Nefi
+    Mátrix Labor Engine v1.46 • Projektigazgatás: Jordan & Nefi
   </footer>
 
   <script>
@@ -442,22 +442,30 @@
       girls: Array.from({length: 15}, (_, i) => ({ id: 'l' + (i + 1), num: String(i + 1).padStart(2, '0'), img: 'l' + (i + 1) + '.png' }))
     };
 
-    // 15 DB FIÚS ÉS 15 DB LÁNYOS MATEK FELADAT - TŰPONTOS SZINKRONBAN A RAJZPALETTÁVAL
+    // 15 DB FIÚS ÉS 15 DB LÁNYOS MATEK FELADAT - VÁLTOZATOS FORMÁKKAL ÉS SZÍNEKKEL
     const mathTemplates = {
       boys: Array.from({length: 15}, (_, i) => {
-        let n1 = (i % 7) + 3;
-        let n2 = ((i + 2) % 5) + 1;
+        let n1 = (i % 6) + 3;
+        let n2 = ((i + 1) % 5) + 1;
         let isMinus = (i % 3 === 0);
         if (isMinus && n1 < n2) { let temp = n1; n1 = n2; n2 = temp; }
         let op = isMinus ? '-' : '+';
         let ans = isMinus ? (n1 - n2) : (n1 + n2);
+        
+        const shapeList = ['kör', 'háromszög', 'téglalap'];
+        const colorList = ['#ff3333', '#0088ff', '#ffcc00', '#00cc66', '#9933ff'];
+        let s1 = shapeList[i % shapeList.length];
+        let s2 = shapeList[(i + 1) % shapeList.length];
+        let c1 = colorList[i % colorList.length];
+        let c2 = colorList[(i + 2) % colorList.length];
+
         return {
           id: 'm' + (i + 1),
           num: String(i + 1).padStart(2, '0'),
           n1: n1, n2: n2, op: op, ans: ans,
-          color1: '#ff3333', color2: '#0088ff',
-          shape1: 'piros kör', shape2: 'kék háromszög',
-          desc: `Piros kör: ${n1}, Kék háromszög: ${n2}. Számold meg külön őket!`
+          color1: c1, color2: c2,
+          shape1: s1, shape2: s2,
+          desc: `${s1}: ${n1}, ${s2}: ${n2}. Számold meg külön egymás alatt!`
         };
       }),
       girls: Array.from({length: 15}, (_, i) => {
@@ -467,13 +475,21 @@
         if (isMinus && n1 < n2) { let temp = n1; n1 = n2; n2 = temp; }
         let op = isMinus ? '-' : '+';
         let ans = isMinus ? (n1 - n2) : (n1 + n2);
+        
+        const shapeList = ['csillag', 'szív', 'kör'];
+        const colorList = ['#ff00ff', '#00cc66', '#ff66b2', '#00ffff', '#ff9900'];
+        let s1 = shapeList[i % shapeList.length];
+        let s2 = shapeList[(i + 1) % shapeList.length];
+        let c1 = colorList[i % colorList.length];
+        let c2 = colorList[(i + 2) % colorList.length];
+
         return {
           id: 'n' + (i + 1),
           num: String(i + 1).padStart(2, '0'),
           n1: n1, n2: n2, op: op, ans: ans,
-          color1: '#ff00ff', color2: '#00cc66',
-          shape1: 'rózsaszín csillag', shape2: 'zöld szív',
-          desc: `Rózsaszín csillag: ${n1}, Zöld szív: ${n2}. Számold meg külön őket!`
+          color1: c1, color2: c2,
+          shape1: s1, shape2: s2,
+          desc: `${s1}: ${n1}, ${s2}: ${n2}. Számold meg külön egymás alatt!`
         };
       })
     };
@@ -948,7 +964,7 @@
       document.getElementById('mathGalleryView').classList.remove('active');
       document.getElementById('mathView').classList.add('active');
       document.getElementById('mathTitle').innerText = tpl.num;
-      document.getElementById('mathDesc').innerText = tpl.desc;
+      document.getElementById('mathDesc').innerText = `${tpl.shape1.toUpperCase()} (${tpl.n1 db}) ÉS ${tpl.shape2.toUpperCase()} (${tpl.n2 db})`;
       document.getElementById('mathEquationLabel').innerText = `${tpl.n1} ${tpl.op} ${tpl.n2} =`;
       document.getElementById('mathAnswerInput').value = '';
 
@@ -956,21 +972,21 @@
       mCtx.fillStyle = '#ffffff';
       mCtx.fillRect(0, 0, mCanvas.width, mCanvas.height);
 
-      // Első csoport formái és színei
+      // EGYMÁS ALÁ RENDEZETT CSOPORTOK (ELSŐ CSOPORT FELÜL, MÁSODIK CSOPORT ALATTA)
+      // Első csoport sorokba rendezve (max 6 elem soronként)
       for (let i = 0; i < tpl.n1; i++) {
         let x = 40 + (i % 6) * 85;
-        let y = 40 + Math.floor(i / 6) * 65;
+        let y = 35 + Math.floor(i / 6) * 55;
         drawShape(mCtx, x, y, tpl.shape1, tpl.color1);
       }
 
-      // Második csoport formái és színei
-      let startX2 = 40 + (Math.min(tpl.n1, 6) * 85) + 15;
-      if (startX2 > 480) startX2 = 40;
-      let startY2 = tpl.n1 > 6 ? 170 : 40;
+      // Második csoport alatta sorokba rendezve
+      let rows1 = Math.ceil(tpl.n1 / 6);
+      let startY2 = 35 + (rows1 * 55) + 15;
 
       for (let i = 0; i < tpl.n2; i++) {
-        let x = startX2 + (i % 6) * 85;
-        let y = startY2 + Math.floor(i / 6) * 65;
+        let x = 40 + (i % 6) * 85;
+        let y = startY2 + Math.floor(i / 6) * 55;
         drawShape(mCtx, x, y, tpl.shape2, tpl.color2);
       }
     }
@@ -981,28 +997,30 @@
       context.lineWidth = 2;
       context.beginPath();
 
-      if (shapeDesc.includes('kör')) {
-        context.arc(x + 22, y + 22, 18, 0, 2 * Math.PI);
+      if (shapeDesc === 'kör') {
+        context.arc(x + 20, y + 20, 16, 0, 2 * Math.PI);
         context.fill(); context.stroke();
-      } else if (shapeDesc.includes('háromszög')) {
-        context.moveTo(x + 22, y);
-        context.lineTo(x + 44, y + 38);
-        context.lineTo(x, y + 38);
+      } else if (shapeDesc === 'háromszög') {
+        context.moveTo(x + 20, y + 2);
+        context.lineTo(x + 38, y + 36);
+        context.lineTo(x + 2, y + 36);
         context.closePath();
         context.fill(); context.stroke();
-      } else if (shapeDesc.includes('csillag')) {
-        // Pontos csillag / kör minta
-        context.arc(x + 22, y + 22, 18, 0, 2 * Math.PI);
+      } else if (shapeDesc === 'téglalap') {
+        context.fillRect(x + 4, y + 6, 32, 26);
+        context.strokeRect(x + 4, y + 6, 32, 26);
+      } else if (shapeDesc === 'csillag') {
+        context.arc(x + 20, y + 20, 16, 0, 2 * Math.PI);
         context.fill(); context.stroke();
-      } else if (shapeDesc.includes('szív')) {
-        context.arc(x + 12, y + 16, 12, 0, Math.PI);
-        context.arc(x + 32, y + 16, 12, 0, Math.PI);
-        context.lineTo(x + 22, y + 38);
+      } else if (shapeDesc === 'szív') {
+        context.arc(x + 11, y + 14, 11, 0, Math.PI);
+        context.arc(x + 29, y + 14, 11, 0, Math.PI);
+        context.lineTo(x + 20, y + 36);
         context.closePath();
         context.fill(); context.stroke();
       } else {
-        context.fillRect(x, y, 35, 35);
-        context.strokeRect(x, y, 35, 35);
+        context.fillRect(x + 4, y + 4, 32, 32);
+        context.strokeRect(x + 4, y + 4, 32, 32);
       }
     }
 
