@@ -185,7 +185,7 @@
       margin: 4px 0;
     }
 
-    /* Munkaterületek (Canvas Container rétegezéshez) */
+    /* Munkaterületek */
     .canvas-workspace {
       display: flex;
       flex-direction: column;
@@ -204,7 +204,6 @@
       background: #ffffff;
     }
 
-    /* Két réteg: alul a színek, felül a fekete kontúr kép áttetszően */
     .canvas-container canvas, .canvas-container img {
       position: absolute;
       top: 0;
@@ -220,8 +219,17 @@
 
     #outlineImage {
       z-index: 2;
-      pointer-events: none; /* Átgördül a kattintás az alsó szín rétegre! */
-      mix-blend-mode: multiply; /* A fehér áttetsző lesz, a fekete kontúr marad */
+      pointer-events: none;
+      mix-blend-mode: multiply;
+    }
+
+    .interactive-canvas {
+      background: #ffffff;
+      border: 3px solid var(--neon-cyan);
+      border-radius: 10px;
+      cursor: crosshair;
+      max-width: 100%;
+      box-shadow: 0 0 20px rgba(0,255,204,0.4);
     }
 
     /* 30 Színű Paletta */
@@ -356,16 +364,15 @@
       <div id="mathGalleryContainer" class="gallery-grid"></div>
     </div>
 
-    <!-- VIEW 3: SZÍNEZŐ MUNKATERÜLET (DUPLA RÉTEGŰ KATTINTÓS KITÖLTÉS) -->
+    <!-- VIEW 3: SZÍNEZŐ MUNKATERÜLET -->
     <div id="canvasView" class="view-section">
       <button class="btn btn-danger" onclick="goBackToGallery()" style="margin-bottom: 8px;">❮ Vissza a Galériába</button>
       
       <div class="canvas-workspace">
         <h3 id="activeTemplateTitle" style="color: var(--accent-gold); margin: 0; font-size: 1rem;">Színező Munkaterület</h3>
-        <p style="font-size: 0.75rem; color: #00ffcc; margin: 0;">Kattints bármelyik formára a kontúrok között a festéshez! 🎨</p>
+        <p style="font-size: 0.75rem; color: #00ffcc; margin: 0;">Kattints precízen a kontúrok közé a festéshez! 🎨</p>
         <div class="palette" id="colorPalette"></div>
         
-        <!-- Dupla réteg: alul a festhető vászon, felül a fekete kontúr kép -->
         <div class="canvas-container">
           <canvas id="colorLayer" width="600" height="400"></canvas>
           <img id="outlineImage" src="" alt="Kontúr kép">
@@ -438,7 +445,7 @@
   </div>
 
   <footer>
-    Mátrix Labor Engine v1.60 • Projektigazgatás: Jordan & Nefi
+    Mátrix Labor Engine v1.61 • Projektigazgatás: Jordan & Nefi
   </footer>
 
   <script>
@@ -485,6 +492,7 @@
       ]
     };
 
+    // TELJES 15-15 DARABOS SZÁMÖSSZEKÖTŐS TÖMB (bebiztosítva f1-15 és l1-15)
     const dotConnectTemplates = {
       boys: Array.from({length: 15}, (_, i) => ({ id: 'f' + (i + 1), num: String(i + 1).padStart(2, '0'), img: 'f' + (i + 1) + '.png' })),
       girls: Array.from({length: 15}, (_, i) => ({ id: 'l' + (i + 1), num: String(i + 1).padStart(2, '0'), img: 'l' + (i + 1) + '.png' }))
@@ -625,7 +633,7 @@
       };
     }
 
-    // KATTINTÓS FLOOD FILL KITÖLTÉS (A kontúrok figyelembevételével)
+    // PRECÍZ KATTINTÓS KITÖLTÉS (Finomított kontúr-határ vizsgálattal)
     if (canvas) {
       canvas.addEventListener('click', e => {
         if (!ctx) return;
@@ -635,7 +643,6 @@
         const startX = Math.floor((e.clientX - rect.left) * scaleX);
         const startY = Math.floor((e.clientY - rect.top) * scaleY);
 
-        // Hozzunk létre egy ideiglenes canvas-t a kontúr pixeladataival a határok ellenőrzéséhez
         const tempCanvas = document.createElement('canvas');
         tempCanvas.width = canvas.width;
         tempCanvas.height = canvas.height;
@@ -666,11 +673,11 @@
       const targetR = data[targetIdx], targetG = data[targetIdx + 1], targetB = data[targetIdx + 2];
       const [fillR, fillG, fillB] = hexToRgb(fillColorHex);
 
-      if (Math.abs(targetR - fillR) < 5 && Math.abs(targetG - fillG) < 5 && Math.abs(targetB - fillB) < 5) return;
+      if (Math.abs(targetR - fillR) < 3 && Math.abs(targetG - fillG) < 3 && Math.abs(targetB - fillB) < 3) return;
 
-      // Ha a kattintott pixel fekete (kontúr vonal), ne csináljunk semmit
+      // Ha a kattintott pixel fekete (vonal), ne csináljon semmit
       const oR = outlineData[targetIdx], oG = outlineData[targetIdx + 1], oB = outlineData[targetIdx + 2];
-      if (oR < 80 && oG < 80 && oB < 80) return;
+      if (oR < 100 && oG < 100 && oB < 100) return;
 
       const queue = [[x, y]];
       const visited = new Uint8Array(width * height);
@@ -683,12 +690,12 @@
 
         let pIdx = idx * 4;
         
-        // Ellenőrizzük, hogy a kontúr kép ebben a pixelben fekete-e (vonal van-e ott)
+        // Kontúr vonal ellenőrzés finomított küszöbnel
         let lineR = outlineData[pIdx], lineG = outlineData[pIdx + 1], lineB = outlineData[pIdx + 2];
-        if (lineR < 80 && lineG < 80 && lineB < 80) continue; // Megáll a fekete vonalnál!
+        if (lineR < 100 && lineG < 100 && lineB < 100) continue; 
 
         let r = data[pIdx], g = data[pIdx + 1], b = data[pIdx + 2];
-        if (Math.abs(r - targetR) > 30 || Math.abs(g - targetG) > 30 || Math.abs(b - targetB) > 30) continue;
+        if (Math.abs(r - targetR) > 25 || Math.abs(g - targetG) > 25 || Math.abs(b - targetB) > 25) continue;
 
         data[pIdx] = fillR;
         data[pIdx + 1] = fillG;
@@ -977,6 +984,7 @@
         card.innerHTML = `
           <div style="font-size: 1.5rem; margin-bottom: 2px;">🔢</div>
           <h3>${tpl.num}</h3>
+          <p style="font-size: 0.65rem; color: #aaa; margin: 0;">${tpl.img}</p>
         `;
         card.onclick = () => startDotConnectGame(tpl);
         container.appendChild(card);
@@ -1002,9 +1010,9 @@
         dCtx.fillStyle = '#ffffff';
         dCtx.fillRect(0, 0, dCanvas.width, dCanvas.height);
         dCtx.font = '14px Courier New';
-        dCtx.fillStyle = '#64748b';
+        dCtx.fillStyle = '#ff3333';
         dCtx.textAlign = 'center';
-        dCtx.fillText('Kép betöltése: ' + tpl.img, dCanvas.width / 2, dCanvas.height / 2);
+        dCtx.fillText('Nem található képfájl: ' + tpl.img, dCanvas.width / 2, dCanvas.height / 2);
       };
     }
 
