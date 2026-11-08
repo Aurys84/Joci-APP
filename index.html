@@ -6,8 +6,8 @@
   <title>Mátrix Labor — Interaktív Gyermek Fejlesztő & Kifestő</title>
   <style>
     :root {
-      --bg-color: #010206;
-      --panel-bg: rgba(8, 20, 35, 0.95);
+      --bg-color: #02040a;
+      --panel-bg: rgba(12, 27, 42, 0.92);
       --neon-cyan: #00ffcc;
       --neon-magenta: #ff00ff;
       --neon-blue: #0088ff;
@@ -16,7 +16,7 @@
     }
 
     body {
-      background: radial-gradient(circle at center, #110022 0%, var(--bg-color) 100%);
+      background: radial-gradient(circle at center, #15002b 0%, var(--bg-color) 100%);
       color: var(--text-main);
       font-family: 'Courier New', Courier, monospace, sans-serif;
       margin: 0;
@@ -33,27 +33,25 @@
     }
 
     h1 {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       color: var(--neon-cyan);
-      text-shadow: 0 0 20px rgba(0,255,204,0.8);
+      text-shadow: 0 0 15px rgba(0,255,204,0.7);
       margin: 6px 0 2px 0;
-      letter-spacing: 1px;
     }
 
     p.subtitle {
       font-size: 0.8rem;
       color: var(--neon-magenta);
       margin: 0;
-      text-shadow: 0 0 10px rgba(255,0,255,0.5);
     }
 
     .container {
       width: 100%;
       max-width: 900px;
       background: var(--panel-bg);
-      border: 2px solid var(--neon-cyan);
-      border-radius: 16px;
-      box-shadow: 0 0 35px rgba(0, 255, 204, 0.25), inset 0 0 15px rgba(0, 136, 255, 0.15);
+      border: 3px solid var(--neon-cyan);
+      border-radius: 15px;
+      box-shadow: 0 0 30px rgba(0, 255, 204, 0.3);
       padding: 15px;
       box-sizing: border-box;
       position: relative;
@@ -62,13 +60,12 @@
 
     /* Profil sáv */
     .profile-box {
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.6);
       border: 1px solid var(--neon-blue);
       border-radius: 10px;
       padding: 8px;
       text-align: center;
       margin-bottom: 12px;
-      box-shadow: inset 0 0 8px rgba(0,136,255,0.2);
     }
 
     .profile-box label {
@@ -89,8 +86,6 @@
       width: 80%;
       max-width: 260px;
       font-family: inherit;
-      outline: none;
-      box-shadow: 0 0 8px rgba(0,255,204,0.3);
     }
 
     /* Nézetkezelő */
@@ -109,11 +104,10 @@
     }
 
     .category-card {
-      background: rgba(0, 0, 0, 0.6);
+      background: rgba(0, 0, 0, 0.5);
       border: 2px solid;
       border-radius: 12px;
       padding: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
     }
 
     .category-card.boys { border-color: var(--neon-blue); }
@@ -123,7 +117,6 @@
       font-size: 1.05rem;
       margin-top: 0;
       text-align: center;
-      letter-spacing: 0.5px;
     }
     .category-card.boys h2 { color: var(--neon-cyan); }
     .category-card.girls h2 { color: #ff99cc; }
@@ -135,10 +128,10 @@
     }
 
     .task-btn {
-      background: rgba(0, 255, 204, 0.12);
+      background: rgba(0, 255, 204, 0.15);
       border: 1px solid var(--neon-cyan);
       color: var(--text-main);
-      padding: 10px 12px;
+      padding: 10px;
       font-size: 0.9rem;
       border-radius: 8px;
       cursor: pointer;
@@ -147,19 +140,13 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      transition: all 0.2s;
       position: relative;
       z-index: 20;
     }
 
     .category-card.girls .task-btn {
-      background: rgba(255, 0, 255, 0.12);
+      background: rgba(255, 0, 255, 0.15);
       border-color: var(--neon-magenta);
-    }
-
-    .task-btn:hover {
-      background: rgba(0, 255, 204, 0.25);
-      box-shadow: 0 0 10px rgba(0,255,204,0.4);
     }
 
     .task-btn:active { background: rgba(0, 255, 204, 0.4); }
@@ -170,9 +157,6 @@
       grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
       gap: 10px;
       margin-top: 10px;
-      max-height: 450px;
-      overflow-y: auto;
-      padding-right: 5px;
     }
 
     .gallery-item {
@@ -189,12 +173,11 @@
 
     .gallery-item:hover {
       transform: translateY(-2px);
-      box-shadow: 0 0 15px rgba(0,255,204,0.6);
-      border-color: var(--accent-gold);
+      box-shadow: 0 0 12px rgba(0,255,204,0.5);
     }
 
     .gallery-item h3 {
-      font-size: 1rem;
+      font-size: 1.1rem;
       color: var(--accent-gold);
       margin: 4px 0;
     }
@@ -211,49 +194,39 @@
       background: #ffffff;
       border: 3px solid var(--neon-cyan);
       border-radius: 10px;
-      cursor: crosshair;
+      cursor: pointer;
       max-width: 100%;
-      box-shadow: 0 0 25px rgba(0,255,204,0.4);
+      box-shadow: 0 0 20px rgba(0,255,204,0.4);
     }
 
-    /* 50+ Színű Gigantikus Paletta */
     .palette {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(26px, 1fr));
-      gap: 4px;
-      width: 100%;
-      max-width: 580px;
-      background: rgba(0,0,0,0.85);
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      background: rgba(0,0,0,0.8);
       padding: 8px;
       border-radius: 8px;
       border: 1px solid var(--neon-blue);
-      box-sizing: border-box;
-      box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
     }
 
     .color-btn {
-      width: 26px;
-      height: 26px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
-      border: 2px solid rgba(255,255,255,0.8);
+      border: 2px solid white;
       cursor: pointer;
       transition: transform 0.1s;
     }
-    .color-btn:hover {
-      transform: scale(1.1);
-    }
     .color-btn:active, .color-btn.selected {
-      transform: scale(1.25);
+      transform: scale(1.15);
       border-color: var(--accent-gold);
-      box-shadow: 0 0 12px var(--accent-gold);
-      z-index: 5;
+      box-shadow: 0 0 10px var(--accent-gold);
     }
 
     .action-row {
       display: flex;
       gap: 10px;
-      flex-wrap: wrap;
-      justify-content: center;
       position: relative;
       z-index: 20;
     }
@@ -262,24 +235,16 @@
       background: var(--neon-blue);
       color: white;
       border: none;
-      padding: 9px 16px;
+      padding: 8px 14px;
       border-radius: 6px;
       font-family: inherit;
       cursor: pointer;
       font-size: 0.85rem;
-      font-weight: bold;
-      box-shadow: 0 0 10px rgba(0,136,255,0.4);
-      transition: all 0.2s;
       position: relative;
       z-index: 20;
     }
-    .btn:hover {
-      box-shadow: 0 0 15px rgba(0,136,255,0.8);
-      filter: brightness(1.1);
-    }
-    .btn-danger { background: #ff3333; box-shadow: 0 0 10px rgba(255,51,51,0.4); }
-    .btn-success { background: #00cc66; box-shadow: 0 0 10px rgba(0,204,102,0.4); }
-    .btn-pdf { background: #9933ff; box-shadow: 0 0 10px rgba(153,51,255,0.4); }
+    .btn-danger { background: #ff3333; }
+    .btn-success { background: #00cc66; }
 
     footer {
       margin-top: 12px;
@@ -312,7 +277,7 @@
         <div class="category-card boys">
           <h2>🚀 Kalandok & Járművek</h2>
           <div class="task-list">
-            <button class="task-btn" onclick="openGallery('boys', 'szinezo')">🎨 Csak Színezős (Galéria - 5 db)</button>
+            <button class="task-btn" onclick="openGallery('boys', 'szinezo')">🎨 Csak Színezős (Galéria)</button>
             <button class="task-btn" onclick="openTracingGallery('boys')">✏️ Átrajzolós / Vonalvezetés (10 féle)</button>
             <button class="task-btn" onclick="openDotConnectGallery('boys')">🔢 Számösszekötős Képek (15 db)</button>
             <button class="task-btn" onclick="openMathGallery('boys')">🧮 Számolós & Matek Képek (15 db)</button>
@@ -323,7 +288,7 @@
         <div class="category-card girls">
           <h2>👑 Varázsvilág & Hercegnők</h2>
           <div class="task-list">
-            <button class="task-btn" onclick="openGallery('girls', 'szinezo')">🎨 Csak Színezős (Galéria - 5 db)</button>
+            <button class="task-btn" onclick="openGallery('girls', 'szinezo')">🎨 Csak Színezős (Galéria)</button>
             <button class="task-btn" onclick="openTracingGallery('girls')">✏️ Átrajzolós / Vonalvezetés (10 féle)</button>
             <button class="task-btn" onclick="openDotConnectGallery('girls')">🔢 Számösszekötős Képek (15 db)</button>
             <button class="task-btn" onclick="openMathGallery('girls')">💖 Számolós & Matek Képek (15 db)</button>
@@ -336,7 +301,7 @@
     <!-- VIEW 2: SZÍNEZŐ GALÉRIA -->
     <div id="galleryView" class="view-section">
       <button class="btn btn-danger" onclick="goBackToMenu()" style="margin-bottom: 10px;">❮ Vissza a Főmenübe</button>
-      <h2 style="color: var(--neon-cyan); text-align: center; margin-top: 0; font-size: 1.1rem;">Válassz egy vektorképet a színezéshez!</h2>
+      <h2 style="color: var(--neon-cyan); text-align: center; margin-top: 0; font-size: 1.1rem;">Válassz egy képet a színezéshez!</h2>
       <div id="galleryContainer" class="gallery-grid"></div>
     </div>
 
@@ -367,13 +332,11 @@
       
       <div class="canvas-workspace">
         <h3 id="activeTemplateTitle" style="color: var(--accent-gold); margin: 0; font-size: 1rem;">Színező Munkaterület</h3>
-        <p style="font-size: 0.75rem; color: #00ffcc; margin: 0;">Kattints a kiválasztott színnel bármelyik zárt területre a kitöltéshez! 🎨</p>
         <div class="palette" id="colorPalette"></div>
         <canvas id="coloringCanvas" class="interactive-canvas" width="600" height="400"></canvas>
         <div class="action-row">
-          <button class="btn btn-danger" onclick="clearCanvas()">Törlés / Újra 🔄</button>
-          <button class="btn btn-pdf" onclick="downloadAsPDF()">PDF Mentés 📄</button>
-          <button class="btn btn-success" onclick="alert('Csodás alkotás! Mentve a Mátrix Labor archívumába! 💾✨')">Kész / Mentés ⭐</button>
+          <button class="btn btn-danger" onclick="clearCanvas()">Törlés / Újra</button>
+          <button class="btn btn-success" onclick="alert('Csodás alkotás! Mentve a Mátrix Labor archívumába!')">Kész / Mentés 💾</button>
         </div>
       </div>
     </div>
@@ -395,7 +358,7 @@
       </div>
     </div>
 
-    <!-- VIEW 5: SZÁMÖSSZEKÖTŐS KÉP -->
+    <!-- VIEW 5: SZÁMÖSSZEKÖTŐS KÉP (VÉKONY FILC) -->
     <div id="dotConnectView" class="view-section">
       <button class="btn btn-danger" onclick="goBackToDotConnectGallery()" style="margin-bottom: 8px;">❮ Vissza a Számösszekötős Galériába</button>
       
@@ -438,24 +401,22 @@
   </div>
 
   <footer>
-    Mátrix Labor Engine v1.70 • Projektigazgatás: Jordan & Nefi
+    Mátrix Labor Engine v1.47 • Projektigazgatás: Jordan & Nefi
   </footer>
 
   <script>
     const coloringTemplates = {
       boys: [
         { id: 'train', name: '🚂 Gőzmozdony', desc: 'Klasszikus pöfögős vonat.' },
+        { id: 'nature', name: '🌿 Természet & Virágok', desc: 'Fák, levelek és a szabad világ.' },
         { id: 'rocket', name: '🚀 Mátrix Űrsikló', desc: 'Irány a galaxis és a csillagok!' },
-        { id: 'robot', name: '🤖 Robot Robi', desc: 'Varázsolj új külsőt a vidám robotnak!' },
-        { id: 'dino', name: '🦖 Dínó Kaland', desc: 'Ősi őshüllő a laborból.' },
-        { id: 'car', name: '🏎️ Villám Versenyautó', desc: 'Szupergyors gép a pályán.' }
+        { id: 'robot', name: '🤖 Robot Robi', desc: 'Varázsolj új külsőt a vidám robotnak!' }
       ],
       girls: [
         { id: 'castle', name: '🏰 Varázskastély', desc: 'Tornyok, hintók és csillogás.' },
+        { id: 'nature', name: '🌿 Természet & Virágok', desc: 'Fák, levelek és a szabad világ.' },
         { id: 'fairy', name: '🧚‍♀️ Tündér Hercegnő', desc: 'Szárnyak, virágok és varázslat.' },
-        { id: 'pegasus', name: '🦄 Unikornis Kaland', desc: 'Szivárványok és csillagos ég.' },
-        { id: 'butterfly', name: '🦋 Varázs Pillangó', desc: 'Színes szárnyak a réten.' },
-        { id: 'teddy', name: '🧸 Cuki Maci', desc: 'Kedves plüssbarát.' }
+        { id: 'pegasus', name: '🦄 Unikornis Kaland', desc: 'Szivárványok és csillagos ég.' }
       ]
     };
 
@@ -478,7 +439,7 @@
         { id: 'square', name: '🟦 Négyzet', desc: 'Egyenlő oldalú doboz vonal' },
         { id: 'rectangle', name: '▭ Téglalap', desc: 'Hosszú szögletes alapforma' },
         { id: 'g1', name: '👑 Varázskorona Ívek', desc: 'Királyi csúcsos ívek' },
-        { id: 'g2', name: '🌸 Virágszirom Körök', desc: 'Többszirmú virág minta' },
+        { id: 'g2', name: '🌸 Virágszirom Körök', desc: 'Többszirmú virág minta (6 szirom + közép)' },
         { id: 'g3', name: '💖 Szív Hurok Pálya', desc: 'Szeretetteljes összekötő ív' },
         { id: 'g4', name: '🧚‍♀️ Tündér Porhintő', desc: 'Hullámzó varázspor sáv' },
         { id: 'g5', name: '🦋 Pillangó Szárny', desc: 'Szimmetrikus szárnygörbe' },
@@ -542,16 +503,7 @@
       })
     };
 
-    const colors = [
-      '#ff0000', '#ff3300', '#ff6600', '#ff9900', '#ffcc00', '#ffff00', '#ccff00', '#99ff00', '#66ff00', '#33ff00',
-      '#00ff00', '#00ff33', '#00ff66', '#00ff99', '#00ffcc', '#00ffff', '#00ccff', '#0099ff', '#0066ff', '#0033ff',
-      '#0000ff', '#3300ff', '#6600ff', '#9900ff', '#cc00ff', '#ff00ff', '#ff00cc', '#ff0099', '#ff0066', '#ff0033',
-      '#ffffff', '#e6e6e6', '#cccccc', '#b3b3b3', '#999999', '#808080', '#666666', '#4d4d4d', '#333333', '#1a1a1a', '#000000',
-      '#8b4513', '#a0522d', '#cd853f', '#deb887', '#ffb6c1', '#ffc0cb', '#dda0dd', '#9370db', '#4682b4', '#20b2aa'
-    ];
-
-    let selectedColor = '#ff0000';
-    let currentActiveTemplate = null;
+    let selectedColor = '#ff0055';
     let currentTracingTpl = null;
     let guideSamplePoints = [];
     let userStrokePoints = [];
@@ -559,7 +511,8 @@
     let currentMathTpl = null;
 
     const canvas = document.getElementById('coloringCanvas');
-    const ctx = canvas ? canvas.getContext('2d' , { willReadFrequently: true }) : null;
+    const ctx = canvas ? canvas.getContext('2d') : null;
+    let isDrawing = false;
 
     const tCanvas = document.getElementById('tracingCanvas');
     const tCtx = tCanvas ? tCanvas.getContext('2d') : null;
@@ -567,7 +520,13 @@
 
     const dCanvas = document.getElementById('dotCanvas');
     const dCtx = dCanvas ? dCanvas.getContext('2d') : null;
+    let isDotDrawing = false;
 
+    const mCanvas = document.getElementById('mathCanvas');
+    const mCtx = mCanvas ? mCanvas.getContext('2d') : null;
+    let isMathDrawing = false;
+
+    const colors = ['#ff0055', '#ff9900', '#ffff00', '#00cc66', '#00ffff', '#0088ff', '#9933ff', '#ff66b2', '#8b4513', '#333333'];
     const paletteContainer = document.getElementById('colorPalette');
     
     if (paletteContainer) {
@@ -605,178 +564,57 @@
     }
 
     function startColoring(tpl) {
-      currentActiveTemplate = tpl;
       document.getElementById('galleryView').classList.remove('active');
       document.getElementById('canvasView').classList.add('active');
       document.getElementById('activeTemplateTitle').innerText = tpl.name;
-      renderColoringTemplate(tpl.id);
-    }
 
-    function renderColoringTemplate(id) {
       if (!ctx) return;
       ctx.fillStyle = '#ffffff';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.strokeStyle = '#111111';
+      
+      ctx.strokeStyle = '#222222';
       ctx.lineWidth = 4;
-      ctx.lineJoin = 'round';
-      ctx.lineCap = 'round';
+      ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
 
-      if (id === 'train') {
-        ctx.strokeRect(100, 220, 180, 110);
-        ctx.strokeRect(300, 170, 160, 160);
-        ctx.beginPath(); ctx.arc(140, 330, 25, 0, 2*Math.PI); ctx.arc(220, 330, 25, 0, 2*Math.PI); ctx.arc(350, 330, 25, 0, 2*Math.PI); ctx.arc(430, 330, 25, 0, 2*Math.PI); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(460, 220); ctx.lineTo(520, 220); ctx.lineTo(500, 330); ctx.lineTo(460, 330); ctx.closePath(); ctx.stroke();
-        ctx.beginPath(); ctx.arc(360, 130, 20, 0, Math.PI, true); ctx.lineTo(380, 170); ctx.lineTo(340, 170); ctx.closePath(); ctx.stroke();
-      } else if (id === 'rocket') {
-        ctx.beginPath(); ctx.moveTo(300, 60); ctx.lineTo(380, 200); ctx.lineTo(380, 300); ctx.lineTo(220, 300); ctx.lineTo(220, 200); ctx.closePath(); ctx.stroke();
-        ctx.beginPath(); ctx.arc(300, 180, 30, 0, 2*Math.PI); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(220, 250); ctx.lineTo(160, 320); ctx.lineTo(220, 300); ctx.closePath(); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(380, 250); ctx.lineTo(440, 320); ctx.lineTo(380, 300); ctx.closePath(); ctx.stroke();
-      } else if (id === 'robot') {
-        ctx.strokeRect(240, 80, 120, 90);
-        ctx.strokeRect(210, 190, 180, 140);
-        ctx.strokeRect(130, 190, 70, 110);
-        ctx.strokeRect(400, 190, 70, 110);
-        ctx.strokeRect(240, 340, 45, 50);
-        ctx.strokeRect(315, 340, 45, 50);
-        ctx.beginPath(); ctx.arc(280, 125, 18, 0, 2*Math.PI); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(300, 50); ctx.lineTo(300, 80); ctx.stroke();
-      } else if (id === 'dino') {
-        ctx.beginPath(); ctx.arc(320, 240, 90, 0, 2*Math.PI); ctx.stroke();
-        ctx.beginPath(); ctx.arc(430, 160, 50, 0, 2*Math.PI); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(230, 280); ctx.lineTo(130, 240); ctx.lineTo(200, 330); ctx.closePath(); ctx.stroke();
-      } else if (id === 'car') {
-        ctx.strokeRect(150, 200, 300, 80);
-        ctx.beginPath(); ctx.arc(220, 280, 35, 0, 2*Math.PI); ctx.arc(380, 280, 35, 0, 2*Math.PI); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(240, 200); ctx.lineTo(280, 140); ctx.lineTo(340, 140); ctx.lineTo(380, 200); ctx.closePath(); ctx.stroke();
-      } else if (id === 'castle') {
-        ctx.strokeRect(220, 160, 160, 170);
-        ctx.strokeRect(160, 120, 60, 210);
-        ctx.strokeRect(380, 120, 60, 210);
-        ctx.beginPath(); ctx.moveTo(160, 120); ctx.lineTo(190, 60); ctx.lineTo(220, 120); ctx.closePath(); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(380, 120); ctx.lineTo(410, 60); ctx.lineTo(440, 120); ctx.closePath(); ctx.stroke();
-      } else if (id === 'fairy') {
-        ctx.beginPath(); ctx.arc(300, 140, 35, 0, 2*Math.PI); ctx.stroke();
-        ctx.beginPath(); ctx.ellipse(300, 250, 30, 70, 0, 0, 2*Math.PI); ctx.stroke();
-        ctx.beginPath(); ctx.ellipse(220, 230, 60, 35, -0.3, 0, 2*Math.PI); ctx.ellipse(380, 230, 60, 35, 0.3, 0, 2*Math.PI); ctx.stroke();
-      } else if (id === 'pegasus') {
-        ctx.beginPath(); ctx.ellipse(320, 230, 90, 55, 0, 0, 2*Math.PI); ctx.stroke();
-        ctx.beginPath(); ctx.arc(420, 150, 45, 0, 2*Math.PI); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(450, 120); ctx.lineTo(480, 70); ctx.lineTo(430, 100); ctx.closePath(); ctx.stroke();
-      } else if (id === 'butterfly') {
-        ctx.beginPath(); ctx.ellipse(300, 200, 15, 80, 0, 0, 2*Math.PI); ctx.stroke();
-        ctx.beginPath(); ctx.arc(300, 110, 22, 0, 2*Math.PI); ctx.stroke();
-        ctx.beginPath(); ctx.ellipse(210, 160, 70, 50, -0.5, 0, 2*Math.PI); ctx.ellipse(390, 160, 70, 50, 0.5, 0, 2*Math.PI); ctx.stroke();
-        ctx.beginPath(); ctx.ellipse(220, 260, 60, 40, 0.5, 0, 2*Math.PI); ctx.ellipse(380, 260, 60, 40, -0.5, 0, 2*Math.PI); ctx.stroke();
-      } else {
-        ctx.beginPath(); ctx.arc(300, 220, 80, 0, 2*Math.PI); ctx.stroke();
-        ctx.beginPath(); ctx.arc(300, 130, 55, 0, 2*Math.PI); ctx.stroke();
-        ctx.beginPath(); ctx.arc(245, 85, 22, 0, 2*Math.PI); ctx.arc(355, 85, 22, 0, 2*Math.PI); ctx.stroke();
-      }
-    }
-
-    function downloadAsPDF() {
-      const dataUrl = canvas.toDataURL('image/png');
-      const win = window.open('');
-      win.document.write(`
-        <html>
-          <head>
-            <title>Mátrix Labor — Alkotás</title>
-            <style>
-              body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; background: #fff; font-family: sans-serif; }
-              img { max-width: 100%; height: auto; border: 2px solid #000; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-              h2 { color: #111; margin-bottom: 10px; }
-              p { color: #555; font-size: 0.9rem; }
-            </style>
-          </head>
-          <body>
-            <h2>Mátrix Labor Kifestő Mestermű</h2>
-            <p>Nyomtasd ki vagy mentsd el PDF-ként (Ctrl+P -> Mentés PDF-ként)!</p>
-            <img src="${dataUrl}" />
-            <script>
-              setTimeout(() => { window.print(); }, 500);
-            <\/script>
-          </body>
-        </html>
-      `);
-      win.document.close();
+      ctx.font = '24px Courier New';
+      ctx.fillStyle = '#444444';
+      ctx.textAlign = 'center';
+      ctx.fillText(tpl.name, canvas.width / 2, canvas.height / 2 - 10);
+      ctx.font = '16px Courier New';
+      ctx.fillText('Színezd ki az ujjal vagy egérrel!', canvas.width / 2, canvas.height / 2 + 25);
     }
 
     if (canvas) {
-      canvas.addEventListener('click', e => {
-        if (!ctx) return;
-        const rect = canvas.getBoundingClientRect();
-        const scaleX = canvas.width / rect.width;
-        const scaleY = canvas.height / rect.height;
-        const startX = Math.floor((e.clientX - rect.left) * scaleX);
-        const startY = Math.floor((e.clientY - rect.top) * scaleY);
-        
-        floodFill(startX, startY, selectedColor);
-      });
+      canvas.addEventListener('mousedown', e => startDraw(e, canvas, ctx));
+      canvas.addEventListener('mousemove', e => draw(e, canvas, ctx));
+      canvas.addEventListener('mouseup', stopDraw);
+      canvas.addEventListener('mouseleave', stopDraw);
+      canvas.addEventListener('touchstart', e => { e.preventDefault(); startDraw(e.touches[0], canvas, ctx); }, {passive: false});
+      canvas.addEventListener('touchmove', e => { e.preventDefault(); draw(e.touches[0], canvas, ctx); }, {passive: false});
+      canvas.addEventListener('touchend', stopDraw);
     }
 
-    function hexToRgb(hex) {
-      let bigint = parseInt(hex.replace('#',''), 16);
-      return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255];
+    function startDraw(e, cvs, context) {
+      if (!context) return;
+      isDrawing = true;
+      context.beginPath();
+      const rect = cvs.getBoundingClientRect();
+      context.moveTo(e.clientX - rect.left, e.clientY - rect.top);
     }
 
-    function floodFill(x, y, fillColorHex) {
-      const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      const data = imgData.data;
-      const targetIdx = (y * canvas.width + x) * 4;
-      
-      const targetR = data[targetIdx];
-      const targetG = data[targetIdx + 1];
-      const targetB = data[targetIdx + 2];
-
-      const [fillR, fillG, fillB] = hexToRgb(fillColorHex);
-
-      if (Math.abs(targetR - fillR) < 10 && Math.abs(targetG - fillG) < 10 && Math.abs(targetB - fillB) < 10) return;
-      if (targetR < 50 && targetG < 50 && targetB < 50) return;
-
-      const queue = [[x, y]];
-      const width = canvas.width;
-      const height = canvas.height;
-      const visited = new Uint8Array(width * height);
-
-      while (queue.length > 0) {
-        let [cx, cy] = queue.pop();
-        let idx = cy * width + cx;
-
-        if (cx < 0 || cx >= width || cy < 0 || cy >= height) continue;
-        if (visited[idx]) continue;
-        visited[idx] = 1;
-
-        let pIdx = idx * 4;
-        let r = data[pIdx];
-        let g = data[pIdx + 1];
-        let b = data[pIdx + 2];
-
-        if (r < 50 && g < 50 && b < 50) continue;
-        if (Math.abs(r - targetR) > 25 || Math.abs(g - targetG) > 25 || Math.abs(b - targetB) > 25) continue;
-
-        data[pIdx] = fillR;
-        data[pIdx + 1] = fillG;
-        data[pIdx + 2] = fillB;
-        data[pIdx + 3] = 255;
-
-        queue.push([cx + 1, cy]);
-        queue.push([cx - 1, cy]);
-        queue.push([cx, cy + 1]);
-        queue.push([cx, cy - 1]);
-      }
-
-      ctx.putImageData(imgData, 0, 0);
+    function draw(e, cvs, context) {
+      if (!isDrawing || !context) return;
+      const rect = cvs.getBoundingClientRect();
+      context.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+      context.strokeStyle = selectedColor;
+      context.lineWidth = 15;
+      context.lineCap = 'round';
+      context.stroke();
     }
 
-    function clearCanvas() {
-      if (currentActiveTemplate) {
-        renderColoringTemplate(currentActiveTemplate.id);
-      }
-    }
+    function stopDraw() { isDrawing = false; isTracing = false; isDotDrawing = false; isMathDrawing = false; }
+    function clearCanvas() { if(ctx) { ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height); } }
 
-    // VONALVEZETÉS MUNKAMOTOR (MIND A 10 SABLON TELJES KEZELÉSÉVEL)
     function openTracingGallery(category) {
       document.getElementById('mainMenuView').classList.remove('active');
       document.getElementById('tracingGalleryView').classList.add('active');
@@ -877,13 +715,48 @@
           tCtx.rect(120, 120, 360, 160);
           break;
         case 'b1':
+          tCtx.moveTo(40, 300);
+          sampleLine(40, 300, 100, 100); sampleLine(100, 100, 160, 300); sampleLine(160, 300, 220, 100); sampleLine(220, 100, 280, 300); sampleLine(280, 300, 340, 100); sampleLine(340, 100, 400, 300); sampleLine(400, 300, 460, 100); sampleLine(460, 100, 520, 300);
+          tCtx.moveTo(40, 300); tCtx.lineTo(100, 100); tCtx.lineTo(160, 300); tCtx.lineTo(220, 100); tCtx.lineTo(280, 300); tCtx.lineTo(340, 100); tCtx.lineTo(400, 300); tCtx.lineTo(460, 100); tCtx.lineTo(520, 300);
+          break;
+        case 'b2':
+          tCtx.moveTo(40, 200);
+          sampleBezier(40, 200, 120, 50, 200, 350, 280, 200); sampleBezier(280, 200, 360, 50, 440, 350, 520, 200);
+          tCtx.bezierCurveTo(120, 50, 200, 350, 280, 200); tCtx.bezierCurveTo(360, 50, 440, 350, 520, 200);
+          break;
+        case 'b3':
+          tCtx.moveTo(300, 200);
+          for (let i = 0; i < 35; i++) {
+            let angle = 0.25 * i;
+            let x = 300 + (5 + i * 4) * Math.cos(angle);
+            let y = 200 + (5 + i * 4) * Math.sin(angle);
+            guideSamplePoints.push({x, y});
+            if (i === 0) tCtx.moveTo(x, y); else tCtx.lineTo(x, y);
+          }
+          break;
+        case 'b4':
+          tCtx.moveTo(50, 330);
+          let stairs = [{x:50, y:330}, {x:50, y:270}, {x:120, y:270}, {x:120, y:210}, {x:190, y:210}, {x:190, y:150}, {x:260, y:150}, {x:260, y:90}, {x:330, y:90}];
+          for(let i=0; i<stairs.length-1; i++) sampleLine(stairs[i].x, stairs[i].y, stairs[i+1].x, stairs[i+1].y);
+          tCtx.lineTo(50, 270); tCtx.lineTo(120, 270); tCtx.lineTo(120, 210); tCtx.lineTo(190, 210); tCtx.lineTo(190, 150); tCtx.lineTo(260, 150); tCtx.lineTo(260, 90); tCtx.lineTo(330, 90);
+          break;
+        case 'b5':
+          tCtx.moveTo(50, 200);
+          sampleQuad(50, 200, 150, 350, 250, 200); sampleQuad(250, 200, 350, 50, 450, 200); sampleQuad(450, 200, 500, 300, 550, 200);
+          tCtx.quadraticCurveTo(150, 350, 250, 200); tCtx.quadraticCurveTo(350, 50, 450, 200); tCtx.quadraticCurveTo(500, 300, 550, 200);
+          break;
+        case 'b6':
+          tCtx.moveTo(150, 40);
+          let vpts = [{x:150, y:40}, {x:250, y:160}, {x:180, y:180}, {x:350, y:320}, {x:280, y:220}, {x:400, y:100}];
+          for(let i=0; i<vpts.length-1; i++) sampleLine(vpts[i].x, vpts[i].y, vpts[i+1].x, vpts[i+1].y);
+          tCtx.lineTo(250, 160); tCtx.lineTo(180, 180); tCtx.lineTo(350, 320); tCtx.lineTo(280, 220); tCtx.lineTo(400, 100);
+          break;
         case 'g1':
           tCtx.moveTo(50, 280);
           let kpts = [{x:50, y:280}, {x:120, y:120}, {x:190, y:250}, {x:260, y:100}, {x:330, y:250}, {x:400, y:120}, {x:470, y:280}];
           for(let i=0; i<kpts.length-1; i++) sampleLine(kpts[i].x, kpts[i].y, kpts[i+1].x, kpts[i+1].y);
           tCtx.lineTo(120, 120); tCtx.lineTo(190, 250); tCtx.lineTo(260, 100); tCtx.lineTo(330, 250); tCtx.lineTo(400, 120); tCtx.lineTo(470, 280);
           break;
-        case 'b2':
         case 'g2':
           let cx = 300, cy = 200, r = 40;
           sampleArc(cx, cy, r, 0, 2 * Math.PI);
@@ -897,25 +770,21 @@
             tCtx.arc(pcx, pcy, 40, 0, 2 * Math.PI);
           }
           break;
-        case 'b3':
         case 'g3':
           tCtx.moveTo(300, 320);
           sampleBezier(300, 320, 100, 220, 100, 80, 300, 180); sampleBezier(300, 180, 500, 80, 500, 220, 300, 320);
           tCtx.bezierCurveTo(100, 220, 100, 80, 300, 180); tCtx.bezierCurveTo(500, 80, 500, 220, 300, 320);
           break;
-        case 'b4':
         case 'g4':
           tCtx.moveTo(40, 150);
           sampleQuad(40, 150, 150, 300, 260, 150); sampleQuad(260, 150, 370, 0, 480, 150); sampleLine(480, 150, 560, 220);
           tCtx.quadraticCurveTo(150, 300, 260, 150); tCtx.quadraticCurveTo(370, 0, 480, 150); tCtx.lineTo(560, 220);
           break;
-        case 'b5':
         case 'g5':
           tCtx.moveTo(300, 200);
           sampleQuad(300, 200, 150, 50, 100, 200); sampleQuad(100, 200, 150, 350, 300, 200); sampleQuad(300, 200, 450, 50, 500, 200); sampleQuad(500, 200, 450, 350, 300, 200);
           tCtx.quadraticCurveTo(150, 50, 100, 200); tCtx.quadraticCurveTo(150, 350, 300, 200); tCtx.quadraticCurveTo(450, 50, 500, 200); tCtx.quadraticCurveTo(450, 350, 300, 200);
           break;
-        case 'b6':
         case 'g6':
           sampleArc(300, 300, 180, Math.PI, 2 * Math.PI);
           tCtx.arc(300, 300, 180, Math.PI, 2 * Math.PI);
@@ -924,6 +793,7 @@
           sampleLine(50, 200, 550, 200);
           tCtx.moveTo(50, 200); tCtx.lineTo(550, 200);
       }
+
       tCtx.stroke();
       tCtx.setLineDash([]);
     }
@@ -931,11 +801,11 @@
     if (tCanvas) {
       tCanvas.addEventListener('mousedown', e => startTrace(e));
       tCanvas.addEventListener('mousemove', e => traceDraw(e));
-      tCanvas.addEventListener('mouseup', () => isTracing = false);
-      tCanvas.addEventListener('mouseleave', () => isTracing = false);
+      tCanvas.addEventListener('mouseup', stopDraw);
+      tCanvas.addEventListener('mouseleave', stopDraw);
       tCanvas.addEventListener('touchstart', e => { e.preventDefault(); startTrace(e.touches[0]); }, {passive: false});
       tCanvas.addEventListener('touchmove', e => { e.preventDefault(); traceDraw(e.touches[0]); }, {passive: false});
-      tCanvas.addEventListener('touchend', () => isTracing = false);
+      tCanvas.addEventListener('touchend', stopDraw);
     }
 
     function startTrace(e) {
@@ -964,23 +834,57 @@
 
     function clearTracing() {
       userStrokePoints = [];
-      if (currentTracingTpl) drawTracingGuide(currentTracingTpl.id);
+      if (currentTracingTpl) {
+        drawTracingGuide(currentTracingTpl.id);
+      }
     }
 
     function checkTracingResult() {
-      alert('Tökéletes vonalvezetés a Mátrix Labor előírásai szerint! 🎉🚀');
+      if (userStrokePoints.length < 15) {
+        alert('Hé, kis művész! Előbb rajzold végig a vonalat a mintán! 🧐');
+        return;
+      }
+
+      let coveredCount = 0;
+      guideSamplePoints.forEach(gp => {
+        let isCovered = userStrokePoints.some(up => {
+          let dist = Math.hypot(up.x - gp.x, up.y - gp.y);
+          return dist <= 18;
+        });
+        if (isCovered) coveredCount++;
+      });
+      let coveragePercent = guideSamplePoints.length > 0 ? (coveredCount / guideSamplePoints.length) * 100 : 0;
+
+      let strayCount = 0;
+      userStrokePoints.forEach(up => {
+        let minDist = Math.min(...guideSamplePoints.map(gp => Math.hypot(up.x - gp.x, up.y - gp.y)));
+        if (minDist > 25) { strayCount++; }
+      });
+      let strayPercent = (strayCount / userStrokePoints.length) * 100;
+
+      if (coveragePercent < 88 || strayPercent > 12) {
+        alert('Hé, kis művész! Ez most túl sok kilengést tartalmaz vagy nem követted elég pontosan a vonalat! Próbáld újra! 🧐');
+      } else if (coveragePercent < 95) {
+        alert('Már nagyon közel jársz, de maradj picit pontosabban a szaggatott mintán! ⭐');
+      } else {
+        alert('Hatalmas ügyesség! Tökéletes, hibátlan vonalvezetés a Mátrix Labor előírásai szerint! 🎉🚀');
+      }
     }
 
-    // SZÁMÖSSZEKÖTŐS MODUL (15 DB GOMB GENERÁLÁSSal)
     function openDotConnectGallery(category) {
       document.getElementById('mainMenuView').classList.remove('active');
       document.getElementById('dotConnectGalleryView').classList.add('active');
+
       const container = document.getElementById('dotConnectGalleryContainer');
       container.innerHTML = '';
+
       dotConnectTemplates[category].forEach(tpl => {
         const card = document.createElement('div');
         card.className = 'gallery-item';
-        card.innerHTML = `<div style="font-size: 1.5rem; margin-bottom: 2px;">🔢</div><h3>${tpl.num}</h3>`;
+        card.innerHTML = `
+          <div style="font-size: 1.5rem; margin-bottom: 2px;">🔢</div>
+          <h3>${tpl.num}</h3>
+        `;
         card.onclick = () => startDotConnectGame(tpl);
         container.appendChild(card);
       });
@@ -991,25 +895,74 @@
       document.getElementById('dotConnectGalleryView').classList.remove('active');
       document.getElementById('dotConnectView').classList.add('active');
       document.getElementById('dotConnectTitle').innerText = tpl.num;
+
       if (!dCtx) return;
       dCtx.fillStyle = '#ffffff';
       dCtx.fillRect(0, 0, dCanvas.width, dCanvas.height);
+
+      const img = new Image();
+      img.src = tpl.img;
+      img.onload = function() {
+        dCtx.drawImage(img, 40, 20, 520, 360);
+      };
+      img.onerror = function() {
+        dCtx.fillStyle = '#ffffff';
+        dCtx.fillRect(0, 0, dCanvas.width, dCanvas.height);
+        dCtx.font = '14px Courier New';
+        dCtx.fillStyle = '#64748b';
+        dCtx.textAlign = 'center';
+        dCtx.fillText('Kép betöltése: ' + tpl.img, dCanvas.width / 2, dCanvas.height / 2);
+      };
+    }
+
+    if (dCanvas) {
+      dCanvas.addEventListener('mousedown', e => startDotDraw(e));
+      dCanvas.addEventListener('mousemove', e => dotDraw(e));
+      dCanvas.addEventListener('mouseup', stopDraw);
+      dCanvas.addEventListener('mouseleave', stopDraw);
+      dCanvas.addEventListener('touchstart', e => { e.preventDefault(); startDotDraw(e.touches[0]); }, {passive: false});
+      dCanvas.addEventListener('touchmove', e => { e.preventDefault(); dotDraw(e.touches[0]); }, {passive: false});
+      dCanvas.addEventListener('touchend', stopDraw);
+    }
+
+    function startDotDraw(e) {
+      if (!dCtx) return;
+      isDotDrawing = true;
+      dCtx.beginPath();
+      const rect = dCanvas.getBoundingClientRect();
+      dCtx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+    }
+
+    function dotDraw(e) {
+      if (!isDotDrawing || !dCtx) return;
+      const rect = dCanvas.getBoundingClientRect();
+      dCtx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+      dCtx.strokeStyle = selectedColor;
+      dCtx.lineWidth = 3;
+      dCtx.lineCap = 'round';
+      dCtx.stroke();
     }
 
     function clearDotConnect() {
-      if (currentDotTpl) startDotConnectGame(currentDotTpl);
+      if (currentDotTpl) {
+        startDotConnectGame(currentDotTpl);
+      }
     }
 
-    // SZÁMOLÓS MATEK MODUL (15 DB GOMB GENERÁLÁSSal)
     function openMathGallery(category) {
       document.getElementById('mainMenuView').classList.remove('active');
       document.getElementById('mathGalleryView').classList.add('active');
+
       const container = document.getElementById('mathGalleryContainer');
       container.innerHTML = '';
+
       mathTemplates[category].forEach(tpl => {
         const card = document.createElement('div');
         card.className = 'gallery-item';
-        card.innerHTML = `<div style="font-size: 1.5rem; margin-bottom: 2px;">🧮</div><h3>${tpl.num}</h3>`;
+        card.innerHTML = `
+          <div style="font-size: 1.5rem; margin-bottom: 2px;">🧮</div>
+          <h3>${tpl.num}</h3>
+        `;
         card.onclick = () => startMathGame(tpl);
         container.appendChild(card);
       });
@@ -1024,8 +977,6 @@
       document.getElementById('mathEquationLabel').innerText = `${tpl.n1} ${tpl.op} ${tpl.n2} =`;
       document.getElementById('mathAnswerInput').value = '';
 
-      const mCanvas = document.getElementById('mathCanvas');
-      const mCtx = mCanvas ? mCanvas.getContext('2d') : null;
       if (!mCtx) return;
       mCtx.fillStyle = '#ffffff';
       mCtx.fillRect(0, 0, mCanvas.width, mCanvas.height);
@@ -1095,11 +1046,20 @@
     }
 
     function clearMath() {
-      if (currentMathTpl) startMathGame(currentMathTpl);
+      if (currentMathTpl) {
+        startMathGame(currentMathTpl);
+      }
     }
 
     function goBackToMenu() {
-      document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+      document.getElementById('galleryView').classList.remove('active');
+      document.getElementById('tracingGalleryView').classList.remove('active');
+      document.getElementById('dotConnectGalleryView').classList.remove('active');
+      document.getElementById('mathGalleryView').classList.remove('active');
+      document.getElementById('canvasView').classList.remove('active');
+      document.getElementById('tracingView').classList.remove('active');
+      document.getElementById('dotConnectView').classList.remove('active');
+      document.getElementById('mathView').classList.remove('active');
       document.getElementById('mainMenuView').classList.add('active');
     }
 
@@ -1121,6 +1081,11 @@
     function goBackToMathGallery() {
       document.getElementById('mathView').classList.remove('active');
       document.getElementById('mathGalleryView').classList.add('active');
+    }
+
+    function openModule(category, type) {
+      const name = document.getElementById('playerName').value || 'Kis Művész';
+      alert(`Üdvözöllek a Laborban, ${name}!\nA(z) [${category.toUpperCase()} -> ${type.toUpperCase()}] modul fejlesztése folyamatban van.`);
     }
   </script>
 
