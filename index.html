@@ -193,36 +193,6 @@
       gap: 10px;
     }
 
-    .canvas-container {
-      position: relative;
-      width: 600px;
-      height: 400px;
-      max-width: 100%;
-      border: 3px solid var(--neon-cyan);
-      border-radius: 10px;
-      box-shadow: 0 0 20px rgba(0,255,204,0.4);
-      background: #ffffff;
-    }
-
-    .canvas-container canvas, .canvas-container img {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-    }
-
-    #colorLayer {
-      z-index: 1;
-      cursor: crosshair;
-    }
-
-    #outlineImage {
-      z-index: 2;
-      pointer-events: none;
-      mix-blend-mode: multiply;
-    }
-
     .interactive-canvas {
       background: #ffffff;
       border: 3px solid var(--neon-cyan);
@@ -370,13 +340,10 @@
       
       <div class="canvas-workspace">
         <h3 id="activeTemplateTitle" style="color: var(--accent-gold); margin: 0; font-size: 1rem;">Színező Munkaterület</h3>
-        <p style="font-size: 0.75rem; color: #00ffcc; margin: 0;">Kattints precízen a kontúrok közé a festéshez! 🎨</p>
+        <p style="font-size: 0.75rem; color: #00ffcc; margin: 0;">Kattints a kiválasztott színnel a kontúrok közé! 🎨</p>
         <div class="palette" id="colorPalette"></div>
         
-        <div class="canvas-container">
-          <canvas id="colorLayer" width="600" height="400"></canvas>
-          <img id="outlineImage" src="" alt="Kontúr kép">
-        </div>
+        <canvas id="coloringCanvas" class="interactive-canvas" width="600" height="400"></canvas>
 
         <div class="action-row">
           <button class="btn btn-danger" onclick="clearCanvas()">Törlés / Újra 🔄</button>
@@ -445,7 +412,7 @@
   </div>
 
   <footer>
-    Mátrix Labor Engine v1.61 • Projektigazgatás: Jordan & Nefi
+    Mátrix Labor Engine v1.62 • Projektigazgatás: Jordan & Nefi
   </footer>
 
   <script>
@@ -492,10 +459,10 @@
       ]
     };
 
-    // TELJES 15-15 DARABOS SZÁMÖSSZEKÖTŐS TÖMB (bebiztosítva f1-15 és l1-15)
+    // PONTOS SORSZÁMOZÁS 1-TŐL 15-IG (F ÉS L ELTAGGAL)
     const dotConnectTemplates = {
-      boys: Array.from({length: 15}, (_, i) => ({ id: 'f' + (i + 1), num: String(i + 1).padStart(2, '0'), img: 'f' + (i + 1) + '.png' })),
-      girls: Array.from({length: 15}, (_, i) => ({ id: 'l' + (i + 1), num: String(i + 1).padStart(2, '0'), img: 'l' + (i + 1) + '.png' }))
+      boys: Array.from({length: 15}, (_, i) => ({ id: 'f' + (i + 1), num: (i + 1).toString(), img: 'f' + (i + 1) + '.png' })),
+      girls: Array.from({length: 15}, (_, i) => ({ id: 'l' + (i + 1), num: (i + 1).toString(), img: 'l' + (i + 1) + '.png' }))
     };
 
     const mathTemplates = {
@@ -516,7 +483,7 @@
 
         return {
           id: 'm' + (i + 1),
-          num: String(i + 1).padStart(2, '0'),
+          num: (i + 1).toString(),
           n1: n1, n2: n2, op: op, ans: ans,
           color1: c1, color2: c2,
           shape1: s1, shape2: s2,
@@ -540,7 +507,7 @@
 
         return {
           id: 'n' + (i + 1),
-          num: String(i + 1).padStart(2, '0'),
+          num: (i + 1).toString(),
           n1: n1, n2: n2, op: op, ans: ans,
           color1: c1, color2: c2,
           shape1: s1, shape2: s2,
@@ -564,9 +531,8 @@
     let currentDotTpl = null;
     let currentMathTpl = null;
 
-    const canvas = document.getElementById('colorLayer');
-    const ctx = canvas ? canvas.getContext('2d', { willReadFrequently: true }) : null;
-    const outlineImg = document.getElementById('outlineImage');
+    const canvas = document.getElementById('coloringCanvas');
+    const ctx = canvas ? canvas.getContext('2d', { willNotReadFrequently: false }) : null;
 
     const tCanvas = document.getElementById('tracingCanvas');
     const tCtx = tCanvas ? tCanvas.getContext('2d') : null;
@@ -602,12 +568,12 @@
       const container = document.getElementById('galleryContainer');
       container.innerHTML = '';
 
-      coloringTemplates[category].forEach(tpl => {
+      coloringTemplates[category].forEach((tpl, i) => {
         const card = document.createElement('div');
         card.className = 'gallery-item';
         card.innerHTML = `
           <div style="font-size: 1.5rem; margin-bottom: 2px;">🎨</div>
-          <h3>${tpl.name}</h3>
+          <h3>#${i + 1}</h3>
           <p style="font-size: 0.65rem; color: #aaa; margin: 0;">${tpl.img}</p>
         `;
         card.onclick = () => startColoring(tpl);
@@ -615,25 +581,40 @@
       });
     }
 
+    // EGYESÍTETT KIFESTŐ MOTOR (A háttér és a fekete kontúr tökéletes kezelésével)
     function startColoring(tpl) {
       currentActiveTemplate = tpl;
       document.getElementById('galleryView').classList.remove('active');
       document.getElementById('canvasView').classList.add('active');
-      document.getElementById('activeTemplateTitle').innerText = tpl.name;
+      document.getElementById('activeTemplateTitle',).innerText = tpl.name;
 
       if (!ctx) return;
       ctx.fillStyle = '#ffffff';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      outlineImg.src = tpl.img;
-      outlineImg.onerror = function() {
-        if (outlineImg.src.endsWith('.png')) {
-          outlineImg.src = tpl.img.replace('.png', '.jpg');
+      const img = new Image();
+      img.src = tpl.img;
+      img.onload = function() {
+        ctx.drawImage(img, 10, 10, canvas.width - 20, canvas.height - 20);
+      };
+      img.onerror = function() {
+        if (img.src.endsWith('.png')) {
+          img.src = tpl.img.replace('.png', '.jpg');
+        } else {
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.strokeStyle = '#222';
+          ctx.lineWidth = 3;
+          ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
+          ctx.font = '15px Courier New';
+          ctx.fillStyle = '#ff3333';
+          ctx.textAlign = 'center';
+          ctx.fillText('Nem található képfájl: ' + tpl.img, canvas.width / 2, canvas.height / 2);
         }
       };
     }
 
-    // PRECÍZ KATTINTÓS KITÖLTÉS (Finomított kontúr-határ vizsgálattal)
+    // OKOS FLOOD FILL KITÖLTÉS (Csak a belső területeket színezni, fekete vonalnál megállni)
     if (canvas) {
       canvas.addEventListener('click', e => {
         if (!ctx) return;
@@ -643,18 +624,47 @@
         const startX = Math.floor((e.clientX - rect.left) * scaleX);
         const startY = Math.floor((e.clientY - rect.top) * scaleY);
 
-        const tempCanvas = document.createElement('canvas');
-        tempCanvas.width = canvas.width;
-        tempCanvas.height = canvas.height;
-        const tCtx = tempCanvas.getContext('2d');
-        tCtx.fillStyle = '#ffffff';
-        tCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
-        if (outlineImg.complete && outlineImg.naturalWidth > 0) {
-          tCtx.drawImage(outlineImg, 0, 0, tempCanvas.width, tempCanvas.height);
-        }
-        const outlineData = tCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height).data;
+        const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const data = imgData.data;
+        const width = canvas.width;
+        const height = canvas.height;
 
-        floodFillWithOutline(startX, startY, selectedColor, outlineData);
+        const targetIdx = (startY * width + startX) * 4;
+        const targetR = data[targetIdx], targetG = data[targetIdx + 1], targetB = data[targetIdx + 2];
+        
+        // Ha fekete kontúrra kattint, ne csináljon semmit
+        if (targetR < 80 && targetG < 80 && targetB < 80) return;
+
+        const [fillR, fillG, fillB] = hexToRgb(selectedColor);
+        if (Math.abs(targetR - fillR) < 5 && Math.abs(targetG - fillG) < 5 && Math.abs(targetB - fillB) < 5) return;
+
+        const queue = [[startX, startY]];
+        const visited = new Uint8Array(width * height);
+
+        while (queue.length > 0) {
+          let [cx, cy] = queue.pop();
+          let idx = cy * width + cx;
+          if (cx < 0 || cx >= width || cy < 0 || cy >= height || visited[idx]) continue;
+          visited[idx] = 1;
+
+          let pIdx = idx * 4;
+          let r = data[pIdx], g = data[pIdx + 1], b = data[pIdx + 2];
+
+          // Megáll a fekete vonalaknál (kontúrok)
+          if (r < 80 && g < 80 && b < 80) continue;
+
+          // Hasonlóság ellenőrzés, hogy tiszta területet töltsön ki
+          if (Math.abs(r - targetR) > 30 || Math.abs(g - targetG) > 30 || Math.abs(b - targetB) > 30) continue;
+
+          data[pIdx] = fillR;
+          data[pIdx + 1] = fillG;
+          data[pIdx + 2] = fillB;
+          data[pIdx + 3] = 255;
+
+          queue.push([cx + 1, cy], [cx - 1, cy], [cx, cy + 1], [cx, cy - 1]);
+        }
+
+        ctx.putImageData(imgData, 0, 0);
       });
     }
 
@@ -663,56 +673,8 @@
       return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255];
     }
 
-    function floodFillWithOutline(x, y, fillColorHex, outlineData) {
-      const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      const data = imgData.data;
-      const width = canvas.width;
-      const height = canvas.height;
-
-      const targetIdx = (y * width + x) * 4;
-      const targetR = data[targetIdx], targetG = data[targetIdx + 1], targetB = data[targetIdx + 2];
-      const [fillR, fillG, fillB] = hexToRgb(fillColorHex);
-
-      if (Math.abs(targetR - fillR) < 3 && Math.abs(targetG - fillG) < 3 && Math.abs(targetB - fillB) < 3) return;
-
-      // Ha a kattintott pixel fekete (vonal), ne csináljon semmit
-      const oR = outlineData[targetIdx], oG = outlineData[targetIdx + 1], oB = outlineData[targetIdx + 2];
-      if (oR < 100 && oG < 100 && oB < 100) return;
-
-      const queue = [[x, y]];
-      const visited = new Uint8Array(width * height);
-
-      while (queue.length > 0) {
-        let [cx, cy] = queue.pop();
-        let idx = cy * width + cx;
-        if (cx < 0 || cx >= width || cy < 0 || cy >= height || visited[idx]) continue;
-        visited[idx] = 1;
-
-        let pIdx = idx * 4;
-        
-        // Kontúr vonal ellenőrzés finomított küszöbnel
-        let lineR = outlineData[pIdx], lineG = outlineData[pIdx + 1], lineB = outlineData[pIdx + 2];
-        if (lineR < 100 && lineG < 100 && lineB < 100) continue; 
-
-        let r = data[pIdx], g = data[pIdx + 1], b = data[pIdx + 2];
-        if (Math.abs(r - targetR) > 25 || Math.abs(g - targetG) > 25 || Math.abs(b - targetB) > 25) continue;
-
-        data[pIdx] = fillR;
-        data[pIdx + 1] = fillG;
-        data[pIdx + 2] = fillB;
-        data[pIdx + 3] = 255;
-
-        queue.push([cx + 1, cy], [cx - 1, cy], [cx, cy + 1], [cx, cy - 1]);
-      }
-
-      ctx.putImageData(imgData, 0, 0);
-    }
-
     function clearCanvas() {
-      if (ctx) {
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-      }
+      if (currentActiveTemplate) startColoring(currentActiveTemplate);
     }
 
     function openTracingGallery(category) {
@@ -978,12 +940,12 @@
       const container = document.getElementById('dotConnectGalleryContainer');
       container.innerHTML = '';
 
-      dotConnectTemplates[category].forEach(tpl => {
+      dotConnectTemplates[category].forEach((tpl, i) => {
         const card = document.createElement('div');
         card.className = 'gallery-item';
         card.innerHTML = `
           <div style="font-size: 1.5rem; margin-bottom: 2px;">🔢</div>
-          <h3>${tpl.num}</h3>
+          <h3>#${i + 1}</h3>
           <p style="font-size: 0.65rem; color: #aaa; margin: 0;">${tpl.img}</p>
         `;
         card.onclick = () => startDotConnectGame(tpl);
@@ -995,7 +957,7 @@
       currentDotTpl = tpl;
       document.getElementById('dotConnectGalleryView').classList.remove('active');
       document.getElementById('dotConnectView').classList.add('active');
-      document.getElementById('dotConnectTitle').innerText = tpl.num;
+      document.getElementById('dotConnectTitle').innerText = `Feladat #${tpl.num}`;
 
       if (!dCtx) return;
       dCtx.fillStyle = '#ffffff';
@@ -1057,12 +1019,12 @@
       const container = document.getElementById('mathGalleryContainer');
       container.innerHTML = '';
 
-      mathTemplates[category].forEach(tpl => {
+      mathTemplates[category].forEach((tpl, i) => {
         const card = document.createElement('div');
         card.className = 'gallery-item';
         card.innerHTML = `
           <div style="font-size: 1.5rem; margin-bottom: 2px;">🧮</div>
-          <h3>${tpl.num}</h3>
+          <h3>#${i + 1}</h3>
         `;
         card.onclick = () => startMathGame(tpl);
         container.appendChild(card);
@@ -1073,7 +1035,7 @@
       currentMathTpl = tpl;
       document.getElementById('mathGalleryView').classList.remove('active');
       document.getElementById('mathView').classList.add('active');
-      document.getElementById('mathTitle').innerText = tpl.num;
+      document.getElementById('mathTitle').innerText = `Feladat #${tpl.num}`;
       document.getElementById('mathDesc').innerText = `${tpl.shape1.toUpperCase()} (${tpl.n1} db) ÉS ${tpl.shape2.toUpperCase()} (${tpl.n2} db)`;
       document.getElementById('mathEquationLabel').innerText = `${tpl.n1} ${tpl.op} ${tpl.n2} =`;
       document.getElementById('mathAnswerInput').value = '';
