@@ -54,6 +54,8 @@
       box-shadow: 0 0 30px rgba(0, 255, 204, 0.3);
       padding: 15px;
       box-sizing: border-box;
+      position: relative;
+      z-index: 10;
     }
 
     /* Profil sáv */
@@ -138,6 +140,8 @@
       display: flex;
       align-items: center;
       gap: 8px;
+      position: relative;
+      z-index: 20;
     }
 
     .category-card.girls .task-btn {
@@ -163,6 +167,8 @@
       text-align: center;
       cursor: pointer;
       transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
+      z-index: 20;
     }
 
     .gallery-item:hover {
@@ -221,6 +227,8 @@
     .action-row {
       display: flex;
       gap: 10px;
+      position: relative;
+      z-index: 20;
     }
 
     .btn {
@@ -232,6 +240,8 @@
       font-family: inherit;
       cursor: pointer;
       font-size: 0.85rem;
+      position: relative;
+      z-index: 20;
     }
     .btn-danger { background: #ff3333; }
     .btn-success { background: #00cc66; }
@@ -365,7 +375,7 @@
       </div>
     </div>
 
-    <!-- VIEW 6: SZÁMOLÓS MATEK KÉP MUNKATERÜLET (EGYMÁS ALÁ RENDEZETT CSOPORTOKKAL) -->
+    <!-- VIEW 6: SZÁMOLÓS MATEK KÉP MUNKATERÜLET -->
     <div id="mathView" class="view-section">
       <button class="btn btn-danger" onclick="goBackToMathGallery()" style="margin-bottom: 8px;">❮ Vissza a Számolós Galériába</button>
       
@@ -375,7 +385,7 @@
         
         <canvas id="mathCanvas" class="interactive-canvas" width="600" height="340"></canvas>
 
-        <div style="display: flex; align-items: center; justify-content: center; gap: 12px; background: rgba(0,0,0,0.7); padding: 10px 20px; border-radius: 10px; border: 2px solid var(--neon-blue);">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 12px; background: rgba(0,0,0,0.7); padding: 10px 20px; border-radius: 10px; border: 2px solid var(--neon-blue); position: relative; z-index: 20;">
           <span id="mathEquationLabel" style="font-size: 1.3rem; font-family: 'Courier New', monospace; color: #fff; font-weight: bold;">5 + 3 =</span>
           <input type="number" id="mathAnswerInput" placeholder="?" style="width: 60px; height: 45px; font-size: 1.4rem; text-align: center; background: #000; border: 2px solid var(--neon-cyan); color: var(--accent-gold); border-radius: 6px; font-family: inherit;">
           <button class="btn btn-success" onclick="checkMathAnswer()" style="padding: 10px 16px; font-size: 1rem;">Ellenőrzés ✓</button>
@@ -391,7 +401,7 @@
   </div>
 
   <footer>
-    Mátrix Labor Engine v1.46 • Projektigazgatás: Jordan & Nefi
+    Mátrix Labor Engine v1.47 • Projektigazgatás: Jordan & Nefi
   </footer>
 
   <script>
@@ -442,7 +452,6 @@
       girls: Array.from({length: 15}, (_, i) => ({ id: 'l' + (i + 1), num: String(i + 1).padStart(2, '0'), img: 'l' + (i + 1) + '.png' }))
     };
 
-    // 15 DB FIÚS ÉS 15 DB LÁNYOS MATEK FELADAT - VÁLTOZATOS FORMÁKKAL ÉS SZÍNEKKEL
     const mathTemplates = {
       boys: Array.from({length: 15}, (_, i) => {
         let n1 = (i % 6) + 3;
@@ -580,8 +589,8 @@
       canvas.addEventListener('mousemove', e => draw(e, canvas, ctx));
       canvas.addEventListener('mouseup', stopDraw);
       canvas.addEventListener('mouseleave', stopDraw);
-      canvas.addEventListener('touchstart', e => { e.preventDefault(); startDraw(e.touches[0], canvas, ctx); });
-      canvas.addEventListener('touchmove', e => { e.preventDefault(); draw(e.touches[0], canvas, ctx); });
+      canvas.addEventListener('touchstart', e => { e.preventDefault(); startDraw(e.touches[0], canvas, ctx); }, {passive: false});
+      canvas.addEventListener('touchmove', e => { e.preventDefault(); draw(e.touches[0], canvas, ctx); }, {passive: false});
       canvas.addEventListener('touchend', stopDraw);
     }
 
@@ -794,8 +803,8 @@
       tCanvas.addEventListener('mousemove', e => traceDraw(e));
       tCanvas.addEventListener('mouseup', stopDraw);
       tCanvas.addEventListener('mouseleave', stopDraw);
-      tCanvas.addEventListener('touchstart', e => { e.preventDefault(); startTrace(e.touches[0]); });
-      tCanvas.addEventListener('touchmove', e => { e.preventDefault(); traceDraw(e.touches[0]); });
+      tCanvas.addEventListener('touchstart', e => { e.preventDefault(); startTrace(e.touches[0]); }, {passive: false});
+      tCanvas.addEventListener('touchmove', e => { e.preventDefault(); traceDraw(e.touches[0]); }, {passive: false});
       tCanvas.addEventListener('touchend', stopDraw);
     }
 
@@ -911,8 +920,8 @@
       dCanvas.addEventListener('mousemove', e => dotDraw(e));
       dCanvas.addEventListener('mouseup', stopDraw);
       dCanvas.addEventListener('mouseleave', stopDraw);
-      dCanvas.addEventListener('touchstart', e => { e.preventDefault(); startDotDraw(e.touches[0]); });
-      dCanvas.addEventListener('touchmove', e => { e.preventDefault(); dotDraw(e.touches[0]); });
+      dCanvas.addEventListener('touchstart', e => { e.preventDefault(); startDotDraw(e.touches[0]); }, {passive: false});
+      dCanvas.addEventListener('touchmove', e => { e.preventDefault(); dotDraw(e.touches[0]); }, {passive: false});
       dCanvas.addEventListener('touchend', stopDraw);
     }
 
@@ -964,7 +973,7 @@
       document.getElementById('mathGalleryView').classList.remove('active');
       document.getElementById('mathView').classList.add('active');
       document.getElementById('mathTitle').innerText = tpl.num;
-      document.getElementById('mathDesc').innerText = `${tpl.shape1.toUpperCase()} (${tpl.n1 db}) ÉS ${tpl.shape2.toUpperCase()} (${tpl.n2 db})`;
+      document.getElementById('mathDesc').innerText = `${tpl.shape1.toUpperCase()} (${tpl.n1} db) ÉS ${tpl.shape2.toUpperCase()} (${tpl.n2} db)`;
       document.getElementById('mathEquationLabel').innerText = `${tpl.n1} ${tpl.op} ${tpl.n2} =`;
       document.getElementById('mathAnswerInput').value = '';
 
@@ -972,15 +981,12 @@
       mCtx.fillStyle = '#ffffff';
       mCtx.fillRect(0, 0, mCanvas.width, mCanvas.height);
 
-      // EGYMÁS ALÁ RENDEZETT CSOPORTOK (ELSŐ CSOPORT FELÜL, MÁSODIK CSOPORT ALATTA)
-      // Első csoport sorokba rendezve (max 6 elem soronként)
       for (let i = 0; i < tpl.n1; i++) {
         let x = 40 + (i % 6) * 85;
         let y = 35 + Math.floor(i / 6) * 55;
         drawShape(mCtx, x, y, tpl.shape1, tpl.color1);
       }
 
-      // Második csoport alatta sorokba rendezve
       let rows1 = Math.ceil(tpl.n1 / 6);
       let startY2 = 35 + (rows1 * 55) + 15;
 
