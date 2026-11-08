@@ -361,7 +361,7 @@
       <div id="mathGalleryContainer" class="gallery-grid"></div>
     </div>
 
-    <!-- VIEW 3: SZÍNEZŐ MUNKATERÜLET (PDF MENTÉS & KATTINTÁSOS KITÖLTÉS) -->
+    <!-- VIEW 3: SZÍNEZŐ MUNKATERÜLET -->
     <div id="canvasView" class="view-section">
       <button class="btn btn-danger" onclick="goBackToGallery()" style="margin-bottom: 8px;">❮ Vissza a Galériába</button>
       
@@ -438,7 +438,7 @@
   </div>
 
   <footer>
-    Mátrix Labor Engine v1.55 • Projektigazgatás: Jordan & Nefi
+    Mátrix Labor Engine v1.60 • Projektigazgatás: Jordan & Nefi
   </footer>
 
   <script>
@@ -459,6 +459,7 @@
       ]
     };
 
+    // TELJES 10 DB-OS VONALVEZETÉS SABLONLISTA (Sértetlenül)
     const tracingTemplates = {
       boys: [
         { id: 'circle', name: '🔵 Tökéletes Kör', desc: 'Kerek alapforma gyakorlat' },
@@ -486,11 +487,13 @@
       ]
     };
 
+    // 15 DB SZÁMÖSSZEKÖTŐS KÉP
     const dotConnectTemplates = {
       boys: Array.from({length: 15}, (_, i) => ({ id: 'f' + (i + 1), num: String(i + 1).padStart(2, '0'), img: 'f' + (i + 1) + '.png' })),
       girls: Array.from({length: 15}, (_, i) => ({ id: 'l' + (i + 1), num: String(i + 1).padStart(2, '0'), img: 'l' + (i + 1) + '.png' }))
     };
 
+    // 15 DB MATEK FELADAT
     const mathTemplates = {
       boys: Array.from({length: 15}, (_, i) => {
         let n1 = (i % 6) + 3;
@@ -542,7 +545,7 @@
       })
     };
 
-    // 50+ DB GIGANTIKUS SZÍNrepertoire
+    // 50+ DB GIGANTIKUS SZÍNREPERTOÁR
     const colors = [
       '#ff0000', '#ff3300', '#ff6600', '#ff9900', '#ffcc00', '#ffff00', '#ccff00', '#99ff00', '#66ff00', '#33ff00',
       '#00ff00', '#00ff33', '#00ff66', '#00ff99', '#00ffcc', '#00ffff', '#00ccff', '#0099ff', '#0066ff', '#0033ff',
@@ -677,7 +680,6 @@
       }
     }
 
-    // PDF-BE MENTÉS FUNKCIÓ (LETÖLTÉS)
     function downloadAsPDF() {
       const dataUrl = canvas.toDataURL('image/png');
       const win = window.open('');
@@ -778,6 +780,7 @@
       }
     }
 
+    // TELJES VONALVEZETÉS MUNKAMOTOR
     function openTracingGallery(category) {
       document.getElementById('mainMenuView').classList.remove('active');
       document.getElementById('tracingGalleryView').classList.add('active');
@@ -887,6 +890,7 @@
       alert('Tökéletes vonalvezetés a Mátrix Labor előírásai szerint! 🎉🚀');
     }
 
+    // SZÁMÖSSZEKÖTŐS MODUL
     function openDotConnectGallery(category) {
       document.getElementById('mainMenuView').classList.remove('active');
       document.getElementById('dotConnectGalleryView').classList.add('active');
@@ -915,6 +919,7 @@
       if (currentDotTpl) startDotConnectGame(currentDotTpl);
     }
 
+    // SZÁMOLÓS MATEK MODUL
     function openMathGallery(category) {
       document.getElementById('mainMenuView').classList.remove('active');
       document.getElementById('mathGalleryView').classList.add('active');
