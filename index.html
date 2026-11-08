@@ -334,7 +334,7 @@
       <div id="mathGalleryContainer" class="gallery-grid"></div>
     </div>
 
-    <!-- VIEW 3: SZÍNEZŐ MUNKATERÜLET (30 SZÍN + 15-15 VALÓDI KÉP MOTOR) -->
+    <!-- VIEW 3: SZÍNEZŐ MUNKATERÜLET -->
     <div id="canvasView" class="view-section">
       <button class="btn btn-danger" onclick="goBackToGallery()" style="margin-bottom: 8px;">❮ Vissza a Galériába</button>
       
@@ -367,7 +367,7 @@
       </div>
     </div>
 
-    <!-- VIEW 5: SZÁMÖSSZEKÖTŐS KÉP (VÉKONY FILC) -->
+    <!-- VIEW 5: SZÁMÖSSZEKÖTŐS KÉP -->
     <div id="dotConnectView" class="view-section">
       <button class="btn btn-danger" onclick="goBackToDotConnectGallery()" style="margin-bottom: 8px;">❮ Vissza a Számösszekötős Galériába</button>
       
@@ -410,7 +410,7 @@
   </div>
 
   <footer>
-    Mátrix Labor Engine v1.58 • Projektigazgatás: Jordan & Nefi
+    Mátrix Labor Engine v1.59 • Projektigazgatás: Jordan & Nefi
   </footer>
 
   <script>
@@ -513,7 +513,7 @@
       })
     };
 
-    // 30 DB RÉSZLETES SZÍN A PALETTÁHOZ
+    // 30 DB SZÍN A PALETTÁHOZ
     const colors = [
       '#ff0000', '#ff4500', '#ffa500', '#ffd700', '#ffff00', '#adff2f', '#00ff00', '#00fa9a', '#00ffff', '#1e90ff',
       '#0000ff', '#8a2be2', '#9932cc', '#ff00ff', '#ff1493', '#ffb6c1', '#8b4513', '#a0522d', '#deb887', '#f5deb3',
@@ -572,7 +572,7 @@
         card.innerHTML = `
           <div style="font-size: 1.5rem; margin-bottom: 2px;">🎨</div>
           <h3>${tpl.name}</h3>
-          <p style="font-size: 0.65rem; color: #aaa; margin: 0;">${tpl.id}.png</p>
+          <p style="font-size: 0.65rem; color: #aaa; margin: 0;">${tpl.img}</p>
         `;
         card.onclick = () => startColoring(tpl);
         container.appendChild(card);
@@ -592,25 +592,29 @@
       const img = new Image();
       img.src = tpl.img;
       img.onload = function() {
-        ctx.drawImage(img, 20, 20, 560, 360);
+        ctx.drawImage(img, 10, 10, canvas.width - 20, canvas.height - 20);
       };
       img.onerror = function() {
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.strokeStyle = '#222';
-        ctx.lineWidth = 3;
-        ctx.strokeRect(20, 20, 560, 360);
-        ctx.font = '16px Courier New';
-        ctx.fillStyle = '#ff3333';
-        ctx.textAlign = 'center';
-        ctx.fillText('Kép betöltése: ' + tpl.img, canvas.width / 2, canvas.height / 2 - 10);
-        ctx.font = '13px Courier New';
-        ctx.fillStyle = '#555';
-        ctx.fillText('(Szabadkézi rajzolás vagy Flood Fill aktív)', canvas.width / 2, canvas.height / 2 + 20);
+        // Ha a .png nem töltődik be, megpróbáljuk .jpg-vel is
+        if (img.src.endsWith('.png')) {
+          img.src = tpl.img.replace('.png', '.jpg');
+        } else {
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.strokeStyle = '#222';
+          ctx.lineWidth = 3;
+          ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
+          ctx.font = '15px Courier New';
+          ctx.fillStyle = '#ff3333';
+          ctx.textAlign = 'center';
+          ctx.fillText('Nem található képfájl: ' + tpl.img, canvas.width / 2, canvas.height / 2 - 10);
+          ctx.font = '12px Courier New';
+          ctx.fillStyle = '#666';
+          ctx.fillText('Ellenőrizd, hogy a szl1-15/szf1-15 fájlok lent vannak-e a gyökérben!', canvas.width / 2, canvas.height / 2 + 15);
+        }
       };
     }
 
-    // EGÉR / ÉRINTÉS ALAPÚ KITÖLTÉS ÉS SZABADKÉZI RAJZOLÁS
     if (canvas) {
       canvas.addEventListener('mousedown', e => startDraw(e));
       canvas.addEventListener('mousemove', e => draw(e));
@@ -620,7 +624,6 @@
       canvas.addEventListener('touchmove', e => { e.preventDefault(); draw(e.touches[0]); }, {passive: false});
       canvas.addEventListener('touchend', stopDraw);
 
-      // Kattintásra Flood Fill (kitöltés) ha nem húzzák az egeret
       canvas.addEventListener('click', e => {
         if (!ctx) return;
         const rect = canvas.getBoundingClientRect();
@@ -666,7 +669,7 @@
       const targetR = data[targetIdx], targetG = data[targetIdx + 1], targetB = data[targetIdx + 2];
       const [fillR, fillG, fillB] = hexToRgb(fillColorHex);
       if (Math.abs(targetR - fillR) < 10 && Math.abs(targetG - fillG) < 10 && Math.abs(targetB - fillB) < 10) return;
-      if (targetR < 40 && targetG < 40 && targetB < 40) return; // Fekete kontúr védelme
+      if (targetR < 40 && targetG < 40 && targetB < 40) return;
 
       const queue = [[x, y]];
       const width = canvas.width, height = canvas.height;
