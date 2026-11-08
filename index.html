@@ -438,7 +438,7 @@
   </div>
 
   <footer>
-    Mátrix Labor Engine v1.60 • Projektigazgatás: Jordan & Nefi
+    Mátrix Labor Engine v1.70 • Projektigazgatás: Jordan & Nefi
   </footer>
 
   <script>
@@ -459,7 +459,6 @@
       ]
     };
 
-    // TELJES 10 DB-OS VONALVEZETÉS SABLONLISTA (Sértetlenül)
     const tracingTemplates = {
       boys: [
         { id: 'circle', name: '🔵 Tökéletes Kör', desc: 'Kerek alapforma gyakorlat' },
@@ -487,13 +486,11 @@
       ]
     };
 
-    // 15 DB SZÁMÖSSZEKÖTŐS KÉP
     const dotConnectTemplates = {
       boys: Array.from({length: 15}, (_, i) => ({ id: 'f' + (i + 1), num: String(i + 1).padStart(2, '0'), img: 'f' + (i + 1) + '.png' })),
       girls: Array.from({length: 15}, (_, i) => ({ id: 'l' + (i + 1), num: String(i + 1).padStart(2, '0'), img: 'l' + (i + 1) + '.png' }))
     };
 
-    // 15 DB MATEK FELADAT
     const mathTemplates = {
       boys: Array.from({length: 15}, (_, i) => {
         let n1 = (i % 6) + 3;
@@ -545,7 +542,6 @@
       })
     };
 
-    // 50+ DB GIGANTIKUS SZÍNREPERTOÁR
     const colors = [
       '#ff0000', '#ff3300', '#ff6600', '#ff9900', '#ffcc00', '#ffff00', '#ccff00', '#99ff00', '#66ff00', '#33ff00',
       '#00ff00', '#00ff33', '#00ff66', '#00ff99', '#00ffcc', '#00ffff', '#00ccff', '#0099ff', '#0066ff', '#0033ff',
@@ -780,7 +776,7 @@
       }
     }
 
-    // TELJES VONALVEZETÉS MUNKAMOTOR
+    // VONALVEZETÉS MUNKAMOTOR (MIND A 10 SABLON TELJES KEZELÉSÉVEL)
     function openTracingGallery(category) {
       document.getElementById('mainMenuView').classList.remove('active');
       document.getElementById('tracingGalleryView').classList.add('active');
@@ -817,6 +813,24 @@
       }
     }
 
+    function sampleQuad(x0, y0, cx, cy, x1, y1, steps = 20) {
+      for (let i = 0; i <= steps; i++) {
+        let t = i / steps;
+        let x = (1-t)*(1-t)*x0 + 2*(1-t)*t*cx + t*t*x1;
+        let y = (1-t)*(1-t)*y0 + 2*(1-t)*t*cy + t*t*y1;
+        guideSamplePoints.push({ x, y });
+      }
+    }
+
+    function sampleBezier(x0, y0, c1x, c1y, c2x, c2y, x1, y1, steps = 25) {
+      for (let i = 0; i <= steps; i++) {
+        let t = i / steps;
+        let x = Math.pow(1-t, 3)*x0 + 3*Math.pow(1-t, 2)*t*c1x + 3*(1-t)*t*t*c2x + t*t*t*x1;
+        let y = Math.pow(1-t, 3)*y0 + 3*Math.pow(1-t, 2)*t*c1y + 3*(1-t)*t*t*c2y + t*t*t*y1;
+        guideSamplePoints.push({ x, y });
+      }
+    }
+
     function sampleArc(cx, cy, radius, startAngle, endAngle, steps = 30) {
       for (let i = 0; i <= steps; i++) {
         let angle = startAngle + (i / steps) * (endAngle - startAngle);
@@ -830,18 +844,85 @@
       if (!tCtx) return;
       tCtx.fillStyle = '#ffffff';
       tCtx.fillRect(0, 0, tCanvas.width, tCanvas.height);
+
       tCtx.strokeStyle = '#0088ff';
       tCtx.lineWidth = 5;
       tCtx.setLineDash([8, 8]);
       tCtx.beginPath();
       guideSamplePoints = [];
 
-      if (id === 'circle') {
-        sampleArc(300, 200, 110, 0, 2 * Math.PI);
-        tCtx.arc(300, 200, 110, 0, 2 * Math.PI);
-      } else {
-        sampleLine(50, 200, 550, 200);
-        tCtx.moveTo(50, 200); tCtx.lineTo(550, 200);
+      switch(id) {
+        case 'circle':
+          sampleArc(300, 200, 110, 0, 2 * Math.PI);
+          tCtx.arc(300, 200, 110, 0, 2 * Math.PI);
+          break;
+        case 'triangle':
+          sampleLine(300, 80, 480, 320);
+          sampleLine(480, 320, 120, 320);
+          sampleLine(120, 320, 300, 80);
+          tCtx.moveTo(300, 80); tCtx.lineTo(480, 320); tCtx.lineTo(120, 320); tCtx.closePath();
+          break;
+        case 'square':
+          sampleLine(180, 90, 420, 90);
+          sampleLine(420, 90, 420, 330);
+          sampleLine(420, 330, 180, 330);
+          sampleLine(180, 330, 180, 90);
+          tCtx.rect(180, 90, 240, 240);
+          break;
+        case 'rectangle':
+          sampleLine(120, 120, 480, 120);
+          sampleLine(480, 120, 480, 280);
+          sampleLine(480, 280, 120, 280);
+          sampleLine(120, 280, 120, 120);
+          tCtx.rect(120, 120, 360, 160);
+          break;
+        case 'b1':
+        case 'g1':
+          tCtx.moveTo(50, 280);
+          let kpts = [{x:50, y:280}, {x:120, y:120}, {x:190, y:250}, {x:260, y:100}, {x:330, y:250}, {x:400, y:120}, {x:470, y:280}];
+          for(let i=0; i<kpts.length-1; i++) sampleLine(kpts[i].x, kpts[i].y, kpts[i+1].x, kpts[i+1].y);
+          tCtx.lineTo(120, 120); tCtx.lineTo(190, 250); tCtx.lineTo(260, 100); tCtx.lineTo(330, 250); tCtx.lineTo(400, 120); tCtx.lineTo(470, 280);
+          break;
+        case 'b2':
+        case 'g2':
+          let cx = 300, cy = 200, r = 40;
+          sampleArc(cx, cy, r, 0, 2 * Math.PI);
+          tCtx.arc(cx, cy, r, 0, 2 * Math.PI);
+          for(let p = 0; p < 6; p++) {
+            let angle = (p / 6) * 2 * Math.PI;
+            let pcx = cx + 55 * Math.cos(angle);
+            let pcy = cy + 55 * Math.sin(angle);
+            sampleArc(pcx, pcy, 40, 0, 2 * Math.PI);
+            tCtx.moveTo(pcx + 40, pcy);
+            tCtx.arc(pcx, pcy, 40, 0, 2 * Math.PI);
+          }
+          break;
+        case 'b3':
+        case 'g3':
+          tCtx.moveTo(300, 320);
+          sampleBezier(300, 320, 100, 220, 100, 80, 300, 180); sampleBezier(300, 180, 500, 80, 500, 220, 300, 320);
+          tCtx.bezierCurveTo(100, 220, 100, 80, 300, 180); tCtx.bezierCurveTo(500, 80, 500, 220, 300, 320);
+          break;
+        case 'b4':
+        case 'g4':
+          tCtx.moveTo(40, 150);
+          sampleQuad(40, 150, 150, 300, 260, 150); sampleQuad(260, 150, 370, 0, 480, 150); sampleLine(480, 150, 560, 220);
+          tCtx.quadraticCurveTo(150, 300, 260, 150); tCtx.quadraticCurveTo(370, 0, 480, 150); tCtx.lineTo(560, 220);
+          break;
+        case 'b5':
+        case 'g5':
+          tCtx.moveTo(300, 200);
+          sampleQuad(300, 200, 150, 50, 100, 200); sampleQuad(100, 200, 150, 350, 300, 200); sampleQuad(300, 200, 450, 50, 500, 200); sampleQuad(500, 200, 450, 350, 300, 200);
+          tCtx.quadraticCurveTo(150, 50, 100, 200); tCtx.quadraticCurveTo(150, 350, 300, 200); tCtx.quadraticCurveTo(450, 50, 500, 200); tCtx.quadraticCurveTo(450, 350, 300, 200);
+          break;
+        case 'b6':
+        case 'g6':
+          sampleArc(300, 300, 180, Math.PI, 2 * Math.PI);
+          tCtx.arc(300, 300, 180, Math.PI, 2 * Math.PI);
+          break;
+        default:
+          sampleLine(50, 200, 550, 200);
+          tCtx.moveTo(50, 200); tCtx.lineTo(550, 200);
       }
       tCtx.stroke();
       tCtx.setLineDash([]);
@@ -890,7 +971,7 @@
       alert('Tökéletes vonalvezetés a Mátrix Labor előírásai szerint! 🎉🚀');
     }
 
-    // SZÁMÖSSZEKÖTŐS MODUL
+    // SZÁMÖSSZEKÖTŐS MODUL (15 DB GOMB GENERÁLÁSSal)
     function openDotConnectGallery(category) {
       document.getElementById('mainMenuView').classList.remove('active');
       document.getElementById('dotConnectGalleryView').classList.add('active');
@@ -919,7 +1000,7 @@
       if (currentDotTpl) startDotConnectGame(currentDotTpl);
     }
 
-    // SZÁMOLÓS MATEK MODUL
+    // SZÁMOLÓS MATEK MODUL (15 DB GOMB GENERÁLÁSSal)
     function openMathGallery(category) {
       document.getElementById('mainMenuView').classList.remove('active');
       document.getElementById('mathGalleryView').classList.add('active');
