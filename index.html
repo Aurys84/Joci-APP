@@ -326,12 +326,13 @@
       <div id="mathGalleryContainer" class="gallery-grid"></div>
     </div>
 
-    <!-- VIEW 3: SZÍNEZŐ MUNKATERÜLET -->
+    <!-- VIEW 3: SZÍNEZŐ MUNKATERÜLET (VALÓDI VEKTOROS FORMÁKKal) -->
     <div id="canvasView" class="view-section">
       <button class="btn btn-danger" onclick="goBackToGallery()" style="margin-bottom: 8px;">❮ Vissza a Galériába</button>
       
       <div class="canvas-workspace">
         <h3 id="activeTemplateTitle" style="color: var(--accent-gold); margin: 0; font-size: 1rem;">Színező Munkaterület</h3>
+        <p style="font-size: 0.75rem; color: #00ffcc; margin: 0;">Válassz színt alul, és fesd ki a rajzot! 🎨</p>
         <div class="palette" id="colorPalette"></div>
         <canvas id="coloringCanvas" class="interactive-canvas" width="600" height="400"></canvas>
         <div class="action-row">
@@ -358,7 +359,7 @@
       </div>
     </div>
 
-    <!-- VIEW 5: SZÁMÖSSZEKÖTŐS KÉP (VÉKONY FILC) -->
+    <!-- VIEW 5: SZÁMÖSSZEKÖTŐS KÉP -->
     <div id="dotConnectView" class="view-section">
       <button class="btn btn-danger" onclick="goBackToDotConnectGallery()" style="margin-bottom: 8px;">❮ Vissza a Számösszekötős Galériába</button>
       
@@ -401,22 +402,23 @@
   </div>
 
   <footer>
-    Mátrix Labor Engine v1.47 • Projektigazgatás: Jordan & Nefi
+    Mátrix Labor Engine v1.49 • Projektigazgatás: Jordan & Nefi
   </footer>
 
   <script>
+    // FIXÁLT SZÍNEZŐ SABLONOK VALÓDI VEKTOROS RAJZOKKAL
     const coloringTemplates = {
       boys: [
-        { id: 'train', name: '🚂 Gőzmozdony', desc: 'Klasszikus pöfögős vonat.' },
-        { id: 'nature', name: '🌿 Természet & Virágok', desc: 'Fák, levelek és a szabad világ.' },
+        { id: 'train', name: '🚂 Gőzmozdony', desc: 'Klasszikus pöfögős vonat kerekekkel.' },
         { id: 'rocket', name: '🚀 Mátrix Űrsikló', desc: 'Irány a galaxis és a csillagok!' },
-        { id: 'robot', name: '🤖 Robot Robi', desc: 'Varázsolj új külsőt a vidám robotnak!' }
+        { id: 'robot', name: '🤖 Robot Robi', desc: 'Varázsolj új külsőt a vidám robotnak!' },
+        { id: 'car', name: '🏎️ Versenyautó', desc: 'Szupergyors gép a pályán.' }
       ],
       girls: [
-        { id: 'castle', name: '🏰 Varázskastély', desc: 'Tornyok, hintók és csillogás.' },
-        { id: 'nature', name: '🌿 Természet & Virágok', desc: 'Fák, levelek és a szabad világ.' },
+        { id: 'castle', name: '🏰 Varázskastély', desc: 'Tornyok, zászlók és csillogás.' },
         { id: 'fairy', name: '🧚‍♀️ Tündér Hercegnő', desc: 'Szárnyak, virágok és varázslat.' },
-        { id: 'pegasus', name: '🦄 Unikornis Kaland', desc: 'Szivárványok és csillagos ég.' }
+        { id: 'pegasus', name: '🦄 Unikornis Kaland', desc: 'Szivárványok és csillagos ég.' },
+        { id: 'teddy', name: '🧸 Cuki Maci', desc: 'Kedves plüssbarát.' }
       ]
     };
 
@@ -448,8 +450,8 @@
     };
 
     const dotConnectTemplates = {
-      boys: Array.from({length: 15}, (_, i) => ({ id: 'f' + (i + 1), num: String(i + 1).padStart(2, '0'), img: 'f' + (i + 1) + '.png' })),
-      girls: Array.from({length: 15}, (_, i) => ({ id: 'l' + (i + 1), num: String(i + 1).padStart(2, '0'), img: 'l' + (i + 1) + '.png' }))
+      boys: Array.from({length: 15}, (_, i) => ({ id: 'f' + (i + 1), num: String(i + 1).padStart(2, '0'), name: `Kaland Pontsor #${i+1}` })),
+      girls: Array.from({length: 15}, (_, i) => ({ id: 'l' + (i + 1), num: String(i + 1).padStart(2, '0'), name: `Varázs Pontsor #${i+1}` }))
     };
 
     const mathTemplates = {
@@ -504,6 +506,7 @@
     };
 
     let selectedColor = '#ff0055';
+    let currentActiveTemplate = null;
     let currentTracingTpl = null;
     let guideSamplePoints = [];
     let userStrokePoints = [];
@@ -564,24 +567,67 @@
     }
 
     function startColoring(tpl) {
+      currentActiveTemplate = tpl;
       document.getElementById('galleryView').classList.remove('active');
       document.getElementById('canvasView').classList.add('active');
       document.getElementById('activeTemplateTitle').innerText = tpl.name;
+      renderColoringTemplate(tpl.id);
+    }
 
+    // VEKTOROS KIFESTŐ SABLONOK KIRAJZOLÁSA A VÁSZONRA
+    function renderColoringTemplate(id) {
       if (!ctx) return;
       ctx.fillStyle = '#ffffff';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      
-      ctx.strokeStyle = '#222222';
-      ctx.lineWidth = 4;
-      ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
 
-      ctx.font = '24px Courier New';
-      ctx.fillStyle = '#444444';
-      ctx.textAlign = 'center';
-      ctx.fillText(tpl.name, canvas.width / 2, canvas.height / 2 - 10);
-      ctx.font = '16px Courier New';
-      ctx.fillText('Színezd ki az ujjal vagy egérrel!', canvas.width / 2, canvas.height / 2 + 25);
+      ctx.strokeStyle = '#111111';
+      ctx.lineWidth = 4;
+      ctx.lineJoin = 'round';
+      ctx.lineCap = 'round';
+
+      if (id === 'train') {
+        ctx.strokeRect(100, 220, 180, 110);
+        ctx.strokeRect(300, 170, 160, 160);
+        ctx.beginPath(); ctx.arc(140, 330, 25, 0, 2*Math.PI); ctx.arc(220, 330, 25, 0, 2*Math.PI); ctx.arc(350, 330, 25, 0, 2*Math.PI); ctx.arc(430, 330, 25, 0, 2*Math.PI); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(460, 220); ctx.lineTo(520, 220); ctx.lineTo(500, 330); ctx.lineTo(460, 330); ctx.closePath(); ctx.stroke();
+        ctx.beginPath(); ctx.arc(360, 130, 20, 0, Math.PI, true); ctx.lineTo(380, 170); ctx.lineTo(340, 170); ctx.closePath(); ctx.stroke();
+      } else if (id === 'rocket') {
+        ctx.beginPath(); ctx.moveTo(300, 60); ctx.lineTo(380, 200); ctx.lineTo(380, 300); ctx.lineTo(220, 300); ctx.lineTo(220, 200); ctx.closePath(); ctx.stroke();
+        ctx.beginPath(); ctx.arc(300, 180, 30, 0, 2*Math.PI); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(220, 250); ctx.lineTo(160, 320); ctx.lineTo(220, 300); ctx.closePath(); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(380, 250); ctx.lineTo(440, 320); ctx.lineTo(380, 300); ctx.closePath(); ctx.stroke();
+      } else if (id === 'robot') {
+        ctx.strokeRect(240, 80, 120, 90);
+        ctx.strokeRect(210, 190, 180, 140);
+        ctx.strokeRect(130, 190, 70, 110);
+        ctx.strokeRect(400, 190, 70, 110);
+        ctx.strokeRect(240, 340, 45, 50);
+        ctx.strokeRect(315, 340, 45, 50);
+        ctx.beginPath(); ctx.arc(280, 125, 18, 0, 2*Math.PI); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(300, 50); ctx.lineTo(300, 80); ctx.stroke();
+      } else if (id === 'car') {
+        ctx.strokeRect(150, 200, 300, 80);
+        ctx.beginPath(); ctx.arc(220, 280, 35, 0, 2*Math.PI); ctx.arc(380, 280, 35, 0, 2*Math.PI); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(240, 200); ctx.lineTo(280, 140); ctx.lineTo(340, 140); ctx.lineTo(380, 200); ctx.closePath(); ctx.stroke();
+      } else if (id === 'castle') {
+        ctx.strokeRect(220, 160, 160, 170);
+        ctx.strokeRect(160, 120, 60, 210);
+        ctx.strokeRect(380, 120, 60, 210);
+        ctx.beginPath(); ctx.moveTo(160, 120); ctx.lineTo(190, 60); ctx.lineTo(220, 120); ctx.closePath(); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(380, 120); ctx.lineTo(410, 60); ctx.lineTo(440, 120); ctx.closePath(); ctx.stroke();
+      } else if (id === 'fairy') {
+        ctx.beginPath(); ctx.arc(300, 140, 35, 0, 2*Math.PI); ctx.stroke();
+        ctx.beginPath(); ctx.ellipse(300, 250, 30, 70, 0, 0, 2*Math.PI); ctx.stroke();
+        ctx.beginPath(); ctx.ellipse(220, 230, 60, 35, -0.3, 0, 2*Math.PI); ctx.ellipse(380, 230, 60, 35, 0.3, 0, 2*Math.PI); ctx.stroke();
+      } else if (id === 'pegasus') {
+        ctx.beginPath(); ctx.ellipse(320, 230, 90, 55, 0, 0, 2*Math.PI); ctx.stroke();
+        ctx.beginPath(); ctx.arc(420, 150, 45, 0, 2*Math.PI); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(450, 120); ctx.lineTo(480, 70); ctx.lineTo(430, 100); ctx.closePath(); ctx.stroke();
+      } else {
+        ctx.beginPath(); ctx.arc(300, 200, 70, 0, 2*Math.PI); ctx.stroke();
+        ctx.beginPath(); ctx.arc(300, 300, 80, 0, Math.PI); ctx.stroke();
+        ctx.beginPath(); ctx.arc(230, 240, 25, 0, 2*Math.PI); ctx.arc(370, 240, 25, 0, 2*Math.PI); ctx.stroke();
+      }
     }
 
     if (canvas) {
@@ -613,7 +659,7 @@
     }
 
     function stopDraw() { isDrawing = false; isTracing = false; isDotDrawing = false; isMathDrawing = false; }
-    function clearCanvas() { if(ctx) { ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height); } }
+    function clearCanvas() { if (currentActiveTemplate) renderColoringTemplate(currentActiveTemplate.id); }
 
     function openTracingGallery(category) {
       document.getElementById('mainMenuView').classList.remove('active');
@@ -884,6 +930,7 @@
         card.innerHTML = `
           <div style="font-size: 1.5rem; margin-bottom: 2px;">🔢</div>
           <h3>${tpl.num}</h3>
+          <p style="font-size: 0.65rem; color: #aaa; margin: 0;">${tpl.name}</p>
         `;
         card.onclick = () => startDotConnectGame(tpl);
         container.appendChild(card);
@@ -894,25 +941,40 @@
       currentDotTpl = tpl;
       document.getElementById('dotConnectGalleryView').classList.remove('active');
       document.getElementById('dotConnectView').classList.add('active');
-      document.getElementById('dotConnectTitle').innerText = tpl.num;
+      document.getElementById('dotConnectTitle').innerText = `${tpl.num} — ${tpl.name}`;
 
       if (!dCtx) return;
       dCtx.fillStyle = '#ffffff';
       dCtx.fillRect(0, 0, dCanvas.width, dCanvas.height);
 
-      const img = new Image();
-      img.src = tpl.img;
-      img.onload = function() {
-        dCtx.drawImage(img, 40, 20, 520, 360);
-      };
-      img.onerror = function() {
-        dCtx.fillStyle = '#ffffff';
-        dCtx.fillRect(0, 0, dCanvas.width, dCanvas.height);
-        dCtx.font = '14px Courier New';
-        dCtx.fillStyle = '#64748b';
-        dCtx.textAlign = 'center';
-        dCtx.fillText('Kép betöltése: ' + tpl.img, dCanvas.width / 2, dCanvas.height / 2);
-      };
+      dCtx.font = 'bold 13px Courier New';
+      dCtx.fillStyle = '#0088ff';
+      dCtx.strokeStyle = '#ff00ff';
+      dCtx.lineWidth = 2;
+
+      let totalDots = 12;
+      let centerX = 300, centerY = 200;
+      let pts = [];
+
+      for (let i = 0; i < totalDots; i++) {
+        let angle = (i / totalDots) * 2 * Math.PI - Math.PI / 2;
+        let rx = 130 + ((i % 3) * 15);
+        let ry = 90 + ((i % 2) * 15);
+        let px = centerX + rx * Math.cos(angle);
+        let py = centerY + ry * Math.sin(angle);
+        pts.push({ x: px, y: py });
+      }
+
+      pts.forEach((p, idx) => {
+        dCtx.beginPath();
+        dCtx.arc(p.x, p.y, 6, 0, 2 * Math.PI);
+        dCtx.fillStyle = '#ff0055';
+        dCtx.fill();
+        dCtx.stroke();
+
+        dCtx.fillStyle = '#111111';
+        dCtx.fillText(idx + 1, p.x + 10, p.y + 4);
+      });
     }
 
     if (dCanvas) {
@@ -938,7 +1000,7 @@
       const rect = dCanvas.getBoundingClientRect();
       dCtx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
       dCtx.strokeStyle = selectedColor;
-      dCtx.lineWidth = 3;
+      dCtx.lineWidth = 4;
       dCtx.lineCap = 'round';
       dCtx.stroke();
     }
