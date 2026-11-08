@@ -326,7 +326,7 @@
       <div id="mathGalleryContainer" class="gallery-grid"></div>
     </div>
 
-    <!-- VIEW 3: SZÍNEZŐ MUNKATERÜLET (VALÓDI VEKTOROS FORMÁKKal) -->
+    <!-- VIEW 3: SZÍNEZŐ MUNKATERÜLET (JAVÍTOTT VEKTOROS SABLONOKKAL) -->
     <div id="canvasView" class="view-section">
       <button class="btn btn-danger" onclick="goBackToGallery()" style="margin-bottom: 8px;">❮ Vissza a Galériába</button>
       
@@ -359,7 +359,7 @@
       </div>
     </div>
 
-    <!-- VIEW 5: SZÁMÖSSZEKÖTŐS KÉP -->
+    <!-- VIEW 5: SZÁMÖSSZEKÖTŐS KÉP (A TE EREDETI KÉPES LOGIKÁDDAL) -->
     <div id="dotConnectView" class="view-section">
       <button class="btn btn-danger" onclick="goBackToDotConnectGallery()" style="margin-bottom: 8px;">❮ Vissza a Számösszekötős Galériába</button>
       
@@ -402,11 +402,11 @@
   </div>
 
   <footer>
-    Mátrix Labor Engine v1.49 • Projektigazgatás: Jordan & Nefi
+    Mátrix Labor Engine v1.50 • Projektigazgatás: Jordan & Nefi
   </footer>
 
   <script>
-    // FIXÁLT SZÍNEZŐ SABLONOK VALÓDI VEKTOROS RAJZOKKAL
+    // KIZÁRÓLAG A SZÍNEZŐ SABLONOK JAVÍTVA VALÓDI VEKTOROS RAJZOKRA
     const coloringTemplates = {
       boys: [
         { id: 'train', name: '🚂 Gőzmozdony', desc: 'Klasszikus pöfögős vonat kerekekkel.' },
@@ -449,9 +449,10 @@
       ]
     };
 
+    // A TE EREDETI SZÁMÖSSZEKÖTŐS LISTÁD (ÉRINTETLEN)
     const dotConnectTemplates = {
-      boys: Array.from({length: 15}, (_, i) => ({ id: 'f' + (i + 1), num: String(i + 1).padStart(2, '0'), name: `Kaland Pontsor #${i+1}` })),
-      girls: Array.from({length: 15}, (_, i) => ({ id: 'l' + (i + 1), num: String(i + 1).padStart(2, '0'), name: `Varázs Pontsor #${i+1}` }))
+      boys: Array.from({length: 15}, (_, i) => ({ id: 'f' + (i + 1), num: String(i + 1).padStart(2, '0'), img: 'f' + (i + 1) + '.png' })),
+      girls: Array.from({length: 15}, (_, i) => ({ id: 'l' + (i + 1), num: String(i + 1).padStart(2, '0'), img: 'l' + (i + 1) + '.png' }))
     };
 
     const mathTemplates = {
@@ -930,51 +931,36 @@
         card.innerHTML = `
           <div style="font-size: 1.5rem; margin-bottom: 2px;">🔢</div>
           <h3>${tpl.num}</h3>
-          <p style="font-size: 0.65rem; color: #aaa; margin: 0;">${tpl.name}</p>
         `;
         card.onclick = () => startDotConnectGame(tpl);
         container.appendChild(card);
       });
     }
 
+    // A TE EREDETI SZÁMÖSSZEKÖTŐS LOGIKÁD (KÉPBETÖLTÉSSEL)
     function startDotConnectGame(tpl) {
       currentDotTpl = tpl;
       document.getElementById('dotConnectGalleryView').classList.remove('active');
       document.getElementById('dotConnectView').classList.add('active');
-      document.getElementById('dotConnectTitle').innerText = `${tpl.num} — ${tpl.name}`;
+      document.getElementById('dotConnectTitle').innerText = tpl.num;
 
       if (!dCtx) return;
       dCtx.fillStyle = '#ffffff';
       dCtx.fillRect(0, 0, dCanvas.width, dCanvas.height);
 
-      dCtx.font = 'bold 13px Courier New';
-      dCtx.fillStyle = '#0088ff';
-      dCtx.strokeStyle = '#ff00ff';
-      dCtx.lineWidth = 2;
-
-      let totalDots = 12;
-      let centerX = 300, centerY = 200;
-      let pts = [];
-
-      for (let i = 0; i < totalDots; i++) {
-        let angle = (i / totalDots) * 2 * Math.PI - Math.PI / 2;
-        let rx = 130 + ((i % 3) * 15);
-        let ry = 90 + ((i % 2) * 15);
-        let px = centerX + rx * Math.cos(angle);
-        let py = centerY + ry * Math.sin(angle);
-        pts.push({ x: px, y: py });
-      }
-
-      pts.forEach((p, idx) => {
-        dCtx.beginPath();
-        dCtx.arc(p.x, p.y, 6, 0, 2 * Math.PI);
-        dCtx.fillStyle = '#ff0055';
-        dCtx.fill();
-        dCtx.stroke();
-
-        dCtx.fillStyle = '#111111';
-        dCtx.fillText(idx + 1, p.x + 10, p.y + 4);
-      });
+      const img = new Image();
+      img.src = tpl.img;
+      img.onload = function() {
+        dCtx.drawImage(img, 40, 20, 520, 360);
+      };
+      img.onerror = function() {
+        dCtx.fillStyle = '#ffffff';
+        dCtx.fillRect(0, 0, dCanvas.width, dCanvas.height);
+        dCtx.font = '14px Courier New';
+        dCtx.fillStyle = '#64748b';
+        dCtx.textAlign = 'center';
+        dCtx.fillText('Kép betöltése: ' + tpl.img, dCanvas.width / 2, dCanvas.height / 2);
+      };
     }
 
     if (dCanvas) {
@@ -1000,7 +986,7 @@
       const rect = dCanvas.getBoundingClientRect();
       dCtx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
       dCtx.strokeStyle = selectedColor;
-      dCtx.lineWidth = 4;
+      dCtx.lineWidth = 3;
       dCtx.lineCap = 'round';
       dCtx.stroke();
     }
