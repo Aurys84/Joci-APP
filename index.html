@@ -270,7 +270,7 @@
             <button class="task-btn" onclick="openGallery('boys', 'szinezo')">🎨 Csak Színezős (Galéria)</button>
             <button class="task-btn" onclick="openTracingGallery('boys')">✏️ Átrajzolós / Vonalvezetés (10 féle)</button>
             <button class="task-btn" onclick="openDotConnectGallery('boys')">🔢 Számösszekötős Képek (15 db)</button>
-            <button class="task-btn" onclick="openModule('boys', 'szamolos')">🔢 Számolós & Logikai Feladatok</button>
+            <button class="task-btn" onclick="openMathGallery('boys')">🧮 Számolós & Matek Képek (15 db)</button>
           </div>
         </div>
 
@@ -281,7 +281,7 @@
             <button class="task-btn" onclick="openGallery('girls', 'szinezo')">🎨 Csak Színezős (Galéria)</button>
             <button class="task-btn" onclick="openTracingGallery('girls')">✏️ Átrajzolós / Vonalvezetés (10 féle)</button>
             <button class="task-btn" onclick="openDotConnectGallery('girls')">🔢 Számösszekötős Képek (15 db)</button>
-            <button class="task-btn" onclick="openModule('girls', 'szamolos')">💖 Pötty-Számláló Challenge</button>
+            <button class="task-btn" onclick="openMathGallery('girls')">💖 Számolós & Matek Képek (15 db)</button>
           </div>
         </div>
 
@@ -302,11 +302,18 @@
       <div id="tracingGalleryContainer" class="gallery-grid"></div>
     </div>
 
-    <!-- VIEW 2.6: SZÁMSZEKÖTŐS KÉPEK GALÉRIA (CSAK SZÁMOK) -->
+    <!-- VIEW 2.6: SZÁMSZEKÖTŐS KÉPEK GALÉRIA -->
     <div id="dotConnectGalleryView" class="view-section">
       <button class="btn btn-danger" onclick="goBackToMenu()" style="margin-bottom: 10px;">❮ Vissza a Főmenübe</button>
       <h2 style="color: var(--neon-cyan); text-align: center; margin-top: 0; font-size: 1.1rem;">Válassz egy számösszekötős képet!</h2>
       <div id="dotConnectGalleryContainer" class="gallery-grid"></div>
+    </div>
+
+    <!-- VIEW 2.7: SZÁMOLÓS MATEK KÉPEK GALÉRIA -->
+    <div id="mathGalleryView" class="view-section">
+      <button class="btn btn-danger" onclick="goBackToMenu()" style="margin-bottom: 10px;">❮ Vissza a Főmenübe</button>
+      <h2 style="color: var(--neon-cyan); text-align: center; margin-top: 0; font-size: 1.1rem;">Válassz egy számolós matek feladatot!</h2>
+      <div id="mathGalleryContainer" class="gallery-grid"></div>
     </div>
 
     <!-- VIEW 3: SZÍNEZŐ MUNKATERÜLET -->
@@ -341,7 +348,7 @@
       </div>
     </div>
 
-    <!-- VIEW 5: SZÁMÖSSZEKÖTŐS KÉP (VÉKONYABB CERUZA ÉS CSAK SZÁMOK A CÍMBEN) -->
+    <!-- VIEW 5: SZÁMÖSSZEKÖTŐS KÉP (ÜVEGLAP MÓD) -->
     <div id="dotConnectView" class="view-section">
       <button class="btn btn-danger" onclick="goBackToDotConnectGallery()" style="margin-bottom: 8px;">❮ Vissza a Számösszekötős Galériába</button>
       
@@ -358,10 +365,27 @@
       </div>
     </div>
 
+    <!-- VIEW 6: SZÁMOLÓS MATEK KÉP MUNKATERÜLET (ÜVEGLAP MÓD) -->
+    <div id="mathView" class="view-section">
+      <button class="btn btn-danger" onclick="goBackToMathGallery()" style="margin-bottom: 8px;">❮ Vissza a Számolós Galériába</button>
+      
+      <div class="canvas-workspace">
+        <h3 id="mathTitle" style="color: var(--neon-cyan); margin: 0; font-size: 1rem;">M01</h3>
+        <p style="font-size: 0.8rem; color: var(--accent-gold); margin: 0;">Számold meg a tárgyakat vagy oldd meg a matek feladatot!</p>
+        
+        <canvas id="mathCanvas" class="interactive-canvas" width="600" height="400"></canvas>
+
+        <div class="action-row">
+          <button class="btn btn-danger" onclick="clearMath()">Törlés / Újra 🔄</button>
+          <button class="btn success" onclick="alert('Fantasztikus matek teljesítmény! Mentve a Mátrix Laborba! 🧮⭐')" style="background:#00cc66; color:white; border:none; padding:8px 14px; border-radius:6px; cursor:pointer;">Kész / Mentés ⭐</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <footer>
-    Mátrix Labor Engine v1.40 • Projektigazgatás: Jordan & Nefi
+    Mátrix Labor Engine v1.41 • Projektigazgatás: Jordan & Nefi
   </footer>
 
   <script>
@@ -407,42 +431,42 @@
       ]
     };
 
-    // 15 DB FIÚS (f1-f15) ÉS 15 DB LÁNYOS (l1-l15) - CSAK SZÁMOK A GOMBOKON
+    // 15 DB FIÚS ÉS 15 DB LÁNYOS SZÁMÖSSZEKÖTŐS KÉP
     const dotConnectTemplates = {
       boys: [
-        { id: 'f1', num: '01', img: 'f1.png' },
-        { id: 'f2', num: '02', img: 'f2.png' },
-        { id: 'f3', num: '03', img: 'f3.png' },
-        { id: 'f4', num: '04', img: 'f4.png' },
-        { id: 'f5', num: '05', img: 'f5.png' },
-        { id: 'f6', num: '06', img: 'f6.png' },
-        { id: 'f7', num: '07', img: 'f7.jpg' },
-        { id: 'f8', num: '08', img: 'f8.png' },
-        { id: 'f9', num: '09', img: 'f9.png' },
-        { id: 'f10', num: '10', img: 'f10.png' },
-        { id: 'f11', num: '11', img: 'f11.png' },
-        { id: 'f12', num: '12', img: 'f12.png' },
-        { id: 'f13', num: '13', img: 'f13.png' },
-        { id: 'f14', num: '14', img: 'f14.png' },
+        { id: 'f1', num: '01', img: 'f1.png' }, { id: 'f2', num: '02', img: 'f2.png' },
+        { id: 'f3', num: '03', img: 'f3.png' }, { id: 'f4', num: '04', img: 'f4.png' },
+        { id: 'f5', num: '05', img: 'f5.png' }, { id: 'f6', num: '06', img: 'f6.png' },
+        { id: 'f7', num: '07', img: 'f7.jpg' }, { id: 'f8', num: '08', img: 'f8.png' },
+        { id: 'f9', num: '09', img: 'f9.png' }, { id: 'f10', num: '10', img: 'f10.png' },
+        { id: 'f11', num: '11', img: 'f11.png' }, { id: 'f12', num: '12', img: 'f12.png' },
+        { id: 'f13', num: '13', img: 'f13.png' }, { id: 'f14', num: '14', img: 'f14.png' },
         { id: 'f15', num: '15', img: 'f15.png' }
       ],
       girls: [
-        { id: 'l1', num: '01', img: 'l1.png' },
-        { id: 'l2', num: '02', img: 'l2.png' },
-        { id: 'l3', num: '03', img: 'l3.png' },
-        { id: 'l4', num: '04', img: 'l4.png' },
-        { id: 'l5', num: '05', img: 'l5.png' },
-        { id: 'l6', num: '06', img: 'l6.png' },
-        { id: 'l7', num: '07', img: 'l7.jpg' },
-        { id: 'l8', num: '08', img: 'l8.jpg' },
-        { id: 'l9', num: '09', img: 'l9.jpg' },
-        { id: 'l10', num: '10', img: 'l10.jpg' },
-        { id: 'l11', num: '11', img: 'l11.jpg' },
-        { id: 'l12', num: '12', img: 'l12.png' },
-        { id: 'l13', num: '13', img: 'l13.png' },
-        { id: 'l14', num: '14', img: 'l14.png' },
+        { id: 'l1', num: '01', img: 'l1.png' }, { id: 'l2', num: '02', img: 'l2.png' },
+        { id: 'l3', num: '03', img: 'l3.png' }, { id: 'l4', num: '04', img: 'l4.png' },
+        { id: 'l5', num: '05', img: 'l5.png' }, { id: 'l6', num: '06', img: 'l6.png' },
+        { id: 'l7', num: '07', img: 'l7.jpg' }, { id: 'l8', num: '08', img: 'l8.jpg' },
+        { id: 'l9', num: '09', img: 'l9.jpg' }, { id: 'l10', num: '10', img: 'l10.jpg' },
+        { id: 'l11', num: '11', img: 'l11.jpg' }, { id: 'l12', num: '12', img: 'l12.png' },
+        { id: 'l13', num: '13', img: 'l13.png' }, { id: 'l14', num: '14', img: 'l14.png' },
         { id: 'l15', num: '15', img: 'l15.png' }
       ]
+    };
+
+    // 15 DB FIÚS ÉS 15 DB LÁNYOS SZÁMOLÓS / MATEK KÉP (m1.png - m15.png a fiúknak, n1.png - n15.png a lányoknak)
+    const mathTemplates = {
+      boys: Array.from({length: 15}, (_, i) => ({
+        id: 'm' + (i + 1),
+        num: String(i + 1).padStart(2, '0'),
+        img: 'm' + (i + 1) + '.png'
+      })),
+      girls: Array.from({length: 15}, (_, i) => ({
+        id: 'n' + (i + 1),
+        num: String(i + 1).padStart(2, '0'),
+        img: 'n' + (i + 1) + '.png'
+      }))
     };
 
     let selectedColor = '#ff0055';
@@ -450,6 +474,7 @@
     let guideSamplePoints = [];
     let userStrokePoints = [];
     let currentDotTpl = null;
+    let currentMathTpl = null;
 
     const canvas = document.getElementById('coloringCanvas');
     const ctx = canvas.getContext('2d');
@@ -462,6 +487,10 @@
     const dCanvas = document.getElementById('dotCanvas');
     const dCtx = dCanvas.getContext('2d');
     let isDotDrawing = false;
+
+    const mCanvas = document.getElementById('mathCanvas');
+    const mCtx = mCanvas.getContext('2d');
+    let isMathDrawing = false;
 
     const colors = ['#ff0055', '#ff9900', '#ffff00', '#00cc66', '#00ffff', '#0088ff', '#9933ff', '#ff66b2', '#8b4513', '#333333'];
     const paletteContainer = document.getElementById('colorPalette');
@@ -543,7 +572,7 @@
       context.stroke();
     }
 
-    function stopDraw() { isDrawing = false; isTracing = false; isDotDrawing = false; }
+    function stopDraw() { isDrawing = false; isTracing = false; isDotDrawing = false; isMathDrawing = false; }
     function clearCanvas() { ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height); }
 
     function openTracingGallery(category) {
@@ -798,7 +827,7 @@
       }
     }
 
-    // --- SZÁMSZEKÖTŐS KÉPEK GALÉRIA ÉS KÉP BEHÍVÁS (CSAK SZÁMOK A CÍMBEN, VÉKONYABB CERUZA) ---
+    // --- SZÁMÖSSZEKÖTŐS GALÉRIA ÉS JÁTÉK ---
     function openDotConnectGallery(category) {
       document.getElementById('mainMenuView').classList.remove('active');
       document.getElementById('dotConnectGalleryView').classList.add('active');
@@ -838,8 +867,7 @@
         dCtx.font = '14px Courier New';
         dCtx.fillStyle = '#64748b';
         dCtx.textAlign = 'center';
-        dCtx.fillText('Kép betöltése: ' + tpl.img, dCanvas.width / 2, dCanvas.height / 2 - 10);
-        dCtx.fillText('(Helyezd el a gyökérkönyvtárban!)', dCanvas.width / 2, dCanvas.height / 2 + 15);
+        dCtx.fillText('Kép betöltése: ' + tpl.img, dCanvas.width / 2, dCanvas.height / 2);
       };
     }
 
@@ -863,7 +891,7 @@
       const rect = dCanvas.getBoundingClientRect();
       dCtx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
       dCtx.strokeStyle = selectedColor;
-      dCtx.lineWidth = 3; /* Finomabb, vékonyabb rajzoló vonal */
+      dCtx.lineWidth = 3;
       dCtx.lineCap = 'round';
       dCtx.stroke();
     }
@@ -874,13 +902,91 @@
       }
     }
 
+    // --- SZÁMOLÓS MATEK GALÉRIA ÉS JÁTÉK ---
+    function openMathGallery(category) {
+      document.getElementById('mainMenuView').classList.remove('active');
+      document.getElementById('mathGalleryView').classList.add('active');
+
+      const container = document.getElementById('mathGalleryContainer');
+      container.innerHTML = '';
+
+      mathTemplates[category].forEach(tpl => {
+        const card = document.createElement('div');
+        card.className = 'gallery-item';
+        card.innerHTML = `
+          <div style="font-size: 1.5rem; margin-bottom: 2px;">🧮</div>
+          <h3>${tpl.num}</h3>
+        `;
+        card.onclick = () => startMathGame(tpl);
+        container.appendChild(card);
+      });
+    }
+
+    function startMathGame(tpl) {
+      currentMathTpl = tpl;
+      document.getElementById('mathGalleryView').classList.remove('active');
+      document.getElementById('mathView').classList.add('active');
+      document.getElementById('mathTitle').innerText = tpl.num;
+
+      mCtx.fillStyle = '#ffffff';
+      mCtx.fillRect(0, 0, mCanvas.width, mCanvas.height);
+
+      const img = new Image();
+      img.src = tpl.img;
+      img.onload = function() {
+        mCtx.drawImage(img, 40, 20, 520, 360);
+      };
+      img.onerror = function() {
+        mCtx.fillStyle = '#ffffff';
+        mCtx.fillRect(0, 0, mCanvas.width, mCanvas.height);
+        mCtx.font = '14px Courier New';
+        mCtx.fillStyle = '#64748b';
+        mCtx.textAlign = 'center';
+        mCtx.fillText('Matek kép betöltése: ' + tpl.img, mCanvas.width / 2, mCanvas.height / 2);
+      };
+    }
+
+    mCanvas.addEventListener('mousedown', e => startMathDraw(e));
+    mCanvas.addEventListener('mousemove', e => mathDraw(e));
+    mCanvas.addEventListener('mouseup', stopDraw);
+    mCanvas.addEventListener('mouseleave', stopDraw);
+    mCanvas.addEventListener('touchstart', e => { e.preventDefault(); startMathDraw(e.touches[0]); });
+    mCanvas.addEventListener('touchmove', e => { e.preventDefault(); mathDraw(e.touches[0]); });
+    mCanvas.addEventListener('touchend', stopDraw);
+
+    function startMathDraw(e) {
+      isMathDrawing = true;
+      mCtx.beginPath();
+      const rect = mCanvas.getBoundingClientRect();
+      mCtx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+    }
+
+    function mathDraw(e) {
+      if (!isMathDrawing) return;
+      const rect = mCanvas.getBoundingClientRect();
+      mCtx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+      mCtx.strokeStyle = selectedColor;
+      mCtx.lineWidth = 3;
+      mCtx.lineCap = 'round';
+      mCtx.stroke();
+    }
+
+    function clearMath() {
+      if (currentMathTpl) {
+        startMathGame(currentMathTpl);
+      }
+    }
+
+    // --- NAVIGÁCIÓS SEGÉdek ---
     function goBackToMenu() {
       document.getElementById('galleryView').classList.remove('active');
       document.getElementById('tracingGalleryView').classList.remove('active');
       document.getElementById('dotConnectGalleryView').classList.remove('active');
+      document.getElementById('mathGalleryView').classList.remove('active');
       document.getElementById('canvasView').classList.remove('active');
       document.getElementById('tracingView').classList.remove('active');
       document.getElementById('dotConnectView').classList.remove('active');
+      document.getElementById('mathView').classList.remove('active');
       document.getElementById('mainMenuView').classList.add('active');
     }
 
@@ -897,6 +1003,11 @@
     function goBackToDotConnectGallery() {
       document.getElementById('dotConnectView').classList.remove('active');
       document.getElementById('dotConnectGalleryView').classList.add('active');
+    }
+
+    function goBackToMathGallery() {
+      document.getElementById('mathView').classList.remove('active');
+      document.getElementById('mathGalleryView').classList.add('active');
     }
 
     function openModule(category, type) {
