@@ -237,6 +237,8 @@
       gap: 10px;
       position: relative;
       z-index: 20;
+      flex-wrap: wrap;
+      justify-content: center;
     }
 
     .btn {
@@ -253,6 +255,7 @@
     }
     .btn-danger { background: #ff3333; }
     .btn-success { background: #00cc66; }
+    .btn-warning { background: #ffaa00; color: #000; font-weight: bold; }
 
     footer {
       margin-top: 12px;
@@ -340,14 +343,15 @@
       
       <div class="canvas-workspace">
         <h3 id="activeTemplateTitle" style="color: var(--accent-gold); margin: 0; font-size: 1rem;">Színező Munkaterület</h3>
-        <p style="font-size: 0.75rem; color: #00ffcc; margin: 0;">Kattints a kiválasztott színnel a kontúrok közé! 🎨</p>
+        <p id="artistDisplayLabel" style="font-size: 0.75rem; color: #00ffcc; margin: 0;">Alkotó: Kis Művész 🎨</p>
         <div class="palette" id="colorPalette"></div>
         
         <canvas id="coloringCanvas" class="interactive-canvas" width="600" height="400"></canvas>
 
         <div class="action-row">
           <button class="btn btn-danger" onclick="clearCanvas()">Törlés / Újra 🔄</button>
-          <button class="btn btn-success" onclick="alert('Csodás alkotás! Mentve a Mátrix Labor archívumába! 💾✨')">Kész / Mentés ⭐</button>
+          <button class="btn btn-warning" onclick="saveArtwork()">Mentés / Letöltés 💾</button>
+          <button class="btn btn-success" onclick="alert('Csodás alkotás! Mentve a Mátrix Labor archívumába! ⭐')">Kész ⭐</button>
         </div>
       </div>
     </div>
@@ -412,11 +416,10 @@
   </div>
 
   <footer>
-    Mátrix Labor Engine v1.63 • Projektigazgatás: Jordan & Nefi
+    Mátrix Labor Engine v1.64 • Projektigazgatás: Jordan & Nefi
   </footer>
 
   <script>
-    // 15-15 SORSZÁMOZOTT KIFESTŐ KÉP (szf1-15 és szl1-15)
     const coloringTemplates = {
       boys: Array.from({length: 15}, (_, i) => ({
         id: 'szf' + (i + 1),
@@ -459,7 +462,6 @@
       ]
     };
 
-    // PONTOS F1-F15 ÉS L1-L15 ELTAGGAL ELLÁTOTT SZÁMÖSSZEKÖTŐS TÖMB
     const dotConnectTemplates = {
       boys: Array.from({length: 15}, (_, i) => ({
         id: 'f' + (i + 1),
@@ -526,7 +528,6 @@
       })
     };
 
-    // 30 DB RÉSZLETES SZÍN A PALETTÁHOZ
     const colors = [
       '#ff0000', '#ff4500', '#ffa500', '#ffd700', '#ffff00', '#adff2f', '#00ff00', '#00fa9a', '#00ffff', '#1e90ff',
       '#0000ff', '#8a2be2', '#9932cc', '#ff00ff', '#ff1493', '#ffb6c1', '#8b4513', '#a0522d', '#deb887', '#f5deb3',
@@ -571,6 +572,11 @@
       });
     }
 
+    function getPlayerName() {
+      const input = document.getElementById('playerName');
+      return input && input.value.trim() ? input.value.trim() : 'Kis Művész';
+    }
+
     function openGallery(category, type) {
       document.getElementById('mainMenuView').classList.remove('active');
       document.getElementById('galleryView').classList.add('active');
@@ -606,6 +612,7 @@
       document.getElementById('galleryView').classList.remove('active');
       document.getElementById('canvasView').classList.add('active');
       document.getElementById('activeTemplateTitle').innerText = tpl.name;
+      document.getElementById('artistDisplayLabel').innerText = `Alkotó: ${getPlayerName()} 🎨`;
 
       if (!ctx) return;
       ctx.fillStyle = '#ffffff';
@@ -627,7 +634,7 @@
       });
     }
 
-    // OKOS FLOOD FILL KITÖLTÉS (Csak a fehér/világos belső területeket színezi, megáll a kontúrnál)
+    // KATTINTÓS KITÖLTÉS
     if (canvas) {
       canvas.addEventListener('click', e => {
         if (!ctx) return;
@@ -645,7 +652,6 @@
         const targetIdx = (startY * width + startX) * 4;
         const targetR = data[targetIdx], targetG = data[targetIdx + 1], targetB = data[targetIdx + 2];
         
-        // Ha fekete vonalra kattint, ne csináljon semmit
         if (targetR < 70 && targetG < 70 && targetB < 70) return;
 
         const [fillR, fillG, fillB] = hexToRgb(selectedColor);
@@ -663,10 +669,7 @@
           let pIdx = idx * 4;
           let r = data[pIdx], g = data[pIdx + 1], b = data[pIdx + 2];
 
-          // Megáll a fekete vonalaknál (kontúrok)
           if (r < 70 && g < 70 && b < 70) continue;
-
-          // Hasonlóság ellenőrzés
           if (Math.abs(r - targetR) > 35 || Math.abs(g - targetG) > 35 || Math.abs(b - targetB) > 35) continue;
 
           data[pIdx] = fillR;
@@ -687,6 +690,32 @@
     }
 
     function clearCanvas() {
+      if (currentActiveTemplate) startColoring(currentActiveTemplate);
+    }
+
+    // MENTÉS / LETÖLTÉS FUNKCIÓ (Névvel ellátott képként)
+    function saveArtwork() {
+      if (!canvas) return;
+      const name = getPlayerName();
+      
+      // Rajzoljunk egy kis névfeliratot a canvas aljára exportálás előtt
+      ctx.save();
+      ctx.fillStyle = '#02040a';
+      ctx.fillRect(10, canvas.height - 30, canvas.width - 20, 25);
+      ctx.font = 'bold 14px "Courier New", monospace';
+      ctx.fillStyle = '#00ffcc';
+      ctx.textAlign = 'left';
+      ctx.fillText(`Mátrix Labor Alkotás — Készítette: ${name}`, 20, canvas.height - 12);
+      ctx.restore();
+
+      const link = document.createElement('a');
+      link.download = `${name}_${currentActiveTemplate ? currentActiveTemplate.id : 'szinezo'}_alkotas.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      
+      alert(`Csodás vagy, ${name}! A színezett képed letöltve! 💾✨`);
+      
+      // Újratöltjük a képet, hogy az aláírás ne maradjon ott a szerkesztőfelületen zavaróan
       if (currentActiveTemplate) startColoring(currentActiveTemplate);
     }
 
@@ -1158,7 +1187,7 @@
     }
 
     function openModule(category, type) {
-      const name = document.getElementById('playerName').value || 'Kis Művész';
+      const name = getPlayerName();
       alert(`Üdvözöllek a Laborban, ${name}!\nA(z) [${category.toUpperCase()} -> ${type.toUpperCase()}] modul fejlesztése folyamatban van.`);
     }
   </script>
