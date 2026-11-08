@@ -348,7 +348,7 @@
       </div>
     </div>
 
-    <!-- VIEW 5: SZÁMÖSSZEKÖTŐS KÉP (ÜVEGLAP MÓD) -->
+    <!-- VIEW 5: SZÁMÖSSZEKÖTŐS KÉP (VÉKONY FILC) -->
     <div id="dotConnectView" class="view-section">
       <button class="btn btn-danger" onclick="goBackToDotConnectGallery()" style="margin-bottom: 8px;">❮ Vissza a Számösszekötős Galériába</button>
       
@@ -365,17 +365,24 @@
       </div>
     </div>
 
-    <!-- VIEW 6: SZÁMOLÓS MATEK KÉP MUNKATERÜLET (FORMÁK ÉS SZÍNEK ALAPJÁN) -->
+    <!-- VIEW 6: SZÁMOLÓS MATEK KÉP MUNKATERÜLET (SZÖVEG + BEÍRHATÓ NÉGYZET) -->
     <div id="mathView" class="view-section">
       <button class="btn btn-danger" onclick="goBackToMathGallery()" style="margin-bottom: 8px;">❮ Vissza a Számolós Galériába</button>
       
       <div class="canvas-workspace">
         <h3 id="mathTitle" style="color: var(--neon-cyan); margin: 0; font-size: 1rem;">M01</h3>
-        <p style="font-size: 0.8rem; color: var(--accent-gold); margin: 0;">Számold meg a formákat, színeket és oldd meg a matek feladatot!</p>
+        <p id="mathDesc" style="font-size: 0.85rem; color: var(--accent-gold); margin: 0; text-align: center;">Számold meg külön őket!</p>
         
-        <canvas id="mathCanvas" class="interactive-canvas" width="600" height="400"></canvas>
+        <canvas id="mathCanvas" class="interactive-canvas" width="600" height="340"></canvas>
 
-        <div class="action-row">
+        <!-- Interaktív Matek Válasz Sáv Beírható Négyzettel -->
+        <div style="display: flex; align-items: center; justify-content: center; gap: 12px; background: rgba(0,0,0,0.7); padding: 10px 20px; border-radius: 10px; border: 2px solid var(--neon-blue);">
+          <span id="mathEquationLabel" style="font-size: 1.3rem; font-family: 'Courier New', monospace; color: #fff; font-weight: bold;">5 + 3 =</span>
+          <input type="number" id="mathAnswerInput" placeholder="?" style="width: 60px; height: 45px; font-size: 1.4rem; text-align: center; background: #000; border: 2px solid var(--neon-cyan); color: var(--accent-gold); border-radius: 6px; font-family: inherit;">
+          <button class="btn btn-success" onclick="checkMathAnswer()" style="padding: 10px 16px; font-size: 1rem;">Ellenőrzés ✓</button>
+        </div>
+
+        <div class="action-row" style="margin-top: 5px;">
           <button class="btn btn-danger" onclick="clearMath()">Törlés / Újra 🔄</button>
           <button class="btn btn-success" onclick="alert('Fantasztikus matek teljesítmény! Mentve a Mátrix Laborba! 🧮⭐')">Kész / Mentés ⭐</button>
         </div>
@@ -385,7 +392,7 @@
   </div>
 
   <footer>
-    Mátrix Labor Engine v1.42 • Projektigazgatás: Jordan & Nefi
+    Mátrix Labor Engine v1.43 • Projektigazgatás: Jordan & Nefi
   </footer>
 
   <script>
@@ -431,26 +438,45 @@
       ]
     };
 
-    // 15 DB FIÚS ÉS 15 DB LÁNYOS SZÁMÖSSZEKÖTŐS KÉP
     const dotConnectTemplates = {
       boys: Array.from({length: 15}, (_, i) => ({ id: 'f' + (i + 1), num: String(i + 1).padStart(2, '0'), img: 'f' + (i + 1) + '.png' })),
       girls: Array.from({length: 15}, (_, i) => ({ id: 'l' + (i + 1), num: String(i + 1).padStart(2, '0'), img: 'l' + (i + 1) + '.png' }))
     };
 
-    // 15 DB FIÚS ÉS 15 DB LÁNYOS SZÁMOLÓS / MATEK KÉP BEÉPÍTETT FORMÁKKal ÉS SZÍNEKKEL
+    // 15 DB FIÚS ÉS 15 DB LÁNYOS MATEK FELADAT (Összeadás és Kivonás, pontos leírással)
     const mathTemplates = {
-      boys: Array.from({length: 15}, (_, i) => ({
-        id: 'm' + (i + 1),
-        num: String(i + 1).padStart(2, '0'),
-        title: `Fiús Számolós Feladat #${i + 1}`,
-        desc: 'Számold meg a járműveket, robotokat és formákat!'
-      })),
-      girls: Array.from({length: 15}, (_, i) => ({
-        id: 'n' + (i + 1),
-        num: String(i + 1).padStart(2, '0'),
-        title: `Lányos Számolós Feladat #${i + 1}`,
-        desc: 'Számold meg a csillagokat, virágokat és szívecskéket!'
-      }))
+      boys: Array.from({length: 15}, (_, i) => {
+        let n1 = (i % 7) + 3;
+        let n2 = ((i + 2) % 5) + 1;
+        let isMinus = (i % 3 === 0); // 5 db kivonás a nagyobbaknak
+        if (isMinus && n1 < n2) { let temp = n1; n1 = n2; n2 = temp; }
+        let op = isMinus ? '-' : '+';
+        let ans = isMinus ? (n1 - n2) : (n1 + n2);
+        return {
+          id: 'm' + (i + 1),
+          num: String(i + 1).padStart(2, '0'),
+          n1: n1, n2: n2, op: op, ans: ans,
+          color1: '#ff3333', color2: '#0088ff',
+          shape1: 'kör', shape2: 'háromszög',
+          desc: `Piros ${shape1}: ${n1}, Kék ${shape2}: ${n2}. Számold meg külön őket!`
+        };
+      }),
+      girls: Array.from({length: 15}, (_, i) => {
+        let n1 = ((i + 1) % 6) + 3;
+        let n2 = (i % 4) + 2;
+        let isMinus = (i % 3 === 1); // 5 db kivonás itt is
+        if (isMinus && n1 < n2) { let temp = n1; n1 = n2; n2 = temp; }
+        let op = isMinus ? '-' : '+';
+        let ans = isMinus ? (n1 - n2) : (n1 + n2);
+        return {
+          id: 'n' + (i + 1),
+          num: String(i + 1).padStart(2, '0'),
+          n1: n1, n2: n2, op: op, ans: ans,
+          color1: '#ff00ff', color2: '#00cc66',
+          shape1: 'csillag', shape2: 'szív',
+          desc: `Rózsaszín ${shape1}: ${n1}, Zöld ${shape2}: ${n2}. Számold meg külön őket!`
+        };
+      })
     };
 
     let selectedColor = '#ff0055';
@@ -886,7 +912,7 @@
       }
     }
 
-    // --- SZÁMOLÓS MATEK GALÉRIA ÉS BEÉPÍTETT VIZUÁLIS FELADATOK ---
+    // --- SZÁMOLÓS MATEK GALÉRIA ÉS PONTOS MATEK LÁTVÁNY ---
     function openMathGallery(category) {
       document.getElementById('mainMenuView').classList.remove('active');
       document.getElementById('mathGalleryView').classList.add('active');
@@ -911,84 +937,74 @@
       document.getElementById('mathGalleryView').classList.remove('active');
       document.getElementById('mathView').classList.add('active');
       document.getElementById('mathTitle').innerText = tpl.num;
+      document.getElementById('mathDesc').innerText = tpl.desc;
+      document.getElementById('mathEquationLabel').innerText = `${tpl.n1} ${tpl.op} ${tpl.n2} =`;
+      document.getElementById('mathAnswerInput').value = '';
 
-      // Háttér és feladat generálás formákkal, színekkel, matek egyenletekkel
       mCtx.fillStyle = '#ffffff';
       mCtx.fillRect(0, 0, mCanvas.width, mCanvas.height);
 
-      // Cím a vásznon
-      mCtx.font = 'bold 18px Courier New';
-      mCtx.fillStyle = '#0f172a';
-      mCtx.textAlign = 'center';
-      mCtx.fillText(tpl.title, mCanvas.width / 2, 35);
-
-      mCtx.font = '13px Courier New';
-      mCtx.fillStyle = '#475569';
-      mCtx.fillText(tpl.desc, mCanvas.width / 2, 60);
-
-      // Dinamikus formák és színek rajzolása az index alapján (1-15)
-      let index = parseInt(tpl.num);
-      
-      // Rajzoljunk formákat (csillagok, körök, téglalapok, szívek, stb.)
-      for (let i = 0; i < (index % 6) + 3; i++) {
-        let x = 80 + (i % 4) * 110;
-        let y = 120 + Math.floor(i / 4) * 80;
-        
-        mCtx.fillStyle = (i % 2 === 0) ? '#ff0055' : '#0088ff';
-        if (index % 3 === 0) {
-          // Körök
-          mCtx.beginPath();
-          mCtx.arc(x + 25, y + 25, 22, 0, 2 * Math.PI);
-          mCtx.fill();
-        } else if (index % 3 === 1) {
-          // Négyzetek
-          mCtx.fillRect(x, y, 45, 45);
-        } else {
-          // Háromszögek
-          mCtx.beginPath();
-          mCtx.moveTo(x + 25, y);
-          mCtx.lineTo(x + 50, y + 45);
-          mCtx.lineTo(x, y + 45);
-          mCtx.closePath();
-          mCtx.fill();
-        }
+      // Első csoport formái (pl. n1 darab)
+      for (let i = 0; i < tpl.n1; i++) {
+        let x = 50 + (i % 6) * 80;
+        let y = 60 + Math.floor(i / 6) * 70;
+        drawShape(mCtx, x, y, tpl.shape1, tpl.color1);
       }
 
-      // Matek egyenlet a lap alján
-      mCtx.font = 'bold 22px Courier New';
-      mCtx.fillStyle = '#1e293b';
-      let eqText = `${index} + ${index % 5} = ?`;
-      if(index > 10) eqText = `${index} - ${index % 4} = ?`;
-      mCtx.fillText(eqText, mCanvas.width / 2, 330);
+      // Második csoport formái (pl. n2 darab)
+      let startX2 = 50 + (Math.min(tpl.n1, 6) * 80) + 20;
+      if (startX2 > 500) startX2 = 50;
+      let startY2 = tpl.n1 > 6 ? 180 : 60;
 
-      mCtx.font = '14px Courier New';
-      mCtx.fillStyle = '#94a3b8';
-      mCtx.fillText('Kösd össze a választ vagy írd be alulra a filccel!', mCanvas.width / 2, 365);
+      for (let i = 0; i < tpl.n2; i++) {
+        let x = startX2 + (i % 6) * 80;
+        let y = startY2 + Math.floor(i / 6) * 70;
+        drawShape(mCtx, x, y, tpl.shape2, tpl.color2);
+      }
     }
 
-    mCanvas.addEventListener('mousedown', e => startMathDraw(e));
-    mCanvas.addEventListener('mousemove', e => mathDraw(e));
-    mCanvas.addEventListener('mouseup', stopDraw);
-    mCanvas.addEventListener('mouseleave', stopDraw);
-    mCanvas.addEventListener('touchstart', e => { e.preventDefault(); startMathDraw(e.touches[0]); });
-    mCanvas.addEventListener('touchmove', e => { e.preventDefault(); mathDraw(e.touches[0]); });
-    mCanvas.addEventListener('touchend', stopDraw);
+    function drawShape(context, x, y, shape, color) {
+      context.fillStyle = color;
+      context.strokeStyle = '#222';
+      context.lineWidth = 2;
+      context.beginPath();
 
-    function startMathDraw(e) {
-      isMathDrawing = true;
-      mCtx.beginPath();
-      const rect = mCanvas.getBoundingClientRect();
-      mCtx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+      if (shape === 'kör') {
+        context.arc(x + 25, y + 25, 22, 0, 2 * Math.PI);
+        context.fill(); context.stroke();
+      } else if (shape === 'háromszög') {
+        context.moveTo(x + 25, y);
+        context.lineTo(x + 50, y + 45);
+        context.lineTo(x, y + 45);
+        context.closePath();
+        context.fill(); context.stroke();
+      } else if (shape === 'csillag') {
+        // Egyszerű csillag / korona forma
+        context.arc(x + 25, y + 25, 20, 0, 2 * Math.PI);
+        context.fill(); context.stroke();
+      } else if (shape === 'szív') {
+        context.arc(x + 15, y + 15, 15, 0, Math.PI);
+        context.arc(x + 35, y + 15, 15, 0, Math.PI);
+        context.lineTo(x + 25, y + 45);
+        context.closePath();
+        context.fill(); context.stroke();
+      } else {
+        context.fillRect(x, y, 40, 40);
+        context.strokeRect(x, y, 40, 40);
+      }
     }
 
-    function mathDraw(e) {
-      if (!isMathDrawing) return;
-      const rect = mCanvas.getBoundingClientRect();
-      mCtx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
-      mCtx.strokeStyle = selectedColor;
-      mCtx.lineWidth = 3;
-      mCtx.lineCap = 'round';
-      mCtx.stroke();
+    function checkMathAnswer() {
+      let userVal = parseInt(document.getElementById('mathAnswerInput').value);
+      if (isNaN(userVal)) {
+        alert('Írd be a számot a négyzetbe, kis művész! 🧐');
+        return;
+      }
+      if (userVal === currentMathTpl.ans) {
+        alert('Hatalmas gratuláció! Tökéletes eredmény! 🎉⭐');
+      } else {
+        alert('Nem baj, próbáld újra! Számold meg még egyszer figyelmesen! 🤓');
+      }
     }
 
     function clearMath() {
