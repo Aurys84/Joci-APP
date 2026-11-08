@@ -154,9 +154,12 @@
     /* Galéria rács */
     .gallery-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
       gap: 10px;
       margin-top: 10px;
+      max-height: 420px;
+      overflow-y: auto;
+      padding-right: 5px;
     }
 
     .gallery-item {
@@ -177,7 +180,7 @@
     }
 
     .gallery-item h3 {
-      font-size: 1.1rem;
+      font-size: 1rem;
       color: var(--accent-gold);
       margin: 4px 0;
     }
@@ -194,45 +197,44 @@
       background: #ffffff;
       border: 3px solid var(--neon-cyan);
       border-radius: 10px;
-      cursor: pointer;
+      cursor: crosshair;
       max-width: 100%;
       box-shadow: 0 0 20px rgba(0,255,204,0.4);
     }
 
+    /* 30 Színű Paletta */
     .palette {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(26px, 1fr));
-      gap: 4px;
-      width: 100%;
-      max-width: 580px;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 6px;
       background: rgba(0,0,0,0.85);
       padding: 8px;
       border-radius: 8px;
       border: 1px solid var(--neon-blue);
+      max-width: 580px;
+      width: 100%;
       box-sizing: border-box;
     }
 
     .color-btn {
-      width: 26px;
-      height: 26px;
+      width: 28px;
+      height: 28px;
       border-radius: 50%;
-      border: 2px solid rgba(255,255,255,0.8);
+      border: 2px solid white;
       cursor: pointer;
       transition: transform 0.1s;
+      justify-self: center;
     }
-    .color-btn:hover { transform: scale(1.1); }
-    .color-btn.selected {
+    .color-btn:active, .color-btn.selected {
       transform: scale(1.25);
       border-color: var(--accent-gold);
-      box-shadow: 0 0 12px var(--accent-gold);
+      box-shadow: 0 0 10px var(--accent-gold);
       z-index: 5;
     }
 
     .action-row {
       display: flex;
       gap: 10px;
-      flex-wrap: wrap;
-      justify-content: center;
       position: relative;
       z-index: 20;
     }
@@ -241,18 +243,16 @@
       background: var(--neon-blue);
       color: white;
       border: none;
-      padding: 9px 16px;
+      padding: 8px 14px;
       border-radius: 6px;
       font-family: inherit;
       cursor: pointer;
       font-size: 0.85rem;
-      font-weight: bold;
       position: relative;
       z-index: 20;
     }
     .btn-danger { background: #ff3333; }
     .btn-success { background: #00cc66; }
-    .btn-pdf { background: #9933ff; }
 
     footer {
       margin-top: 12px;
@@ -334,18 +334,17 @@
       <div id="mathGalleryContainer" class="gallery-grid"></div>
     </div>
 
-    <!-- VIEW 3: SZÍNEZŐ MUNKATERÜLET (VALÓDI RÉSZLETES RAJZOKKAL ÉS KITÖLTÉSSEL) -->
+    <!-- VIEW 3: SZÍNEZŐ MUNKATERÜLET (30 SZÍN + 15-15 VALÓDI KÉP MOTOR) -->
     <div id="canvasView" class="view-section">
       <button class="btn btn-danger" onclick="goBackToGallery()" style="margin-bottom: 8px;">❮ Vissza a Galériába</button>
       
       <div class="canvas-workspace">
         <h3 id="activeTemplateTitle" style="color: var(--accent-gold); margin: 0; font-size: 1rem;">Színező Munkaterület</h3>
-        <p style="font-size: 0.75rem; color: #00ffcc; margin: 0;">Kattints a kiválasztott színnel bármelyik zárt területre a kitöltéshez, vagy színezz szabadon! 🎨</p>
+        <p style="font-size: 0.75rem; color: #00ffcc; margin: 0;">Kattints a kiválasztott színnel a kitöltéshez, vagy színezz szabadon!</p>
         <div class="palette" id="colorPalette"></div>
         <canvas id="coloringCanvas" class="interactive-canvas" width="600" height="400"></canvas>
         <div class="action-row">
           <button class="btn btn-danger" onclick="clearCanvas()">Törlés / Újra 🔄</button>
-          <button class="btn btn-pdf" onclick="downloadAsPDF()">PDF Mentés 📄</button>
           <button class="btn btn-success" onclick="alert('Csodás alkotás! Mentve a Mátrix Labor archívumába! 💾✨')">Kész / Mentés ⭐</button>
         </div>
       </div>
@@ -368,7 +367,7 @@
       </div>
     </div>
 
-    <!-- VIEW 5: SZÁMÖSSZEKÖTŐS KÉP (A TE EREDETI KÉPES LOGIKÁDDAL) -->
+    <!-- VIEW 5: SZÁMÖSSZEKÖTŐS KÉP (VÉKONY FILC) -->
     <div id="dotConnectView" class="view-section">
       <button class="btn btn-danger" onclick="goBackToDotConnectGallery()" style="margin-bottom: 8px;">❮ Vissza a Számösszekötős Galériába</button>
       
@@ -411,26 +410,24 @@
   </div>
 
   <footer>
-    Mátrix Labor Engine v1.55 • Projektigazgatás: Jordan & Nefi
+    Mátrix Labor Engine v1.58 • Projektigazgatás: Jordan & Nefi
   </footer>
 
   <script>
-    // VALÓDI, RÉSZLETES ÉS FELISMERHETŐ SZÍNEZŐ SABLONOK
+    // 15-15 SORSZÁMOZOTT ONLINE KIFESTŐ KÉP (szl1-15 és szf1-15)
     const coloringTemplates = {
-      boys: [
-        { id: 'train', name: '🚂 Gőzmozdony', desc: 'Klasszikus pöfögős vonat kerekekkel és füsttel.' },
-        { id: 'rocket', name: '🚀 Mátrix Űrsikló', desc: 'Irány a galaxis és a csillagok!' },
-        { id: 'robot', name: '🤖 Robot Robi', desc: 'Vidám bádogember karokkal és kijelzővel.' },
-        { id: 'dino', name: '🦖 Dínó Kaland', desc: 'Hatalmas őshüllő tüskékkel és hosszú farokkal.' },
-        { id: 'car', name: '🏎️ Versenyautó', desc: 'Szupergyors gép nagy kerekekkel a pályán.' }
-      ],
-      girls: [
-        { id: 'castle', name: '🏰 Varázskastély', desc: 'Tornyok, kapuk, zászlók és csillogás.' },
-        { id: 'fairy', name: '🧚‍♀️ Tündér Hercegnő', desc: 'Szárnyak, virágok, korona és varázspálca.' },
-        { id: 'pegasus', name: '🦄 Unikornis Kaland', desc: 'Szárnyas egyszarvú szivárvánnyal.' },
-        { id: 'butterfly', name: '🦋 Varázs Pillangó', desc: 'Mintás szárnyú gyönyörű pillangó.' },
-        { id: 'teddy', name: '🧸 Cuki Maci', desc: 'Kedves plüssbarát masnival.' }
-      ]
+      boys: Array.from({length: 15}, (_, i) => ({
+        id: 'szf' + (i + 1),
+        name: `Fiús Kifestő #${i + 1}`,
+        img: `szf${i + 1}.png`,
+        desc: `Kaland & Járművek kép #${i + 1}`
+      })),
+      girls: Array.from({length: 15}, (_, i) => ({
+        id: 'szl' + (i + 1),
+        name: `Lányos Kifestő #${i + 1}`,
+        img: `szl${i + 1}.png`,
+        desc: `Varázsvilág kép #${i + 1}`
+      }))
     };
 
     const tracingTemplates = {
@@ -460,7 +457,6 @@
       ]
     };
 
-    // A TE EREDETI SZÁMÖSSZEKÖTŐS LISTÁD (ÉRINTETLEN)
     const dotConnectTemplates = {
       boys: Array.from({length: 15}, (_, i) => ({ id: 'f' + (i + 1), num: String(i + 1).padStart(2, '0'), img: 'f' + (i + 1) + '.png' })),
       girls: Array.from({length: 15}, (_, i) => ({ id: 'l' + (i + 1), num: String(i + 1).padStart(2, '0'), img: 'l' + (i + 1) + '.png' }))
@@ -517,12 +513,11 @@
       })
     };
 
+    // 30 DB RÉSZLETES SZÍN A PALETTÁHOZ
     const colors = [
-      '#ff0000', '#ff3300', '#ff6600', '#ff9900', '#ffcc00', '#ffff00', '#ccff00', '#99ff00', '#66ff00', '#33ff00',
-      '#00ff00', '#00ff33', '#00ff66', '#00ff99', '#00ffcc', '#00ffff', '#00ccff', '#0099ff', '#0066ff', '#0033ff',
-      '#0000ff', '#3300ff', '#6600ff', '#9900ff', '#cc00ff', '#ff00ff', '#ff00cc', '#ff0099', '#ff0066', '#ff0033',
-      '#ffffff', '#e6e6e6', '#cccccc', '#b3b3b3', '#999999', '#808080', '#666666', '#4d4d4d', '#333333', '#1a1a1a', '#000000',
-      '#8b4513', '#a0522d', '#cd853f', '#deb887', '#ffb6c1', '#ffc0cb', '#dda0dd', '#9370db', '#4682b4', '#20b2aa'
+      '#ff0000', '#ff4500', '#ffa500', '#ffd700', '#ffff00', '#adff2f', '#00ff00', '#00fa9a', '#00ffff', '#1e90ff',
+      '#0000ff', '#8a2be2', '#9932cc', '#ff00ff', '#ff1493', '#ffb6c1', '#8b4513', '#a0522d', '#deb887', '#f5deb3',
+      '#ffffff', '#dcdcdc', '#c0c0c0', '#808080', '#696969', '#2f4f4f', '#191970', '#000000', '#ff6347', '#4682b4'
     ];
 
     let selectedColor = '#ff0000';
@@ -535,6 +530,7 @@
 
     const canvas = document.getElementById('coloringCanvas');
     const ctx = canvas ? canvas.getContext('2d', { willReadFrequently: true }) : null;
+    let isDrawing = false;
 
     const tCanvas = document.getElementById('tracingCanvas');
     const tCtx = tCanvas ? tCanvas.getContext('2d') : null;
@@ -574,9 +570,9 @@
         const card = document.createElement('div');
         card.className = 'gallery-item';
         card.innerHTML = `
-          <div style="font-size: 1.8rem; margin-bottom: 4px;">🎨</div>
+          <div style="font-size: 1.5rem; margin-bottom: 2px;">🎨</div>
           <h3>${tpl.name}</h3>
-          <p style="font-size: 0.7rem; color: #aaa; margin: 2px 0 0 0;">${tpl.desc}</p>
+          <p style="font-size: 0.65rem; color: #aaa; margin: 0;">${tpl.id}.png</p>
         `;
         card.onclick = () => startColoring(tpl);
         container.appendChild(card);
@@ -588,107 +584,43 @@
       document.getElementById('galleryView').classList.remove('active');
       document.getElementById('canvasView').classList.add('active');
       document.getElementById('activeTemplateTitle').innerText = tpl.name;
-      renderColoringTemplate(tpl.id);
-    }
 
-    // RÉSZLETES, VALÓDI Vonalas VEKTOROS KIFESTŐ SABLONOK (FLOOD FILL TÁMOGATÁSSAL)
-    function renderColoringTemplate(id) {
       if (!ctx) return;
       ctx.fillStyle = '#ffffff';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      ctx.strokeStyle = '#111111';
-      ctx.lineWidth = 4;
-      ctx.lineJoin = 'round';
-      ctx.lineCap = 'round';
-
-      if (id === 'train') {
-        // Gőzmozdony részletes rajz
-        ctx.strokeRect(100, 220, 180, 110);
-        ctx.strokeRect(300, 170, 160, 160);
-        ctx.beginPath(); ctx.arc(140, 330, 25, 0, 2*Math.PI); ctx.arc(220, 330, 25, 0, 2*Math.PI); ctx.arc(350, 330, 25, 0, 2*Math.PI); ctx.arc(430, 330, 25, 0, 2*Math.PI); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(460, 220); ctx.lineTo(520, 220); ctx.lineTo(500, 330); ctx.lineTo(460, 330); ctx.closePath(); ctx.stroke();
-        ctx.beginPath(); ctx.arc(360, 130, 20, 0, Math.PI, true); ctx.lineTo(380, 170); ctx.lineTo(340, 170); ctx.closePath(); ctx.stroke();
-        ctx.strokeRect(330, 200, 40, 50); ctx.strokeRect(390, 200, 40, 50);
-      } else if (id === 'rocket') {
-        // Űrsikló
-        ctx.beginPath(); ctx.moveTo(300, 50); ctx.lineTo(380, 200); ctx.lineTo(380, 310); ctx.lineTo(220, 310); ctx.lineTo(220, 200); ctx.closePath(); ctx.stroke();
-        ctx.beginPath(); ctx.arc(300, 170, 30, 0, 2*Math.PI); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(220, 250); ctx.lineTo(150, 330); ctx.lineTo(220, 300); ctx.closePath(); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(380, 250); ctx.lineTo(450, 330); ctx.lineTo(380, 300); ctx.closePath(); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(260, 310); ctx.lineTo(300, 370); ctx.lineTo(340, 310); ctx.closePath(); ctx.stroke();
-      } else if (id === 'robot') {
-        // Robot Robi
-        ctx.strokeRect(240, 80, 120, 90); // Fej
-        ctx.strokeRect(210, 190, 180, 140); // Törzs
-        ctx.strokeRect(130, 190, 70, 110); // Bal kar
-        ctx.strokeRect(400, 190, 70, 110); // Jobb kar
-        ctx.strokeRect(230, 340, 50, 50); // Bal láb
-        ctx.strokeRect(320, 340, 50, 50); // Jobb láb
-        ctx.beginPath(); ctx.arc(280, 125, 18, 0, 2*Math.PI); ctx.stroke(); // Szem
-        ctx.beginPath(); ctx.arc(320, 125, 18, 0, 2*Math.PI); ctx.stroke(); // Szem
-        ctx.beginPath(); ctx.moveTo(270, 150); ctx.lineTo(330, 150); ctx.stroke(); // Száj
-        ctx.beginPath(); ctx.moveTo(300, 45); ctx.lineTo(300, 80); ctx.arc(300, 40, 6, 0, 2*Math.PI); ctx.stroke(); // Antenna
-      } else if (id === 'dino') {
-        // Valódi dínó
-        ctx.beginPath(); ctx.ellipse(300, 240, 110, 60, 0, 0, 2*Math.PI); ctx.stroke(); // Törzs
-        ctx.beginPath(); ctx.arc(440, 160, 40, 0, 2*Math.PI); ctx.stroke(); // Fej
-        ctx.beginPath(); ctx.moveTo(410, 175); ctx.lineTo(470, 175); ctx.stroke(); // Száj
-        ctx.beginPath(); ctx.arc(430, 150, 6, 0, 2*Math.PI); ctx.stroke(); // Szem
-        ctx.beginPath(); ctx.moveTo(400, 185); ctx.bezierCurveTo(360, 180, 340, 210, 320, 180); ctx.stroke(); // Nyak
-        ctx.beginPath(); ctx.moveTo(190, 260); ctx.lineTo(100, 220); ctx.lineTo(180, 300); ctx.closePath(); ctx.stroke(); // Farok
-        ctx.beginPath(); ctx.rect(220, 298, 30, 70); ctx.rect(330, 298, 30, 70); ctx.stroke(); // Lábak
-        // Tüskék a hátán
-        ctx.beginPath(); ctx.moveTo(210, 180); ctx.lineTo(230, 130); ctx.lineTo(260, 180); ctx.lineTo(290, 125); ctx.lineTo(320, 180); ctx.lineTo(350, 130); ctx.lineTo(380, 180); ctx.stroke();
-      } else if (id === 'car') {
-        // Versenyautó
-        ctx.strokeRect(150, 200, 300, 90);
-        ctx.beginPath(); ctx.arc(220, 290, 38, 0, 2*Math.PI); ctx.arc(380, 290, 38, 0, 2*Math.PI); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(230, 200); ctx.lineTo(270, 130); ctx.lineTo(330, 130); ctx.lineTo(370, 200); ctx.closePath(); ctx.stroke();
-        ctx.beginPath(); ctx.arc(300, 245, 20, 0, 2*Math.PI); ctx.stroke(); // Szélvédő/szám
-      } else if (id === 'castle') {
-        // Varázskastély
-        ctx.strokeRect(210, 170, 180, 170); // Fő épület
-        ctx.strokeRect(140, 110, 75, 230); // Bal torony
-        ctx.strokeRect(385, 110, 75, 230); // Jobb torony
-        ctx.beginPath(); ctx.moveTo(140, 110); ctx.lineTo(177, 40); ctx.lineTo(215, 110); ctx.closePath(); ctx.stroke(); // Tető
-        ctx.beginPath(); ctx.moveTo(385, 110); ctx.lineTo(422, 40); ctx.lineTo(460, 110); ctx.closePath(); ctx.stroke(); // Tető
-        ctx.strokeRect(275, 240, 50, 100); // Kapu
-      } else if (id === 'fairy') {
-        // Tündér Hercegnő
-        ctx.beginPath(); ctx.arc(300, 130, 35, 0, 2*Math.PI); ctx.stroke(); // Fej
-        ctx.beginPath(); ctx.moveTo(280, 95); ctx.lineTo(320, 95); ctx.lineTo(340, 75); ctx.lineTo(300, 65); ctx.lineTo(260, 75); ctx.closePath(); ctx.stroke(); // Korona
-        ctx.beginPath(); ctx.moveTo(280, 165); ctx.lineTo(320, 165); ctx.lineTo(335, 270); ctx.lineTo(265, 270); ctx.closePath(); ctx.stroke(); // Ruha
-        // Szárnyak
-        ctx.beginPath(); ctx.ellipse(220, 200, 60, 35, -0.3, 0, 2*Math.PI); ctx.ellipse(380, 200, 60, 35, 0.3, 0, 2*Math.PI); ctx.stroke();
-        ctx.beginPath(); ctx.ellipse(235, 250, 45, 25, 0.2, 0, 2*Math.PI); ctx.ellipse(365, 250, 45, 25, -0.2, 0, 2*Math.PI); ctx.stroke();
-      } else if (id === 'pegasus') {
-        // Unikornis
-        ctx.beginPath(); ctx.ellipse(320, 230, 90, 55, 0, 0, 2*Math.PI); ctx.stroke(); // Törzs
-        ctx.beginPath(); ctx.arc(420, 150, 42, 0, 2*Math.PI); ctx.stroke(); // Fej
-        ctx.beginPath(); ctx.moveTo(450, 120); ctx.lineTo(490, 60); ctx.lineTo(430, 100); ctx.closePath(); ctx.stroke(); // Szarv
-        ctx.beginPath(); ctx.moveTo(380, 180); ctx.bezierCurveTo(340, 140, 300, 130, 260, 150); ctx.stroke(); // Sörény
-        ctx.beginPath(); ctx.rect(250, 280, 22, 70); ctx.rect(370, 280, 22, 70); ctx.stroke(); // Lábak
-        ctx.beginPath(); ctx.ellipse(280, 200, 70, 40, -0.4, 0, 2*Math.PI); ctx.stroke(); // Szárny
-      } else if (id === 'butterfly') {
-        // Varázs Pillangó
-        ctx.beginPath(); ctx.ellipse(300, 200, 14, 80, 0, 0, 2*Math.PI); ctx.stroke(); // Test
-        ctx.beginPath(); ctx.arc(300, 110, 22, 0, 2*Math.PI); ctx.stroke(); // Fej
-        ctx.beginPath(); ctx.ellipse(210, 160, 75, 55, -0.5, 0, 2*Math.PI); ctx.ellipse(390, 160, 75, 55, 0.5, 0, 2*Math.PI); ctx.stroke(); // Felső szárny
-        ctx.beginPath(); ctx.ellipse(220, 260, 60, 45, 0.5, 0, 2*Math.PI); ctx.ellipse(380, 260, 60, 45, -0.5, 0, 2*Math.PI); ctx.stroke(); // Alsó szárny
-      } else {
-        // Cuki Maci
-        ctx.beginPath(); ctx.arc(300, 220, 75, 0, 2*Math.PI); ctx.stroke(); // Test
-        ctx.beginPath(); ctx.arc(300, 130, 55, 0, 2*Math.PI); ctx.stroke(); // Fej
-        ctx.beginPath(); ctx.arc(245, 85, 22, 0, 2*Math.PI); ctx.arc(355, 85, 22, 0, 2*Math.PI); ctx.stroke(); // Fülek
-        ctx.beginPath(); ctx.arc(280, 125, 8, 0, 2*Math.PI); ctx.arc(320, 125, 8, 0, 2*Math.PI); ctx.stroke(); // Szemek
-        ctx.beginPath(); ctx.arc(300, 142, 10, 0, 2*Math.PI); ctx.stroke(); // Orr
-        ctx.beginPath(); ctx.arc(230, 220, 30, 0, 2*Math.PI); ctx.arc(370, 220, 30, 0, 2*Math.PI); ctx.stroke(); // Kezek
-      }
+      const img = new Image();
+      img.src = tpl.img;
+      img.onload = function() {
+        ctx.drawImage(img, 20, 20, 560, 360);
+      };
+      img.onerror = function() {
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.strokeStyle = '#222';
+        ctx.lineWidth = 3;
+        ctx.strokeRect(20, 20, 560, 360);
+        ctx.font = '16px Courier New';
+        ctx.fillStyle = '#ff3333';
+        ctx.textAlign = 'center';
+        ctx.fillText('Kép betöltése: ' + tpl.img, canvas.width / 2, canvas.height / 2 - 10);
+        ctx.font = '13px Courier New';
+        ctx.fillStyle = '#555';
+        ctx.fillText('(Szabadkézi rajzolás vagy Flood Fill aktív)', canvas.width / 2, canvas.height / 2 + 20);
+      };
     }
 
-    // Flood fill (kitöltő) algoritmus kattintásra
+    // EGÉR / ÉRINTÉS ALAPÚ KITÖLTÉS ÉS SZABADKÉZI RAJZOLÁS
     if (canvas) {
+      canvas.addEventListener('mousedown', e => startDraw(e));
+      canvas.addEventListener('mousemove', e => draw(e));
+      canvas.addEventListener('mouseup', stopDraw);
+      canvas.addEventListener('mouseleave', stopDraw);
+      canvas.addEventListener('touchstart', e => { e.preventDefault(); startDraw(e.touches[0]); }, {passive: false});
+      canvas.addEventListener('touchmove', e => { e.preventDefault(); draw(e.touches[0]); }, {passive: false});
+      canvas.addEventListener('touchend', stopDraw);
+
+      // Kattintásra Flood Fill (kitöltés) ha nem húzzák az egeret
       canvas.addEventListener('click', e => {
         if (!ctx) return;
         const rect = canvas.getBoundingClientRect();
@@ -697,6 +629,30 @@
         floodFill(Math.floor((e.clientX - rect.left) * scaleX), Math.floor((e.clientY - rect.top) * scaleY), selectedColor);
       });
     }
+
+    function startDraw(e) {
+      if (!ctx) return;
+      isDrawing = true;
+      ctx.beginPath();
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      ctx.moveTo((e.clientX - rect.left) * scaleX, (e.clientY - rect.top) * scaleY);
+    }
+
+    function draw(e) {
+      if (!isDrawing || !ctx) return;
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      ctx.lineTo((e.clientX - rect.left) * scaleX, (e.clientY - rect.top) * scaleY);
+      ctx.strokeStyle = selectedColor;
+      ctx.lineWidth = 12;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+    }
+
+    function stopDraw() { isDrawing = false; isTracing = false; isDotDrawing = false; }
 
     function hexToRgb(hex) {
       let bigint = parseInt(hex.replace('#',''), 16);
@@ -710,7 +666,7 @@
       const targetR = data[targetIdx], targetG = data[targetIdx + 1], targetB = data[targetIdx + 2];
       const [fillR, fillG, fillB] = hexToRgb(fillColorHex);
       if (Math.abs(targetR - fillR) < 10 && Math.abs(targetG - fillG) < 10 && Math.abs(targetB - fillB) < 10) return;
-      if (targetR < 50 && targetG < 50 && targetB < 50) return; // Nem festjük át a fekete körvonalat
+      if (targetR < 40 && targetG < 40 && targetB < 40) return; // Fekete kontúr védelme
 
       const queue = [[x, y]];
       const width = canvas.width, height = canvas.height;
@@ -723,21 +679,16 @@
         visited[idx] = 1;
         let pIdx = idx * 4;
         let r = data[pIdx], g = data[pIdx + 1], b = data[pIdx + 2];
-        if (r < 50 && g < 50 && b < 50 || Math.abs(r - targetR) > 25 || Math.abs(g - targetG) > 25 || Math.abs(b - targetB) > 25) continue;
+        if (r < 40 && g < 40 && b < 40 || Math.abs(r - targetR) > 30 || Math.abs(g - targetG) > 30 || Math.abs(b - targetB) > 30) continue;
         data[pIdx] = fillR; data[pIdx + 1] = fillG; data[pIdx + 2] = fillB; data[pIdx + 3] = 255;
         queue.push([cx + 1, cy], [cx - 1, cy], [cx, cy + 1], [cx, cy - 1]);
       }
       ctx.putImageData(imgData, 0, 0);
     }
 
-    function downloadAsPDF() {
-      const dataUrl = canvas.toDataURL('image/png');
-      const win = window.open('');
-      win.document.write(`<html><head><title>Mátrix Labor — Alkotás</title><style>body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; background: #fff; font-family: sans-serif; } img { max-width: 100%; height: auto; border: 2px solid #000; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); } h2 { color: #111; margin-bottom: 10px; } p { color: #555; font-size: 0.9rem; }</style></head><body><h2>Mátrix Labor Kifestő Mestermű</h2><p>Nyomtasd ki vagy mentsd el PDF-ként (Ctrl+P -> Mentés PDF-ként)!</p><img src="${dataUrl}" /><script>setTimeout(() => { window.print(); }, 500);<\/script></body></html>`);
-      win.document.close();
+    function clearCanvas() {
+      if (currentActiveTemplate) startColoring(currentActiveTemplate);
     }
-
-    function clearCanvas() { if (currentActiveTemplate) renderColoringTemplate(currentActiveTemplate.id); }
 
     function openTracingGallery(category) {
       document.getElementById('mainMenuView').classList.remove('active');
@@ -925,11 +876,11 @@
     if (tCanvas) {
       tCanvas.addEventListener('mousedown', e => startTrace(e));
       tCanvas.addEventListener('mousemove', e => traceDraw(e));
-      tCanvas.addEventListener('mouseup', () => isTracing = false);
-      tCanvas.addEventListener('mouseleave', () => isTracing = false);
+      tCanvas.addEventListener('mouseup', stopDraw);
+      tCanvas.addEventListener('mouseleave', stopDraw);
       tCanvas.addEventListener('touchstart', e => { e.preventDefault(); startTrace(e.touches[0]); }, {passive: false});
       tCanvas.addEventListener('touchmove', e => { e.preventDefault(); traceDraw(e.touches[0]); }, {passive: false});
-      tCanvas.addEventListener('touchend', () => isTracing = false);
+      tCanvas.addEventListener('touchend', stopDraw);
     }
 
     function startTrace(e) {
@@ -1014,7 +965,6 @@
       });
     }
 
-    // A TE EREDETI SZÁMÖSSZEKÖTŐS LOGIKÁD (ÉRINTETLENÜL)
     function startDotConnectGame(tpl) {
       currentDotTpl = tpl;
       document.getElementById('dotConnectGalleryView').classList.remove('active');
@@ -1043,11 +993,11 @@
     if (dCanvas) {
       dCanvas.addEventListener('mousedown', e => startDotDraw(e));
       dCanvas.addEventListener('mousemove', e => dotDraw(e));
-      dCanvas.addEventListener('mouseup', () => isDotDrawing = false);
-      dCanvas.addEventListener('mouseleave', () => isDotDrawing = false);
+      dCanvas.addEventListener('mouseup', stopDraw);
+      dCanvas.addEventListener('mouseleave', stopDraw);
       dCanvas.addEventListener('touchstart', e => { e.preventDefault(); startDotDraw(e.touches[0]); }, {passive: false});
       dCanvas.addEventListener('touchmove', e => { e.preventDefault(); dotDraw(e.touches[0]); }, {passive: false});
-      dCanvas.addEventListener('touchend', () => isDotDrawing = false);
+      dCanvas.addEventListener('touchend', stopDraw);
     }
 
     function startDotDraw(e) {
